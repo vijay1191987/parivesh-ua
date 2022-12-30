@@ -1,0 +1,18 @@
+<div class="footer">
+    <div class="container-fluid d-flex justify-content-end">
+        <ul class="list-unstyled p-0 d-flex pe-3 mb-0 border-end align-items-center">
+            <li class="me-3">Scale</li>
+            <li><a href="javascript:void(0);" (click)="zoomInOut('OUT')" class="h5" style="color: #8D8D8D;"><i
+                        class="fas fa-minus-circle"></i></a></li>
+            <li class="mx-1 px-2 py-1" style="background: #3C3C3C;border-radius: 4px;"><span>1:{{this.mapScale}}</span>
+            </li>
+            <li><a href="javascript:void(0);" (click)="zoomInOut('IN')" class="h5" style="color: #8D8D8D;"><i
+                        class="fas fa-plus-circle"></i></a></li>
+        </ul>
+
+        <ul class="list-unstyled p-0 d-flex ps-3 mb-0 border-start align-items-center">
+            <li class="me-3">Cordinates</li>
+            <li class="px-2 py-1" style="background: #3C3C3C;border-radius: 4px;"><span>{{this.mapPointer}}</span></li>
+        </ul>
+    </div>
+</div>

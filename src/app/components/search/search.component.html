@@ -1,0 +1,154 @@
+<!--Search box start--> 
+<div class="search-box">
+    <div class="p-1 d-flex align-items-center bg-white rounded shadow">
+        <a href="javascript:void(0);" (click)="menuBtn()">
+            <img src="assets/img/icon/search/menu.png" class="py-1 px-2">
+        </a>
+        <div class="position-relative w-100">
+            <input type="text" (click)="searchInput()" class="form-control shadow-none border-0 menu-search" placeholder="Search proposal">
+            <a href="" class=""><img src="assets/img/icon/search/search.png" class="menu-search-icon"></a>
+            <!--<a href="" class=""><img src="assets/img/icon/search/cross.png" class="menu-cross-icon"></a>-->
+        </div>
+    </div>
+</div>      
+<!--Search box end-->
+ 
+<!-- proposal side-popup start  -->
+<div class="proposal-box shadow" [hidden]="!proposalBox">
+    <div class="proposal-header"> 
+        <a href="javascript:void(0);" class="text-dark fs-4 px-2 float-end" (click)="menuBtn()"><i class="fas fa-caret-left"></i></a>
+        <div class="d-flex align-items-center"> 
+            <h5>Proposal No.: <span class="py-1 px-2 ms-2 bg-light rounded-pill" style="font-size: 12px;">IA/AP/IND2/27956/2015</span></h5>
+        </div>
+        </div>
+        <hr/>
+    
+        <div class="proposal-body">
+            <a class="text-dark text-decoration-none" href="javascript:void(0);"> <p class="w-100 p-2 mb-3 text-start fw-bold"> <i class="fas fa-cloud-upload-alt me-2"></i> Primary KML </p></a>
+            <a class="text-dark text-decoration-none" href="javascript:void(0);"> <p class="w-100 p-2 mb-3 text-start fw-bold"> <i class="fas fa-cloud-upload-alt me-2"></i> Alternative KML </p></a>
+            <a class="text-dark text-decoration-none" href="javascript:void(0);"> <p class="w-100 p-2 mb-3 text-start fw-bold"> <i class="fas fa-cloud-upload-alt me-2"></i> Help </p></a>
+            <a class="text-dark text-decoration-none" href="javascript:void(0);"> <p class="w-100 p-2 mb-3 text-start fw-bold"> <i class="fas fa-cloud-upload-alt me-2"></i> Instructions </p></a>
+               <hr>
+
+            <div class="d-flex align-items-center">
+                <i class="fas fa-user fa-2x me-3"></i>
+                <div>
+                    <a href="javascript:void(0);" class="text-dark text-decoration-none">
+                        <p class="w-100 mb-0 text-start fw-bold"> Shubham Deep Gupta </p>
+                    </a>
+                    <p class="w-100 mb-0 text-start text-muted small"> Proponent Type </p>
+                </div>
+            </div>
+
+            <a href="javascript:void(0);" class="btn btn-secondary border fw-bold mt-3 bg-light text-start text-dark w-75"><i class="fas fa-sign-out-alt me-2"></i> Logout</a>
+        </div> 
+    </div>
+<!-- proposal side-popup end  -->
+
+
+
+
+<!-- search box start  -->
+<div class="search-popbox shadow" [hidden]="!searchBox">
+        <div class="search-popbox-header">
+            <div class="d-flex align-items-center"> 
+                <a href="javascript:void(0);">Status <i class="fas fa-chevron-down"></i></a>
+                <a href="javascript:void(0);" class="disable">Sector <i class="fas fa-chevron-down"></i></a>
+            </div>
+            <div class="d-flex mt-3">
+                <button type="button" class="btn btn-sm btn-outline-success me-2 d-flex align-items-center"> <i class="fas fa-circle me-2"></i> Granted</button>
+                <button type="button" class="btn btn-sm btn-outline-warning me-2 d-flex align-items-center"> <i class="fas fa-circle me-2"></i> Under Review</button>
+                <button type="button" class="btn btn-sm btn-outline-danger me-2 d-flex align-items-center"> <i class="fas fa-circle me-2"></i> Rejected</button>
+            </div>
+        </div> 
+
+        <div class="search-popbox-body">
+            <div class="search-status-box mt-3">
+                <div class="row">
+                    <div class="col-md-4"><h6 class="fade-text">Proposal No.:</h6></div>
+                    <div class="col-md-8"><h6 class="text-dark">IA/AP/IND2/27956/2015</h6></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4"><h6 class="fade-text">Organisation:</h6></div>
+                    <div class="col-md-8"><h6 class="text-dark">Reliance Telecom Pvt. Ltd</h6></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4"><h6 class="fade-text">Status:</h6></div>
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h6 class="text-success">Granted</h6>
+                            </div>
+                            <div class="col-md-4">
+                                <h6 class="fade-text">Sector:</h6>
+                            </div>
+                            <div class="col-md-4">
+                                <h6>CRZ</h6>
+                            </div>
+                            </div>
+                    </div>
+                </div>
+            </div>  
+
+            <div class="col-md-12 mt-3">
+                <button type="button" class="btn btn-sm btn-light bg-light border fw-light"><small>Similar Proposals</small> <i class="fas fa-arrows-alt-h ms-2"></i></button>
+            </div>
+            
+            <div class="search-status-box mt-3">
+                <div class="row">
+                    <div class="col-md-4"><h6 class="fade-text">Proposal No.:</h6></div>
+                    <div class="col-md-8"><h6 class="text-dark">IA/AP/IND2/27956/2015</h6></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4"><h6 class="fade-text">Organisation:</h6></div>
+                    <div class="col-md-8"><h6 class="text-dark">Reliance Telecom Pvt. Ltd</h6></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4"><h6 class="fade-text">Status:</h6></div>
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6 class="text-warning">Under Review</h6>
+                            </div>
+                            <div class="col-md-3">
+                                <h6 class="fade-text">Sector:</h6>
+                            </div>
+                            <div class="col-md-3">
+                                <h6>CRZ</h6>
+                            </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="search-status-box mt-3">
+                <div class="row">
+                    <div class="col-md-4"><h6 class="fade-text">Proposal No.:</h6></div>
+                    <div class="col-md-8"><h6 class="text-dark">IA/AP/IND2/27956/2015</h6></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4"><h6 class="fade-text">Organisation:</h6></div>
+                    <div class="col-md-8"><h6 class="text-dark">Reliance Telecom Pvt. Ltd</h6></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4"><h6 class="fade-text">Status:</h6></div>
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h6 class="text-danger">Rejected</h6>
+                            </div>
+                            <div class="col-md-4">
+                                <h6 class="fade-text">Sector:</h6>
+                            </div>
+                            <div class="col-md-4">
+                                <h6>CRZ</h6>
+                            </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </div>
+<!-- search box end  -->
+
+

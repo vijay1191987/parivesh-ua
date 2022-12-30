@@ -1,0 +1,48 @@
+.checklist-leaf-node {
+  padding-left: 40px;
+}
+
+.submit-button {
+  margin-top: 10px;
+}
+
+.toggle-show-only-selected {
+  margin-top: 15px;
+}
+
+.example-form-field {
+  width: 300px;
+}
+
+.offcanvas.offcanvas-start {
+  visibility: visible;
+}
+
+.example-tree-invisible {
+  display: none;
+}
+
+.example-tree ul,
+.example-tree li {
+  margin-top: 0;
+  margin-bottom: 0;
+  list-style-type: none;
+}
+
+/* silly UX, they want a border in the full width of the tree between tree nodes */
+.example-tree {
+  position: relative;
+}
+
+.example-tree-node-name {
+  flex: 1 1 auto;
+}
+/* 
+li::before {
+  height: 3rem;
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-bottom: #EEE 1px solid;
+  content: ' ';
+} */

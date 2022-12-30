@@ -1,0 +1,62 @@
+<!-- icon start -->
+<li class="nav-item">
+  <a class="nav-link" data-bs-toggle="offcanvas" href="#offcanvasScrolling" role="button"><img
+      src="assets/img/icon/layer.svg" alt="Toolbar" /></a>
+</li>
+<!-- icon end -->
+
+<div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
+  id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+  <div class="offcanvas-header border-bottom">
+    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Layers</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    <a data-bs-toggle="offcanvas" href="#offcanvasScrolling" role="button" class="btn border-0 shadow-sm"
+      style="position: absolute;right: -69px;top: 45%;transform: rotate(-90deg);background: #08950f; color: #fff; border-radius: 0px 0px 9px 9px;">
+      <i class="fas fa-layer-group me-2"></i> Layers </a>
+  </div>
+  <div class="offcanvas-body">
+
+    <mat-form-field class="example-form-field">
+      <mat-label>Search a Layer</mat-label>
+      <input matInput type="text" [(ngModel)]="searchString" />
+      <button *ngIf="searchString" matSuffix mat-icon-button aria-label="Clear" (click)="searchString=''">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" #LayerView class="example-tree">
+      <!-- This is the tree node template for leaf nodes -->
+      <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding
+        [style.display]="showOnlySelected && !node.selected || this.searchString && hideLeafNode(node) ? 'none' : 'block'"
+        matTreeNodePadding matTreeNodePaddingIndent="0" matTreeNodePadding="0">
+        <li class="mat-tree-node">
+          <mat-checkbox class="checklist-leaf-node" (change)="itemToggle($event.checked,node)"
+            [checked]="node.selected">
+            <img src="{{node.LegendPath}}" alt="{{node.LayerName}}" />
+            {{node.LayerName}}</mat-checkbox>
+        </li>
+      </mat-tree-node>
+      <!-- This is the tree node template for expandable nodes -->
+      <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild"
+        [style.display]="(showOnlySelected && !(node.selected || node.indeterminate)) || this.searchString && hideParentNode(node) ? 'none' : 'block'">
+        <li>
+          <div class="mat-tree-node">
+            <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'toggle ' + node.LayerName">
+              <mat-icon class="mat-icon-rtl-mirror">
+                {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+              </mat-icon>
+            </button>
+            <mat-checkbox [checked]="node.selected" [indeterminate]="node.indeterminate && !node.selected"
+              (change)="itemToggle($event.checked,node)">{{node.LayerName}}</mat-checkbox>
+          </div>
+          <ul [class.example-tree-invisible]="!treeControl.isExpanded(node)">
+            <ng-container matTreeNodeOutlet></ng-container>
+          </ul>
+        </li>
+      </mat-nested-tree-node>
+    </mat-tree>
+    <button class="submit-button" mat-raised-button (click)="submit()">Submit</button>
+    <button class="submit-button" mat-raised-button (click)="ForTest()">Test</button>
+
+  </div>
+</div>

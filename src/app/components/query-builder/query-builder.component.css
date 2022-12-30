@@ -1,0 +1,176 @@
+.query-frame {
+    background: #FBFBFB;
+    border: 1px solid #C4C4C4;
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.drag-btn {
+    position: absolute;
+    top: 36%;
+    left: 4px;
+    padding: 5px;
+    font-size: 27px;
+    color: #a8a8a8;
+}
+
+.delete-btn {
+    position: absolute;
+    top: 40%;
+    right: -15px;
+    padding: 4px;
+    width: 30px;
+    height: 30px;
+    background: #FFF6F6;
+    border-radius: 30px;
+    text-align: center;
+    color: #FF5555;
+    border: 1px solid #FF5555;
+}
+
+.qb-plus-icon {
+    width: 30px;
+    height: 30px;
+    background: #08950F;
+    border-radius: 100px;
+    display: grid;
+    place-content: center;
+    font-size: 25px;
+    line-height: 0;
+    color: white;
+    margin-top: 4px;
+}
+
+.select-vl {
+    height: 100%;
+    width: 1px;
+    background: #000;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+}
+
+
+
+
+
+
+
+/*  */
+/*  */
+/*  */
+/*  */
+/*  */
+/*  */
+.rd-dropdown {
+    background: white;
+    padding: 5px !important;
+    border-radius: 4px !important;
+    box-shadow: 0px 0px 10px rgb(25 25 25 / 10%);
+    border: none;
+    width: 100%;
+}
+
+.select-step-label{
+    font-size: 10px;
+    color: #BDBDBD;
+    font-weight: 400;
+    margin-bottom: 0px;
+    margin-top: -2px;
+}
+
+.dropdown-menu[data-bs-popper] {
+    margin-top: 0rem;
+}
+
+.dropdown-item {
+    background-color: #fff;
+    padding: 0.5rem;
+    cursor: pointer;
+}
+
+.dropdown-menu {
+    font-size: 14px;
+} 
+   
+.dropdown-item:hover {
+    background-color: #F6F6F6;
+    color: rgb(50, 50, 50);
+    border-radius: 4px !important;
+}
+
+.dropdown:hover .rd-dropdown {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+    transition: 0.5s;
+}
+
+/* ============ desktop view ============ */
+@media all and (min-width: 992px) {
+
+    .dropdown-menu li {
+        position: relative;
+    }
+
+    .dropdown-menu .submenu {
+        display: none;
+        position: absolute;
+        left: 100%;
+        top: 0px;
+        background: white;
+        padding: 5px !important;
+        border-radius: 4px !important;
+        box-shadow: 0px 0px 10px rgb(25 25 25 / 10%);
+        border: none;
+        width: 100%;
+    }
+
+    .dropdown-menu .submenu-left {
+        right: 100%;
+        left: auto;
+    }
+
+    .dropdown-menu>li:hover {
+        background-color: #f1f1f1;
+        border-radius: 4px;
+    }
+
+    .dropdown-menu>li:hover>.submenu {
+        display: block;
+    }
+}
+
+/* ============ desktop view .end// ============ */
+
+/* ============ small devices ============ */
+@media (max-width: 991px) {
+
+    .dropdown-menu .dropdown-menu {
+        margin-left: 0.7rem;
+        margin-right: 0.7rem;
+        margin-bottom: .5rem;
+    }
+
+}
+
+/* ============ small devices .end// ============ */
+ 
+
+.rd-dropdown-li .sub-dropdown:hover .dropdown-item-sub-rd {
+    background-color: #F6F6F6;
+    color: rgb(50, 50, 50);
+    border-radius: 4px;
+}
+
+.rd-dropdown-li .sub-dropdown2:hover .dropdown-item-sub2-rd {
+    background-color: #F6F6F6;
+    color: rgb(50, 50, 50);
+    border-radius: 4px;
+}
+
+.slick-dots {
+    display: none !important;
+}

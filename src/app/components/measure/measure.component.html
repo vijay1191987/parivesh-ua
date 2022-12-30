@@ -1,0 +1,37 @@
+<!-- icon start --> 
+<li class="nav-item" (click)="elevationIcon('elevation')">
+    <a class="nav-link bottom-menu-btn" aria-current="page" href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Measure"><img src="assets/img/icon/3.svg" alt="Toolbar"/></a>
+</li> 
+<!-- icon end -->
+
+
+<div id="elevation" class="tool-popup" [hidden]="!elevationShow">
+    <div class="tool-popup-header"> <img class="header-icon invert" src="assets/img/icon/3.svg"> Elevation
+        <i class="fas fa-caret-down close-drag-window px-2 p-1"  (click)="elevationIcon('buffer')"></i>
+    </div> 
+
+    <div class="tool-popup-inner">
+        <form class=""> 
+            <div class="mb-3">
+              <label class="mb-1" for="">Select Geometry Type</label>  
+              <div class="">
+                <a href="javascript:void(0);" class="me-2"> <img src="assets/img/icon/geometry-icon-1.svg"></a>
+                <a href="javascript:void(0);" class="me-2"> <img src="assets/img/icon/geometry-icon-2.svg"></a>
+              </div> 
+            </div>
+            <div class="mb-3">
+                <label class="mb-1" for="">Measurement Unit</label>
+                <select class="form-select" id="">
+                  <option>Select</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                </select>
+              </div> 
+            </form>
+</div> 
+<div class="tool-popup-footer text-end">
+  <button type="button" class="btn btn-link me-2">Reset</button>
+  <button type="button" class="btn btn-tool-popup">Execute</button>
+</div>
+</div>

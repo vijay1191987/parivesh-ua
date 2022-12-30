@@ -1,0 +1,124 @@
+<!-- map start -->
+<div id="pariveshMAPdiv" class="map-area">
+</div>
+<!-- map start end -->
+
+<!--Navigation Tool Drawer start-->
+<div class="tool-drawer">
+    <a href="#!" class="btn btn-tool-drawer"><i class="fas fa-dice-d6 me-1"></i> Tool Drawer</a>
+    <ul class="tool-drawer-icons list-unstyled mb-0">
+        <li data-bs-toggle="tooltip" data-bs-placement="left" title="Measure"><a href="javascript:void(0);"
+                class="td-icon" (click)="handleMapToolButtons($event)"><img src="assets/img/icon/drawer/1.png"></a></li>
+        <li data-bs-toggle="tooltip" data-bs-placement="left" title="Extent"><a href="javascript:void(0);"
+                class="td-icon" (click)="handleMapToolButtons($event)"><img src="assets/img/icon/drawer/2.png"></a></li>
+        <li data-bs-toggle="tooltip" data-bs-placement="left" title="Previous Extent"><a href="javascript:void(0);"
+                class="td-icon" (click)="handleMapToolButtons($event)"><img src="assets/img/icon/drawer/3.png"></a></li>
+        <li data-bs-toggle="tooltip" data-bs-placement="left" title="Next Extent"><a href="javascript:void(0);"
+                class="td-icon" (click)="handleMapToolButtons($event)"><img src="assets/img/icon/drawer/4.png"></a></li>
+        <li data-bs-toggle="tooltip" data-bs-placement="left" title="Identify"><a href="javascript:void(0);"
+                class="td-icon" (click)="handleMapToolButtons($event)"><img src="assets/img/icon/drawer/7.png"></a></li>
+        <li data-bs-toggle="tooltip" data-bs-placement="left" title="Pan"><a href="javascript:void(0);" class="td-icon"
+                (click)="handleMapToolButtons($event)"><img src="assets/img/icon/drawer/5.png"></a></li>
+        <li data-bs-toggle="tooltip" data-bs-placement="left" title="ZoomOUT"><a href="javascript:void(0);"
+                class="td-icon" (click)="handleMapToolButtons($event)"><img src="assets/img/icon/drawer/6.png"></a></li>
+        <li data-bs-toggle="tooltip" data-bs-placement="left" title="ZoomIN"><a href="javascript:void(0);"
+                class="td-icon" (click)="handleMapToolButtons($event)"><img src="assets/img/icon/drawer/7.png"></a></li>
+
+    </ul>
+</div>
+<!--Navigation Tool Drawer end-->
+
+<!-- Measure Tool-->
+<div id="measureTool" class="basemap-gallery" [hidden]="measurementList">
+    <div class="mydivheader">Measurement (Click here to drag)
+        <i (click)="commonClose('Measurement')" class="fa fa-times" aria-hidden="true"
+            style="float:right; line-height: inherit; cursor: pointer;"></i>
+    </div>
+    <button class="action-button esri-icon-measure-line" id="distanceButton" type="button"
+        title="Measure distance between two or more points"></button>
+    <button class="action-button esri-icon-measure-area" id="areaButton" type="button" title="Measure area"></button>
+</div>
+
+<!-- change Map Layer bottom start-->
+<div class="blur-box" id="change-map-layer" (click)="baseLayer()" [ngClass]="{'z-index-999':  mapLayer}">
+    <ul class="d-flex ps-0 list-unstyled p-0" id="basmaps_click" style="cursor: pointer;">
+        <li class="m-0">
+            <a href="javascript:void(0);" style="width: 81px; height: 81px; border: 0px solid #fff">
+                <img src="assets/img/india_bnd.png" class="h-100 w-100 border-0">
+                <p class="mb-0 text-white"> BaseMaps </p>
+            </a>
+        </li>
+    </ul>
+</div>
+
+<div class="blur-box bb2" id="change-map-layer" [hidden]="!mapLayer" [ngClass]="{'z-index-999' : mapLayer}">
+    <ul class="list-unstyled">
+        <li>
+            <a (click)="handleBasemapEvent('Bing')" class="basemapIcon">
+                <img src="assets/img/Bing.jpeg">
+                <p class="mb-0">Bing</p>
+            </a>
+        </li>
+        <li>
+            <a (click)="handleBasemapEvent('gStreet')" class="basemapIcon">
+                <img src="assets/img/Google Street.png">
+                <p class="mb-0">Google Street</p>
+            </a>
+        </li>
+        <li>
+            <a (click)="handleBasemapEvent('gSatellite')" class="basemapIcon">
+                <img src="assets/img/Google Satillite.png">
+                <p class="mb-0">Google Satillite</p>
+            </a>
+        </li>
+        <li>
+            <a (click)="handleBasemapEvent('NIC_Street')">
+                <img src="assets/img/NIC_Street.png">
+                <p class="mb-0">NIC Streets Maps</p>
+            </a>
+        </li>
+        <li>
+            <a (click)="handleBasemapEvent('Terrain')">
+                <img src="assets/img/Terrain.png">
+                <p class="mb-0">Terrain</p>
+            </a>
+        </li>
+        <li>
+            <a (click)="handleBasemapEvent('Topo')">
+                <img src="assets/img/topo.png">
+                <p class="mb-0">Topo</p>
+            </a>
+        </li>
+        <li>
+            <a (click)="handleBasemapEvent('NSatellite')">
+                <img src="assets/img/satellite.png">
+                <p class="mb-0">Satillite</p>
+            </a>
+        </li>
+        <li>
+            <a (click)="handleBasemapEvent('ESatellite')">
+                <img src="assets/img/esri-satellite.png">
+                <p class="mb-0">Esri Satillite</p>
+            </a>
+        </li>
+        <li>
+            <a (click)="handleBasemapEvent('NoBasemap')">
+                <img src="assets/img/nobasemap.png">
+                <p class="mb-0">No Basemap</p>
+            </a>
+        </li>
+    </ul>
+</div>
+<!-- change Map Layer bottom end-->
+
+
+<!-- Bottom Tool Bar Start -->
+<div class="col-md-12 bottom-toolbar-outer">
+    <ul class="mx-auto bottom-toolbar">
+        <app-layers [MapObject]="ESRIObject"></app-layers>
+        <app-legend [MapObject]="ESRIObject"></app-legend>
+        <!--For DSS Tools-->
+        <ng-content></ng-content>
+    </ul>
+</div>
+<!-- Bottom Tool Bar End -->

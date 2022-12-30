@@ -1,0 +1,75 @@
+<!-- icon start -->
+<li class="nav-item" (click)="bufferIcon('buffer')">
+  <a class="nav-link bottom-menu-btn" aria-current="page" href="javascript:void(0);" data-bs-toggle="tooltip"
+    data-bs-placement="bottom" title="Buffer"><img src="assets/img/icon/4.svg" alt="Toolbar" /></a>
+</li>
+<!-- icon end -->
+
+
+<div id="buffer" class="tool-popup" [hidden]="!bufferShow">
+  <div class="tool-popup-header"> <img class="header-icon invert" src="assets/img/icon/4.svg"> Buffer
+    <i class="fas fa-caret-down close-drag-window px-2 p-1" (click)="bufferIcon('buffer')"></i>
+  </div>
+
+  <div class="tool-popup-inner">
+    <form class="">
+      <div class="mb-3">       
+        <label class="mb-1" for="">Type</label>  
+      
+      </div>
+      <div class="mb-3">
+        <label class="mb-1" for="">Select Feature Type</label>
+        <div class="">
+          <a href="javascript:void(0);" class="me-2"> <img src="assets/img/icon/buffer-feature-icon1.svg"></a>
+          <a href="javascript:void(0);" class="me-2"> <img src="assets/img/icon/buffer-feature-icon2.svg"></a>
+          <a href="javascript:void(0);" class="me-2"> <img src="assets/img/icon/buffer-feature-icon3.svg"></a>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="mb-1" for="">Reference Feature</label>
+        <select class="form-select" id="">
+          <option>Select KML</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label class="mb-1" for="">Target Layer</label>
+        <select class="form-select" id="">
+          <option>Select</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label class="mb-1 d-flex align-items-center" for=""><span>Buffer Value</span>
+          <p class="alert alert-warning ms-2 mb-0 p-0 rounded" style="width: 20px;height: 20px"></p>
+        </label>
+        <input type="number" class="form-control" id="" placeholder="00">
+      </div>
+      <div class="mb-3">
+        <label class="mb-1 d-flex align-items-center" for=""><span>Buffer Value</span>
+          <p class="alert alert-success ms-2 mb-0 p-0 rounded" style="width: 20px;height: 20px"></p>
+        </label>
+        <input type="number" class="form-control" id="" placeholder="00">
+      </div>
+      <div class="mb-3">
+        <label class="mb-1 d-flex align-items-center" for=""><span>Buffer Value</span>
+          <p class="alert alert-danger ms-2 mb-0 p-0 rounded" style="width: 20px;height: 20px"></p>
+        </label>
+        <input type="number" class="form-control" id="" placeholder="00">
+      </div>
+      <div class="mb-3 text-end">
+        <a href="javascript:void(0);"
+          class="text-success fw-semibold d-flex align-items-center justify-content-end text-decoration-none">
+          <i class="bi bi-plus-circle-fill h4 mb-0 me-1"></i> <span> Add Buffer </span></a>
+      </div>
+    </form>
+  </div>
+  <div class="tool-popup-footer text-end">
+    <button type="button" class="btn btn-link me-2">Reset</button>
+    <button type="button" class="btn btn-tool-popup">Execute</button>
+  </div>
+</div>

@@ -1,0 +1,18 @@
+<!-- Icons Start -->
+<li class="nav-item me-2 first-item position-relative" (click)="legendIcon()">
+   <a class="nav-link bottom-menu-btn" aria-current="page" href="javascript:void(0);" data-bs-toggle="tooltip"
+      data-bs-placement="bottom" title="Legend"><img src="assets/img/icon/7.svg" alt="Toolbar" /></a>
+</li>
+<!-- Icons End -->
+
+<!-- legend Start -->
+<div class="tool-popup" style="right: 3%;bottom: 50px;top: auto;width: 180px;" [hidden]="!legendShow">
+   <div class="tool-popup-header"> Legends
+      <i class="fas fa-caret-down close-drag-window px-2 p-1" (click)="legendIcon()"></i>
+   </div>
+
+   <div class="tool-popup-inner p-3" id="legendDIV">
+     
+   </div>
+</div>
+   <!-- legend End -->

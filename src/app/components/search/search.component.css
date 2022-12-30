@@ -1,0 +1,126 @@
+.search-box .menu-search-icon {
+    position: absolute;
+    top: 9px;
+    right: 12px;
+    color: #000;
+} 
+.search-box{ 
+    position: absolute;
+    z-index: 9;
+    left: 15px;
+    right: 0;
+    top: 108px;
+    width: 350px; 
+    /* top: 72px;
+    width: 400px; */
+    } 
+
+
+.proposal-box{
+    background: #fff;
+    padding: 20px;
+    width: 450px; 
+    background: white;
+    border-radius: 4px;
+    
+    position: fixed;
+    top: 160px;
+    left: 15px;
+    bottom: 126px;
+    z-index: 15; 
+    transition: 0.5s;
+
+    transform: translateX(0%);
+    opacity: 1;
+    visibility: visible;
+}
+
+
+.proposal-box[hidden] {
+    transform: translateX(-100%);
+    opacity: 0;
+    visibility: hidden;
+}
+
+.proposal-body {
+    overflow: auto;
+    height: calc(100% - 60px);
+}
+
+/*  */
+
+.search-popbox{
+    background: #fff;
+    padding: 20px;
+    width: 450px; 
+    background: white;
+    border-radius: 4px;
+    
+    position: fixed;
+    top: 160px;
+    left: 15px;
+    bottom: 126px;
+    z-index: 14; 
+    transition: 0.5s;
+
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+}
+
+
+.search-popbox[hidden] {
+    transform: translateY(-10px);
+    opacity: 0;
+    visibility: hidden;
+}
+
+.search-popbox-body {
+    overflow: auto;
+    height: calc(100% - 60px);
+    padding-bottom: 10px;
+}
+
+.search-popbox-body h6{
+    font-size: 15px;
+    margin: 7px 0px;
+}
+
+.fade-text{
+    color: #BDBDBD;
+}
+
+.search-status-box{
+    padding: 10px 15px;
+    border: 1px solid #dcdcdc;
+    border-radius: 4px;
+}
+
+.search-popbox-header a{
+    font-weight: 500;
+    font-size: 14px; 
+    color: #888888;
+    text-decoration: none;
+    margin-right: 15px;
+}
+
+.search-popbox-header a.disable{
+    color: #C4C4C4;
+    font-weight: 400;
+}
+
+.btn-outline-success {
+    background: #E8FDE9;
+}
+
+.btn-outline-warning {
+    background: #FFF9E6;
+}
+
+.btn-outline-danger {
+    background: #FFF6F6;
+}
+
+.search-popbox-header .btn i{
+    font-size: 9px;
+}

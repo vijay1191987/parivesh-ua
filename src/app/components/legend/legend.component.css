@@ -1,0 +1,12 @@
+.legends-box {
+    width: 25px;
+    height: 18px;
+    background: #ff5722;
+    margin-right: 9px;
+}
+.legends-line {
+    width: 25px;
+    height: 1px;
+    border-top: 2px dashed #000;
+    margin-right: 9px;
+}

@@ -1,0 +1,245 @@
+<!-- icon start -->
+<li class="nav-item" (click)="forestIcon('forest')">
+    <a class="nav-link bottom-menu-btn" aria-current="page" href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Forest"><img src="assets/img/icon/6.svg" alt="Toolbar"/></a>     
+</li>
+<!-- icon end -->
+
+
+
+<!-- forest content start-->
+
+<div id="forest" class="tool-popup" [hidden]="!forestShow">
+    <div class="tool-popup-header"> <img class="header-icon invert" src="assets/img/icon/6.svg"> Forest
+        <i class="fas fa-caret-down close-drag-window px-2 p-1" (click)="forestIcon('forest')"></i>
+    </div>
+
+
+    <div class="result-table bg-white p-0">
+        <nav>
+            <div class="nav nav-tabs result-tab px-3 pt-3 mt-0" id="nav-tab" role="tablist">
+              <button class="nav-link result-tab-btn active" id="tab-id-01" data-bs-toggle="tab" data-bs-target="#tab01" type="button" role="tab" aria-controls="tab01" aria-selected="true">Decision Rule 1</button>
+              <button class="nav-link result-tab-btn" id="tab-id-02" data-bs-toggle="tab" data-bs-target="#tab02" type="button" role="tab" aria-controls="tab02" aria-selected="false">Decision Rule 2</button>
+              <button class="nav-link result-tab-btn" id="tab-id-03" data-bs-toggle="tab" data-bs-target="#tab03" type="button" role="tab" aria-controls="tab03" aria-selected="false">Get Final Result</button>
+              <button class="nav-link result-tab-btn" id="tab-id-04" data-bs-toggle="tab" data-bs-target="#tab04" type="button" role="tab" aria-controls="tab04" aria-selected="false">Get Result table</button>
+            </div>
+          </nav>
+
+          <div class="tab-content forest-tab-content tool-popup-inner" id="nav-tabContent"> 
+            <div class="tab-pane fade show active" id="tab01" role="tabpanel" aria-labelledby="tab-id-01">
+    <div class="">
+        <div class="forest-inner-box">
+            <div class="row">
+            <div class="col-md-6">
+            <span class="landmark-text">Landmark 1</span>
+            <h6 class="font-15">Milestone name will come here</h6>
+            </div>
+            <div class="col-md-6 text-end align-self-end">
+                <button type="button" class="btn btn-result" (click)="viewResult()">View Result</button>
+            </div>
+        </div>
+        </div>
+        <div class="forest-inner-box disable">
+            <div class="row">
+            <div class="col-md-6">
+            <span class="landmark-text">Landmark 1</span>
+            <h6 class="font-15">Milestone name will come here</h6>
+            </div>
+            <div class="col-md-6 text-end align-self-end">
+                <button type="button" class="btn btn-result">View Result</button>
+            </div>
+        </div>
+        </div> 
+    </div> 
+    </div>  
+        <div class="tab-pane fade" id="tab02" role="tabpanel" aria-labelledby="tab-id-02">
+            <div class="">
+                <div class="forest-inner-box disable">
+                    <div class="row">
+                    <div class="col-md-6">
+                    <span class="landmark-text">Landmark 1</span>
+                    <h6 class="font-15">Milestone name will come here</h6>
+                    </div>
+                    <div class="col-md-6 text-end align-self-end">
+                        <button type="button" class="btn btn-result">View Result</button>
+                    </div>
+                    </div>
+                </div> 
+            </div> 
+        </div>  
+        <div class="tab-pane fade" id="tab03" role="tabpanel" aria-labelledby="tab-id-03">
+            <div class="">
+                <div class="forest-inner-box">
+                    <div class="row">
+                    <div class="col-md-6">
+                    <span class="landmark-text">Landmark 1</span>
+                    <h6 class="font-15">Milestone name will come here</h6>
+                    </div>
+                    <div class="col-md-6 text-end align-self-end">
+                        <button type="button" class="btn btn-result" (click)="dssResult()">Dss Result</button>
+                    </div>
+                </div>
+                </div> 
+            </div> 
+        </div>  
+        <div class="tab-pane fade" id="tab04" role="tabpanel" aria-labelledby="tab-id-04">
+                <div class=""> 
+                    <div class="forest-inner-box disable">
+                        <div class="row">
+                        <div class="col-md-6">
+                        <span class="landmark-text">Landmark 1</span>
+                        <h6 class="font-15">Milestone name will come here</h6>
+                        </div>
+                        <div class="col-md-6 text-end align-self-end">
+                            <button type="button" class="btn btn-result">View Result</button>
+                        </div>
+                    </div>
+                    </div> 
+                </div> 
+                </div>  
+    </div>
+</div> 
+</div>
+<!-- result popup start -->
+<div class="forest-result-box shadow" [hidden]="showViewResult">
+    <div class="forest-result-data" [ngClass]="{'w-100' : addexpendclass}">
+        <a href="javascript:void(0);" class="expend-icon text-center" (click)="ExpendScreen()"> <i class="fas fa-caret-right" [ngClass]="{'fa-flip-horizontal' : addexpendclass}" style="transition: 0.5s;"></i> </a>
+        <a href="javascript:void(0);" class="btn btn-download float-end"><i class="fas fa-cloud-download-alt"></i> Download</a>
+        <div class="d-flex align-items-center"> 
+            <h4>Result</h4>
+        <a href="javascript:void(0);" class="btn btn-sm btn-light rounded-pill ms-2">Query Builder</a>
+        </div>
+
+        <div class="result-table">
+        <nav>
+            <div class="nav nav-tabs result-tab" id="nav-tab" role="tablist">
+              <button class="nav-link result-tab-btn active" id="tab-id-1" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab" aria-controls="tab1" aria-selected="true">Tab Name 1</button>
+              <button class="nav-link result-tab-btn" id="tab-id-2" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab" aria-controls="tab2" aria-selected="false">Tab Name 2</button>
+              <button class="nav-link result-tab-btn" id="tab-id-3" data-bs-toggle="tab" data-bs-target="#tab3" type="button" role="tab" aria-controls="tab3" aria-selected="false">Tab Name 3</button>
+            </div>
+          </nav>
+          <div class="tab-content pt-3 text-center" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab-id-1">
+                <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col"><span class="table-heading">Column Name 1</span></th>
+                    <th scope="col"><span class="table-heading">Column Name 2</span></th>
+                    <th scope="col"><span class="table-heading">Column Name 3</span></th>
+                    <th scope="col"><span class="table-heading">Column Name 4</span></th>
+                  </tr>
+                </thead>
+                <tbody> 
+                  <tr>
+                    <td>Column Name 1</td>
+                    <td>Column Name 2</td>
+                    <td>Column Name 3</td>
+                    <td>Column Name 4</td> 
+                  </tr> 
+                  <tr>
+                    <td>Column Name 1</td>
+                    <td>Column Name 2</td>
+                    <td>Column Name 3</td>
+                    <td>Column Name 4</td> 
+                  </tr> 
+                  <tr>
+                    <td>Column Name 1</td>
+                    <td>Column Name 2</td>
+                    <td>Column Name 3</td>
+                    <td>Column Name 4</td> 
+                  </tr> 
+                  <tr>
+                    <td>Column Name 1</td>
+                    <td>Column Name 2</td>
+                    <td>Column Name 3</td>
+                    <td>Column Name 4</td> 
+                  </tr> 
+                  <tr>
+                    <td>Column Name 1</td>
+                    <td>Column Name 2</td>
+                    <td>Column Name 3</td>
+                    <td>Column Name 4</td> 
+                  </tr> 
+                  <tr>
+                    <td>Column Name 1</td>
+                    <td>Column Name 2</td>
+                    <td>Column Name 3</td>
+                    <td>Column Name 4</td> 
+                  </tr> 
+                  <tr>
+                    <td>Column Name 1</td>
+                    <td>Column Name 2</td>
+                    <td>Column Name 3</td>
+                    <td>Column Name 4</td> 
+                  </tr> 
+                  <tr>
+                    <td>Column Name 1</td>
+                    <td>Column Name 2</td>
+                    <td>Column Name 3</td>
+                    <td>Column Name 4</td> 
+                  </tr> 
+                </tbody>
+              </table>
+            </div>
+            <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab-id-2">...</div>
+            <div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="tab-id-3">...</div>
+          </div>
+        </div>
+    </div>
+</div>
+<!-- result popup start -->
+
+<!-- dss result popup start -->
+<div class="forest-result-box shadow DssResult" [hidden]="showDssResult">
+<div class="forest-result-data text-start"> 
+    <a href="javascript:void(0);" class="btn btn-download float-end"><i class="fas fa-cloud-download-alt"></i> Download</a>
+    <div class="d-flex align-items-center"> 
+        <h4>Result</h4>
+    </div>
+
+    <div class="result-table mt-4"> 
+        <p class="w-100 p-1 small text-start bg-light fw-bold">Tiger Reserves:</p>
+        <p class="w-100 p-2 text-start fw-bold">Area of KML: <span class="text-muted">92475 (Ha)</span></p>
+        <hr/>
+        <table class="table table-borderless">
+            <thead>
+              <tr>
+                <th scope="col" class="fw-bold text-dark">State</th>
+                <th scope="col" class="fw-bold text-dark">District</th>
+                <th scope="col" class="fw-bold text-dark">Area (Ha)</th> 
+              </tr>
+            </thead>
+            <tbody>
+              <tr> 
+                <td>Uttarakhand</td>
+                <td>Chamoli</td>
+                <td>92475</td>
+              </tr>
+              <tr> 
+                <td>Uttarakhand</td>
+                <td>Bageshwar</td>
+                <td>20987</td>
+              </tr> 
+            </tbody>
+          </table>
+
+            
+        <p class="w-100 p-1 small text-start bg-light fw-bold">Tiger Reserves:</p>
+        <ul class="ps-3" style="list-style: auto;font-size: 12px;">
+            <li><p class="mb-1">Corbett Tiger Reserve</p></li>
+            <li><p class="mb-1">Rajaji Tiger Reserve</p></li>
+        </ul>
+
+             
+        <p class="w-100 p-1 small text-start bg-light fw-bold">Protected Area:</p>
+        <ul class="ps-3" style="list-style: auto;font-size: 12px;">
+            <li><p class="mb-1">Jim Corbett, NP</p></li>
+            <li><p class="mb-1">Gangotri, NP</p></li>
+        </ul>
+    </div>
+</div>
+</div>
+<!-- dss result popup start -->
+
+
+
+<!-- forest content end-->

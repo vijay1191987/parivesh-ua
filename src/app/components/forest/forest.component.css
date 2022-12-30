@@ -1,0 +1,134 @@
+.forest-inner-box {
+    border: 1px solid #000;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0px 0px 20px rgb(8 149 15 / 9%);
+    transition: 0.5s;
+    }
+    
+    .forest-inner-box {
+    border: 1px solid #08950F; 
+    }
+    .forest-inner-box.disable {
+    background: #F6F6F6;
+    border: 1px solid #F6F6F6;
+    box-shadow: none;
+    pointer-events: none;
+    }
+.forest-result-box{
+position: fixed;
+top: 195px;
+left: 20px;
+bottom: 144px;
+z-index: 12; 
+visibility: hidden;
+opacity: 0;
+transform: translateY(-18px);
+transition: 0.5s;
+}
+.forest-result-box[hidden]{
+visibility: visible;
+opacity: 1;
+transform: translateY(0px);
+border-radius: 4px;
+}
+.forest-result-box.showDssResult[hidden]{
+visibility: visible;
+opacity: 1;
+transform: translateY(0px);
+}
+.forest-result-data{
+background: #fff;
+padding: 20px;
+width: 480px;
+height: 100%;
+background: white;
+border-radius: 4px;
+} 
+
+
+.result-table{
+    height: calc(100% - 20px);
+    }
+    .result-table .tab-content{ 
+    overflow: auto;
+    height: calc(100% - 70px);
+    }
+
+    
+.nav-tabs.result-tab{
+width: 100%;
+margin-top: 20px;
+flex-flow: nowrap;
+overflow-x: auto;
+overflow-y: hidden;
+}
+.nav-tabs .nav-link.result-tab-btn { 
+white-space: nowrap;
+font-weight: 600;
+margin-right: 7px;
+font-size: 12px;
+background: #EEEEEE;
+color: #8D8D8D;
+border-radius: 4px 4px 0px 0px;
+}
+
+.nav-tabs .nav-link.result-tab-btn.active {  
+background: #fff !important;
+color: #000 !important; 
+border-color: #c1c9d1 #c1c9d1 #fff !important;
+border: 2px solid;
+}
+  
+.result-table .tab-content.forest-tab-content{ 
+overflow: auto;
+height: 320px;
+}
+
+.table-heading{
+font-weight: 700;
+font-size: 12px;
+white-space: nowrap;
+background: #FFF;
+border: 1px solid #ddd;
+border-radius: 100px;
+line-height: 2;
+padding: 10px 12px;
+}
+.result-table .table>:not(caption)>*>* {
+padding: 0.7rem 0.2rem;
+border-bottom-width: 0px; 
+}
+.DssResult .result-table .table>:not(caption)>*>* {
+padding: 0.2rem 0.2rem;
+border-bottom-width: 0px; 
+}
+.DssResult .result-table.mt-4 {
+overflow: auto;
+height: calc(100% - 60px);
+}
+.result-table th, td {
+padding-left: 0.2rem !important;
+position: relative;
+height: 30px;
+vertical-align: middle;
+font-size: 12px;
+color: #888888;
+font-weight: 500 !important;
+}
+.result-table .nav-link{
+padding: 0.5rem 0.5rem;
+}
+.expend-icon {
+display: block;
+width: 25px;
+height: 25px;
+background: #ffffff;
+border-radius: 0px 4px 4px 0px;
+color: #000;
+font-size: 18px;
+position: absolute;
+right: -22px;
+box-shadow: 7px 0px 10px -2px #00000026;
+}

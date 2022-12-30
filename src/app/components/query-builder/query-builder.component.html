@@ -1,0 +1,188 @@
+<!-- icon start -->
+<li class="nav-item" (click)="queryBuilderIcon('query_builder')">
+    <a class="nav-link bottom-menu-btn" aria-current="page" href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Query Builder"><img src="assets/img/icon/2.svg" alt="Toolbar"/></a>
+</li>
+<!-- icon end -->
+  
+<div id="query_builder" class="tool-popup" style="width: 833px;" [hidden]="!queryBuilderShow">
+    <div class="tool-popup-header"> <img class="header-icon invert" src="assets/img/icon/2.svg"> Query Builder
+        <i class="fas fa-caret-down close-drag-window px-2 p-1" (click)="queryBuilderIcon('query_builder')"></i>
+    </div> 
+    <div class="tool-popup-inner">
+        <app-table [HeadArray]="headArray" [GridArray]="usersList"
+        (onEdit)="editUser($event)" (onDelete)="deleteUser($event)"></app-table>
+        
+            <div class="query-frame pe-4 position-relative">
+                <!-- <a href="javascript:void(0);" class="drag-btn"><i class="bi bi-grip-vertical"></i></a> -->
+            <form class="row">
+                <div class="col-md-4"> 
+                      <div class="mb-3">
+                        <label class="mb-1" for="">Layers</label> 
+                        <div class="nav-item dropdown rd-dropdown-li">
+                            <button class="form-select text-start">
+                               <p class="select-step-label">({{selectContent}})</p>
+                               <p class="mb-0">{{selectContent}}</p>
+                              </button>
+                            <ul class="dropdown-menu rd-dropdown p-0 rounded-0">
+                              <li class="sub-dropdown"><span class="dropdown-item dropdown-item-sub-rd"> Option 1 <i class="fas fa-angle-right float-end pt-1"></i></span>
+                                 <ul class="submenu dropdown-menu p-0 rounded-0">
+                                            <li class="sub-dropdown2"><span class="dropdown-item dropdown-item-sub2-rd"> Sub Option 1 <i class="fas fa-angle-right float-end pt-1"></i></span>
+                                                <ul class="submenu dropdown-menu p-0 rounded-0">
+                                                    <li><span class="dropdown-item" (click)="dropClick('Select Option')">Select Option</span></li> 
+                                                </ul>
+                                            </li>
+                                     <li><span class="dropdown-item" (click)="dropClick('Sub Option 2')">Sub Option 2</span></li>
+                                     <li><span class="dropdown-item" (click)="dropClick('Sub Option 3')">Sub Option 3</span></li>
+                                 </ul>
+                              </li>
+                              <li><span class="dropdown-item" (click)="dropClick('Option 2')">Option 2</span></li>
+                              <li><span class="dropdown-item" (click)="dropClick('Option 3')">Option 3</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label class="mb-1" for="">Operator</label>
+                        <select class="form-select" id="">
+                        <option>Select</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label class="mb-1" for="">Unique Value</label>
+                        <select class="form-select" id="">
+                        <option>Select</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label class="mb-1" for="">Operator</label>
+                        <select class="form-select" id="">
+                        <option>Select</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label class="mb-1" for="">Unique Value</label>
+                        <select class="form-select" id="">
+                        <option>Select</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="mb-3">
+                        <label class="mb-1" for="">&nbsp;</label>
+                        <a href="javascript:void(0);" class="qb-plus-icon"><i class="bi bi-plus"></i></a>
+                    </div>
+                </div>
+            </form>
+            <a href="javascript:void(0);" class="delete-btn"><i class="fas fa-trash"></i></a>
+            </div>
+
+            <!-- select operator dropdown start -->
+            <div class="row">
+                <div class="col-md-3 position-relative mx-auto">
+                    <div class="my-3 position-relative" style="z-index: 9;">
+                        <select class="form-select" id="" style="border-color: #000;">
+                        <option>Select Operator</option>
+                        <option>AND</option>
+                        <option>OR</option> 
+                        </select>
+                    </div>
+                    <div class="select-vl"></div>
+                </div>
+            </div>
+            
+            <!-- select operator dropdown end -->
+
+            <div class="query-frame pe-4 position-relative">
+                <!-- <a href="javascript:void(0);" class="drag-btn"><i class="bi bi-grip-vertical"></i></a> -->
+             <form class="row">
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label class="mb-1" for="">Layers</label>
+                        <select class="form-select" id="">
+                          <option>Select</option>
+                          <option>2</option>
+                          <option>3</option>
+                          <option>4</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label class="mb-1" for="">Operator</label>
+                        <select class="form-select" id="">
+                          <option>Select</option>
+                          <option>2</option>
+                          <option>3</option>
+                          <option>4</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label class="mb-1" for="">Unique Value</label>
+                        <select class="form-select" id="">
+                          <option>Select</option>
+                          <option>2</option>
+                          <option>3</option>
+                          <option>4</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label class="mb-1" for="">Operator</label>
+                        <select class="form-select" id="">
+                          <option>Select</option>
+                          <option>2</option>
+                          <option>3</option>
+                          <option>4</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label class="mb-1" for="">Unique Value</label>
+                        <select class="form-select" id="">
+                          <option>Select</option>
+                          <option>2</option>
+                          <option>3</option>
+                          <option>4</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="mb-3">
+                        <label class="mb-1" for="">&nbsp;</label>
+                        <a href="javascript:void(0);" class="qb-plus-icon"><i class="bi bi-plus"></i></a>
+                    </div>
+                </div>
+            </form>
+            <a href="javascript:void(0);" class="delete-btn"><i class="fas fa-trash"></i></a>
+            </div>
+      </div> 
+      
+      <div class="tool-popup-footer text-end">
+        <button type="button" class="btn btn-link me-2">Reset</button>
+        <button type="button" class="btn btn-tool-popup">Execute</button>
+      </div> 
+
+</div>
