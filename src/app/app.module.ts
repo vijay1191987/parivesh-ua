@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RouterModule, Routes } from '@angular/router';
 import { MatNativeDateModule } from '@angular/material/core';
 import { NgOptimizedImage } from '@angular/common';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
@@ -29,6 +28,9 @@ import { SwipeComponent } from './components/swipe/swipe.component';
 import { MeasureComponent } from './components/measure/measure.component';
 import { SearchComponent } from './components/search/search.component';
 import { TableComponent } from './commonComponents/table/table.component';
+import { DssToolsComponent } from './components/dss-tools/dss-tools.component';
+import { CafComponent } from './components/caf/caf.component';
+import { RouterModule } from '@angular/router';
 
 
 @NgModule({
@@ -46,11 +48,13 @@ import { TableComponent } from './commonComponents/table/table.component';
     XyComponent,
     SpatialSearchComponent,
     ScreenShotComponent, SwipeComponent, MeasureComponent, SearchComponent,
-    TableComponent
+    TableComponent,
+    DssToolsComponent,
+    CafComponent
   ],
   imports: [
+    RouterModule.forRoot([]),
     BrowserModule,
-    RouterModule,
     HttpClientModule,
     BrowserAnimationsModule,
     DemoMaterialModule,
@@ -59,9 +63,8 @@ import { TableComponent } from './commonComponents/table/table.component';
     ReactiveFormsModule,
     MatNativeDateModule
   ],
-  providers: [{ provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } }, PariveshServices],
-  entryComponents: [],
-  bootstrap: [AppComponent, LayersComponent],
+  providers: [{ provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } }, PariveshServices, LayersComponent],
+  bootstrap: [AppComponent],
   exports: []
 })
 export class AppModule { }

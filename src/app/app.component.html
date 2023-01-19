@@ -1,14 +1,9 @@
 <app-header></app-header>
 <app-search></app-search>
-<app-parivesh-map [ESRIObject]={PariveshMap}>    
-    <app-swipe></app-swipe>
-    <app-query-builder></app-query-builder>
-    <app-measure></app-measure>
-    <app-buffer [ESRIObject]={PariveshMap}></app-buffer>
-    <app-xy></app-xy>
-    <app-forest></app-forest>
-    <app-spatial-search></app-spatial-search>
-    <app-print></app-print>
-    <app-screen-shot></app-screen-shot>
+<app-parivesh-map [ESRIObject]={PariveshMap}>
+    <app-layers [ESRIObject]={PariveshMap}></app-layers>
+    <app-legend [ESRIObject]={PariveshMap}></app-legend>
+    <app-dss-tools [ESRIObject]={PariveshMap} class="d-flex"></app-dss-tools>
+    <app-caf [ESRIObject]={PariveshMap}></app-caf>
 </app-parivesh-map>
 <app-footer [ESRIObject]={PariveshMap}></app-footer>

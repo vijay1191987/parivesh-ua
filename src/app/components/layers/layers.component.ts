@@ -4,10 +4,9 @@ import { NestedTreeControl } from "@angular/cdk/tree";
 import { MatTreeNestedDataSource } from "@angular/material/tree";
 import { groupByJsonData, renameJSONKey, createMapImageLayer, getLayerMasters } from "./../gisHelper";
 import axios from 'axios';
-import { ActivatedRoute, Router } from '@angular/router';
+import { PariveshServices } from 'src/app/services/GISLayerMasters.service';
 
-let ESRIObject: any = {};
-const _ESRIToken = 'p0i-bKxTlEsvRYHKbc2B0vKU-J7cmn8UjqTNDMmpBrUHtqRYEDVuUXKYx9WQhG0oFCxT4g2hT2Re_7eOI1WM7Q..';
+const _ESRIToken = '5ewlhladvLt1Pq7VEKutoe-1y7XqH7v_cvKCgvUcbS-GC94tqrrsftiWi-osv0H';
 
 export interface LayerNode {
   LayerName: string;
@@ -17,6 +16,7 @@ export interface LayerNode {
   selected?: boolean;
   indeterminate?: boolean;
   parent?: LayerNode;
+  reqType?: string;
 }
 
 @Component({
@@ -24,15 +24,13 @@ export interface LayerNode {
   templateUrl: './layers.component.html',
   styleUrls: ['./layers.component.css']
 })
-
 @Injectable({ providedIn: 'root' })
 export class LayersComponent implements OnInit {
+  //private subscriptionName: Subscription; //important to create a subscription
   //{To Access ESRI MapView object}
-  @Input() MapObject: object = {};
+  @Input() ESRIObject: any = {};
   PariveshGIS: any = {};
 
-  public layerMasters: any = null;
-  public TREE_DATA: LayerNode[] = [];
   public treeControl = new NestedTreeControl<LayerNode>(node => node.children);
   public dataSource = new MatTreeNestedDataSource<LayerNode>();
 
@@ -40,33 +38,28 @@ export class LayersComponent implements OnInit {
   public showOnlySelected = false;
   public layersShow: boolean = false;
 
-  private subscriptionName: Subscription; //important to create a subscription  
-  private subjectName = new Subject<LayerNode[]>(); //need to create a subject
 
-  constructor() {
 
+  constructor(private parivesh: PariveshServices) {
     // subscribe to sender component messages
-    this.subscriptionName = this.getTreeData().subscribe
-      (message => { //message contains the data sent from service
-        this.dataSource.data = [];
-        this.dataSource.data = message;
-      });
+    parivesh.currentLayerTreeData.subscribe(layerData => {
+      const _kj = this.dataSource.data;
+      this.dataSource.data = [];
+      this.dataSource.data = [...layerData, ..._kj];
+    })
+
   }
-  ngOnDestroy() {
-    if (this.subscriptionName) {
-      this.subscriptionName.unsubscribe();
-    }
+  ngOnDestroy() { // It's a good practice to unsubscribe to ensure no memory leaks
+    //this.subscriptionName.unsubscribe();
   }
-  ForTest() {
-    this.dataSource.data = [];
-    // this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    // this.router.onSameUrlNavigation = 'reload';
-    // this.router.navigate(['./'], { relativeTo: this.route });
+
+  private subjectName = new Subject<any>(); //need to create a subject
+
+  sendUpdate(message: LayerNode[]) { //the component that wants to update something, calls this fn
+    this.subjectName.next({ treeData: message }); //next() will feed the value in Subject
   }
-  updateTreeData(message: LayerNode[]) { //the component that wants to update something, calls this fn
-    this.subjectName.next(message); //next() will feed the value in Subject
-  }
-  getTreeData(): Observable<LayerNode[]> { //the receiver component calls this function 
+
+  getUpdate(): Observable<any> { //the receiver component calls this function 
     return this.subjectName.asObservable(); //it returns as an observable to which the receiver funtion will subscribe
   }
 
@@ -74,15 +67,14 @@ export class LayersComponent implements OnInit {
     let pOBJ: any = [];
     let treeData: any[] = [];
     const res = await getLayerMasters();
-    const t: any = this.MapObject;
+    const t: any = this.ESRIObject;
     this.PariveshGIS = await t.PariveshMap;
-    ESRIObject = this.PariveshGIS;
 
-    this.layerMasters = groupByJsonData(res.data, "group_layer");
+    let layerMasters = groupByJsonData(res.data, "group_layer");
 
-    Object.keys(this.layerMasters).map(async (_d: any) => {
+    Object.keys(layerMasters).map(async (_d: any) => {
       const myPromise = new Promise((resolve, reject) => {
-        this.layerMasters[_d].map((obj: any) => {
+        layerMasters[_d].map((obj: any) => {
           renameJSONKey(obj, 'layernm', 'LayerName');
           renameJSONKey(obj, 'ggllayerid', 'LayerID');
           let _ur = obj.layerurl.trim().split('MapServer');
@@ -96,11 +88,11 @@ export class LayersComponent implements OnInit {
             if (responseData.data.hasOwnProperty("layers")) {
               const g = responseData.data.layers.filter((f: any) => f.layerId === obj.LayerID);
               if (g.length > 0)
-                obj["LegendPath"] = "data:image/png;base64, " + g[0].legend[0].imageData;
+                obj["LegendPath"] = "data:image/png;base64," + g[0].legend[0].imageData;
               else
                 console.log("No Legend for " + obj.LayerName + " AND " + obj.layerurl + "##" + obj.LayerID);
             }
-            const ret = { node: this.layerMasters[_d] };
+            const ret = { node: layerMasters[_d] };
             resolve(ret);
           }).catch((error) => {
             reject(error);
@@ -114,8 +106,8 @@ export class LayersComponent implements OnInit {
         const data = { LayerName: _a.node[0].group_layer.trim(), LayerID: _a.node[0].glayerid, children: _a.node };
         treeData.push(data);
       });
-      this.TREE_DATA = treeData;
-      this.dataSource.data = this.TREE_DATA;
+      const TREE_DATA: LayerNode[] = treeData;
+      this.dataSource.data = TREE_DATA;
     });
   }
 
@@ -151,32 +143,42 @@ export class LayersComponent implements OnInit {
       });
     }
     this.checkAllParents(node);
-    const uniqueLayerID = layerConfigs.LayerName.trim() + "_" + layerConfigs.glayerid + "_" + layerConfigs.layerurl.trim().charAt(layerConfigs.layerurl.trim().length - 1);
-    const _layer = ESRIObject.ArcMap.findLayerById(uniqueLayerID);
-    if (checked && _layer === undefined) {
-      const _params = {
-        apiKey: _ESRIToken,
-        url: layerConfigs.layerurl.trim().slice(0, -1),
-        copyright: layerConfigs.layer_description,
-        customParameters: { token: _ESRIToken },
-        legendEnabled: true,//layerConfigs.legend_enabled,
-        opacity: layerConfigs.gglopacity,
-        title: layerConfigs.LayerName.trim(),
-        id: uniqueLayerID,
-        visible: true, //layerConfigs.glvisiblity,
-        sublayers: [
-          {
-            id: layerConfigs.layerurl.trim().charAt(layerConfigs.layerurl.trim().length - 1),
-            visible: true
-          }
-        ]
-      };
-      const _ly = await createMapImageLayer(_params);
-      ESRIObject.ArcMap.add(_ly);
+    if (node.hasOwnProperty("reqType")) {
+      const _lyr: any = this.PariveshGIS.ArcMap.findLayerById("EsriUserMap");
+      let layerFeature = _lyr.graphics.items.filter((f: any) => f.id === node.LayerID);
+      // if (layerFeature[0].visible)
+      layerFeature[0].visible = checked;
+      //else
+      //   layerFeature[0].visible = true;
     }
     else {
-      _layer.visible = false;
-      ESRIObject.ArcMap.remove(_layer);
+      const uniqueLayerID = layerConfigs.LayerName.trim() + "_" + layerConfigs.glayerid + "_" + layerConfigs.layerurl.trim().charAt(layerConfigs.layerurl.trim().length - 1);
+      const _layer = this.PariveshGIS.ArcMap.findLayerById(uniqueLayerID);
+      if (checked && _layer === undefined) {
+        const _params = {
+          apiKey: _ESRIToken,
+          url: layerConfigs.layerurl.trim().slice(0, -1),
+          copyright: layerConfigs.layer_description,
+          customParameters: { token: _ESRIToken },
+          legendEnabled: true,//layerConfigs.legend_enabled,
+          opacity: layerConfigs.gglopacity,
+          title: layerConfigs.LayerName.trim(),
+          id: uniqueLayerID,
+          visible: true, //layerConfigs.glvisiblity,
+          sublayers: [
+            {
+              id: layerConfigs.layerurl.trim().charAt(layerConfigs.layerurl.trim().length - 1),
+              visible: true
+            }
+          ]
+        };
+        const _ly = await createMapImageLayer(_params);
+        this.PariveshGIS.ArcMap.add(_ly);
+      }
+      else {
+        _layer.visible = false;
+        this.PariveshGIS.ArcMap.remove(_layer);
+      }
     }
   }
 

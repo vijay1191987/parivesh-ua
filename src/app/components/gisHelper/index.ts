@@ -1,5 +1,10 @@
 import { isLoaded, loadModules } from 'esri-loader';
 import axios from 'axios';
+import Polygon from "@arcgis/core/geometry/Polygon";
+import Polyline from "@arcgis/core/geometry/Polyline";
+import { AsyncAction } from 'rxjs/internal/scheduler/AsyncAction';
+import { async } from '@angular/core/testing';
+import { retry } from 'rxjs';
 
 /*****************************************************************
  <<<<< COMMON FUNCTION TO RE-USE IN ENTIRE APPLICATION >>>>>
@@ -131,3 +136,185 @@ export const getLayerMasters = async () => {
     const res = axios.get("https://stgdev.parivesh.nic.in/ua-dev/gislayer/getlayerslist");
     return res;
 };
+
+
+export const saveInterSectionResults = async (_d: any) => {
+    const _config = {
+        headers: { 'Content-Type': 'application/json' },
+    }
+    const res = axios.post("https://stgdev.parivesh.nic.in/gis-dev/api/InsertOutData", _d, _config);
+    return res;
+};
+// export const checkKMLGEOJSON = (_jsonData: any) => {
+//   let _finalJSONData = [];
+//   const _geoJSON: any = {
+//     type: "FeatureCollection", features: []
+//   };
+//   for (let i = 0; i < _jsonData.features.length; i++) {
+//     if (_jsonData.features[i].geometry.hasOwnProperty("geometries")) {
+//       for (let j = 0; j < _jsonData.features[i].geometry.geometries.length; j++) {
+//         if (_jsonData.features[i].geometry.geometries[j].geometry.type.toLowerCase() !== 'point') {
+//           const ab: any = {
+//             "type": "Feature", "id": "Feat" + j, geometry: _jsonData.features[i].geometry.geometries[j], properties: _jsonData.features[i].geometry.geometries[j].properties
+//           };
+//           _finalJSONData.push(ab);
+//         }
+//       }
+//     }
+//     else {
+//       if (_jsonData.features[i].geometry.type.toLowerCase() !== 'point')
+//         _finalJSONData.push(_jsonData.features[i]);
+//     }
+//   }
+//   _geoJSON.features = _finalJSONData;
+//   return _geoJSON;
+// }
+export const checkKMLGEOJSON = (_jsonData: any) => {
+    let _finalJSONData = [];
+    const bc: any = {
+        type: "FeatureCollection", features: [], LineGeom: [], PolygonGeom: [], hasPointData: false
+    };
+    for (let i = 0; i < _jsonData.features.length; i++) {
+        if (_jsonData.features[i].geometry.hasOwnProperty("geometries")) {
+            for (let j = 0; j < _jsonData.features[i].geometry.geometries.length; j++) {
+                const ab: any = {
+                    "type": "Feature", "id": null, geometry: null, properties: {
+                        prop0: "value0",
+                    }
+                };
+                if (_jsonData.features[i].geometry.geometries[j].type.toLowerCase() == 'point') {
+                    bc.hasPointData = true;
+                    break;
+                }
+                else if (_jsonData.features[i].geometry.geometries[j].type.toLowerCase() == "linestring") {
+                    const _line = new Polyline({
+                        paths: _jsonData.features[i].geometry.coordinates,
+                        hasZ: false,
+                        hasM: false,
+                        spatialReference: { wkid: 4326 }
+                    });
+                    bc.LineGeom.push(_line);
+                }
+                else if (_jsonData.features[i].geometry.geometries[j].type.toLowerCase() == "polygon" && _jsonData.features[i].geometry.geometries[j].coordinates.length > 0) {
+                    const _poly = new Polygon({
+                        rings: _jsonData.features[i].geometry.coordinates,
+                        hasZ: false,
+                        hasM: false,
+                        spatialReference: { wkid: 4326 }
+                    });
+                    bc.PolygonGeom.push(_poly);
+                }
+                ab.id = "Feat" + j;
+                ab.geometry = _jsonData.features[i].geometry.geometries[j];
+                _finalJSONData.push(ab);
+            }
+        }
+        else {
+            if (_jsonData.features[i].geometry.type == 'Point') {
+                localStorage.setItem("checkPointLayer", 'yes');
+                break;
+            }
+            else if (_jsonData.features[i].geometry.type.toLowerCase() == "linestring" && _jsonData.features[i].geometry.coordinates.length > 0) {
+                const _line = new Polyline({
+                    paths: _jsonData.features[i].geometry.coordinates,
+                    hasZ: false,
+                    hasM: false,
+                    spatialReference: { wkid: 4326 }
+                });
+                bc.LineGeom.push(_line);
+            }
+            else if (_jsonData.features[i].geometry.type.toLowerCase() == "polygon" && _jsonData.features[i].geometry.coordinates.length > 0) {
+                const _poly = new Polygon({
+                    rings: _jsonData.features[i].geometry.coordinates,
+                    hasZ: false,
+                    hasM: false,
+                    spatialReference: { wkid: 4326 }
+                });
+                bc.PolygonGeom.push(_poly);
+            }
+            _finalJSONData.push(_jsonData.features[i]);
+        }
+    }
+    bc.features = _finalJSONData;
+    return bc;
+}
+export const CreateEsrisymbol = (_color: string, _outlinecolor: string, _type: string, _style: string) => {
+    let _symbol = null;
+    if (_type == "Fill") {
+        _symbol = {
+            style: _style,
+            type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+            color: _color,
+            outline: {  // autocasts as new SimpleLineSymbol()
+                color: _outlinecolor,
+                width: 2
+            }
+        };
+    }
+    else if (_type == "Marker") {
+        _symbol = {
+            type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
+            size: 16,
+            color: _color,
+            path: _outlinecolor
+        };
+    }
+    else {
+        _symbol = {
+            type: "simple-line",
+            color: _color,
+            outline: 4,
+            width: 4
+        };
+    }
+    return _symbol;
+}
+export const fetchDataEsriService = async (params: any, _URL: any) => {
+    const abcd = await _URL.queryFeatures(params).then(function (resultsAdministrative_inner: any) {
+        return resultsAdministrative_inner;
+    }).catch((error: any) => {
+        console.log(error);
+    });
+    return abcd;
+}
+export const _TextSymbol: any = {
+    type: "text",  // autocasts as new TextSymbol()
+    color: "white",
+    haloColor: "black",
+    haloSize: "1px",
+    xoffset: 3,
+    yoffset: 3,
+    font: {  // autocasts as new Font()
+        size: 12,
+        family: "sans serif",
+        weight: "bold"
+    }
+};
+
+export const createCanvasImage = (_type: any, _color: any) => {
+    let _img64:string='';
+    const canvas = document.createElement('canvas');
+    const context: any = canvas.getContext("2d");
+    const image = new Image();
+    canvas.width = 20;
+    canvas.height = 20;
+    if (_type === "Rect") {
+        context.beginPath();
+        context.strokeStyle = _color;
+        context.lineWidth = 3;
+        context.strokeRect(0, 0, 20, 20);
+        // context.stroke();
+        context.drawImage(image, 0, 0, 20, 20);
+    }
+    else if (_type === "Line") {
+        context.beginPath();
+        context.moveTo(0, 0);
+        context.lineTo(20, 20);
+        context.lineWidth = 2;
+        context.strokeStyle = _color;
+        context.stroke();
+        context.drawImage(image, 0, 0, 20, 20);
+    }
+    _img64= canvas.toDataURL();
+    return _img64;
+}

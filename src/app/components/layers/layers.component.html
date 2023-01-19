@@ -1,3 +1,4 @@
+
 <!-- icon start -->
 <li class="nav-item">
   <a class="nav-link" data-bs-toggle="offcanvas" href="#offcanvasScrolling" role="button"><img
@@ -23,8 +24,7 @@
         <mat-icon>close</mat-icon>
       </button>
     </mat-form-field>
-
-    <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" #LayerView class="example-tree">
+    <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="example-tree">
       <!-- This is the tree node template for leaf nodes -->
       <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding
         [style.display]="showOnlySelected && !node.selected || this.searchString && hideLeafNode(node) ? 'none' : 'block'"
@@ -56,7 +56,6 @@
       </mat-nested-tree-node>
     </mat-tree>
     <button class="submit-button" mat-raised-button (click)="submit()">Submit</button>
-    <button class="submit-button" mat-raised-button (click)="ForTest()">Test</button>
 
   </div>
 </div>

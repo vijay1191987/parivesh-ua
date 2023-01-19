@@ -23,7 +23,6 @@
                 class="td-icon" (click)="handleMapToolButtons($event)"><img src="assets/img/icon/drawer/6.png"></a></li>
         <li data-bs-toggle="tooltip" data-bs-placement="left" title="ZoomIN"><a href="javascript:void(0);"
                 class="td-icon" (click)="handleMapToolButtons($event)"><img src="assets/img/icon/drawer/7.png"></a></li>
-
     </ul>
 </div>
 <!--Navigation Tool Drawer end-->
@@ -35,8 +34,27 @@
             style="float:right; line-height: inherit; cursor: pointer;"></i>
     </div>
     <button class="action-button esri-icon-measure-line" id="distanceButton" type="button"
-        title="Measure distance between two or more points"></button>
-    <button class="action-button esri-icon-measure-area" id="areaButton" type="button" title="Measure area"></button>
+        title="Measure distance between two or more points" (click)="KmlMeasurement($event,'distance')">
+    </button>
+
+    <button class="action-button esri-icon-measure-area" id="areaButton" (click)="KmlMeasurement($event, 'area')"
+        type="button" title="Measure area"></button>
+
+    <div class="row" [hidden]="MeasurementdistanceMeter">
+        <div class="col-md-12">
+            <p style="position: relative;top: 31px;left: 20px;">Distance(KM) : <span id="kmlMeterData"
+                    [innerHTML]="MeasurementValue | number : '1.2-2'"></span></p>
+        </div>
+    </div>
+
+    <div class="row" [hidden]="MeasurementareaMeter" style="position: relative; bottom: 30px;">
+        <div class="col-md-12">
+            <p style="position: relative;top: 31px;left: 20px;">Area(KM) : <span id="kmlMeterData"
+                    [innerHTML]="MeasurementAreaValue | number : '1.2-2'"></span></p>
+            <p style="position: relative;top: 31px;left: 20px;">Perimeter(KM) : <span id="kmlMeterData"
+                    [innerHTML]="MeasurementPerimeterValue | number : '1.2-2'"></span></p>
+        </div>
+    </div>
 </div>
 
 <!-- change Map Layer bottom start-->
@@ -115,8 +133,6 @@
 <!-- Bottom Tool Bar Start -->
 <div class="col-md-12 bottom-toolbar-outer">
     <ul class="mx-auto bottom-toolbar">
-        <app-layers [MapObject]="ESRIObject"></app-layers>
-        <app-legend [MapObject]="ESRIObject"></app-legend>
         <!--For DSS Tools-->
         <ng-content></ng-content>
     </ul>

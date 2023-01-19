@@ -17,6 +17,7 @@ export class ScreenShotComponent implements OnInit {
     this.dragable.registerDragElement(idName);
   } 
   ngOnInit(): void {
+    
   }
 
 }
