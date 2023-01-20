@@ -6,7 +6,7 @@ import { groupByJsonData, renameJSONKey, createMapImageLayer, getLayerMasters } 
 import axios from 'axios';
 import { PariveshServices } from 'src/app/services/GISLayerMasters.service';
 
-const _ESRIToken = '5ewlhladvLt1Pq7VEKutoe-1y7XqH7v_cvKCgvUcbS-GC94tqrrsftiWi-osv0H';
+const _ESRIToken = 'sewVmRXTzUj0E0Cwu6TJcTn8r8a1FuoGf2P9ANXJEnbFvKkKKY2HR3gc0Lfz7r-IWF2LCZC0S6hwtZjvvTOgTA..';
 
 export interface LayerNode {
   LayerName: string;
@@ -28,7 +28,7 @@ export interface LayerNode {
 export class LayersComponent implements OnInit {
   //private subscriptionName: Subscription; //important to create a subscription
   //{To Access ESRI MapView object}
-  @Input() ESRIObject: any = {};
+  @Input() MapData: any = {};
   PariveshGIS: any = {};
 
   public treeControl = new NestedTreeControl<LayerNode>(node => node.children);
@@ -38,11 +38,9 @@ export class LayersComponent implements OnInit {
   public showOnlySelected = false;
   public layersShow: boolean = false;
 
-
-
   constructor(private parivesh: PariveshServices) {
     // subscribe to sender component messages
-    parivesh.currentLayerTreeData.subscribe(layerData => {
+    this.parivesh.currentLayerTreeData.subscribe(layerData => {
       const _kj = this.dataSource.data;
       this.dataSource.data = [];
       this.dataSource.data = [...layerData, ..._kj];
@@ -66,10 +64,13 @@ export class LayersComponent implements OnInit {
   async ngOnInit() {
     let pOBJ: any = [];
     let treeData: any[] = [];
-    const res = await getLayerMasters();
-    const t: any = this.ESRIObject;
-    this.PariveshGIS = await t.PariveshMap;
+    const t: any = this.MapData;
+    if (t.ESRIObj_.hasOwnProperty("ESRIObj_"))
+      this.PariveshGIS = await t.ESRIObj_.ESRIObj_;
+    else
+      this.PariveshGIS = await t.ESRIObj_;
 
+    const res = await getLayerMasters();
     let layerMasters = groupByJsonData(res.data, "group_layer");
 
     Object.keys(layerMasters).map(async (_d: any) => {

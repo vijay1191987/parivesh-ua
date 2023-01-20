@@ -12,10 +12,8 @@ import { PariveshServices } from 'src/app/services/GISLayerMasters.service';
 
 export class LegendComponent implements OnInit {
   //{To Access ESRI MapView object}
-  @Input() ESRIObject: object = {};
+  @Input() MapData: object = {};
   PariveshGIS: any = {};
-
-  constructor(private parivesh: PariveshServices) { } //mention the service in constructor
 
   legendShow: boolean = false;
   async legendIcon() {
@@ -29,8 +27,11 @@ export class LegendComponent implements OnInit {
           layout: "auto"
         }
       });
-      const t: any = this.ESRIObject;
-      this.PariveshGIS = await t.PariveshMap;
+      const t: any = this.MapData;
+      if (t.ESRIObj_.hasOwnProperty("ESRIObj_"))
+        this.PariveshGIS = await t.ESRIObj_.ESRIObj_;
+      else
+        this.PariveshGIS = await t.ESRIObj_;
       this.PariveshGIS.MapView.ui.add(legend, "bottom-right");
     }
     this.legendShow = !this.legendShow;

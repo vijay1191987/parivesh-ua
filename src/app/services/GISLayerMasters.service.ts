@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import { LayerNode } from '../components/layers/layers.component';
 
-
 @Injectable()
 export class PariveshServices {
     private layerTreeData = new BehaviorSubject<LayerNode[]>([]);

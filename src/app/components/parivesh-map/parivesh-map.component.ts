@@ -10,7 +10,7 @@ let _this: any = null;
   styleUrls: ['./parivesh-map.component.css']
 })
 
-export class GisComponentComponent implements OnInit {
+export class PariveshMapComponent implements OnInit {
   mapLayer: boolean = false;
   measurementList: boolean = true;
   MeasurementValue: any;
@@ -23,20 +23,25 @@ export class GisComponentComponent implements OnInit {
   previousMapExtent: any = null;
 
   //{To Access ESRI MapView object}
-  @Input() ESRIObject: object = {};
+  @Input('MapData') MapData: any = null;
+  ESRIObject: object = {};
+  ESRIObj_: any = null;
   PariveshGIS: any = {};
-  baseLayer() {
-    this.mapLayer = !this.mapLayer;
-  }
+
   async ngOnInit() {
     _this = this;
+    if (this.MapData === null) {
+      this.ESRIObj_ = this.ESRIObject;
+      this.PariveshGIS = await this.ESRIObject;
+    }
+    else {
+      this.ESRIObj_ = this.MapData;
+      const t: any = this.MapData;
+      this.PariveshGIS = await t.ESRIObj_;
+    }
     this.mapExtent = [];
     this.NextExtent = [];
-    const t: any = this.ESRIObject;
-    this.PariveshGIS = await t.PariveshMap;
-
     const [reactiveUtils] = await loadModules(["esri/core/reactiveUtils"]);
-
     this.PariveshGIS.MapView.on("key-down", function (event: any) {
       var keyPressed = event.key;
       if (keyPressed.slice(0, 5) === "Arrow") {
@@ -46,7 +51,7 @@ export class GisComponentComponent implements OnInit {
     this.PariveshGIS.MapView.on("drag", function (event: any) {
       // prevents panning with the mouse drag event
       //    event.stopPropagation();
-      //  console.log(event);
+      console.log(event);
       //this.PariveshGIS.MapView.surface.style.cursor = "default";
     });
 
@@ -70,7 +75,10 @@ export class GisComponentComponent implements OnInit {
         }
       }
     );
+  }
 
+  baseLayer() {
+    this.mapLayer = !this.mapLayer;
   }
 
   handleBasemapEvent(event: any) {

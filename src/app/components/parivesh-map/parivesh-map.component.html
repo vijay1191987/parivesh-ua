@@ -128,12 +128,11 @@
     </ul>
 </div>
 <!-- change Map Layer bottom end-->
-
-
 <!-- Bottom Tool Bar Start -->
 <div class="col-md-12 bottom-toolbar-outer">
     <ul class="mx-auto bottom-toolbar">
-        <!--For DSS Tools-->
+        <app-layers [MapData]="{ESRIObj_}"></app-layers>
+        <app-legend [MapData]="{ESRIObj_}"></app-legend>
         <ng-content></ng-content>
     </ul>
 </div>

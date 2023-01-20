@@ -7,13 +7,11 @@ import { Component, Input } from '@angular/core';
 })
 export class DssToolsComponent {
   //{To Access ESRI MapView object}
-  @Input() ESRIObject: object = {};
-  PariveshGIS: any = {};  
+  ESRIObject: object = {};
+  ESRIObj_: object = {};
 
   async ngOnInit() {
-    const t: any = this.ESRIObject;
-    this.PariveshGIS = await t.PariveshMap;
-
+    this.ESRIObj_ = this.ESRIObject;
   }
 
 }

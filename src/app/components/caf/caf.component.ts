@@ -24,8 +24,10 @@ let dtName: any;
 })
 export class CafComponent implements OnInit {
   // for ESRI Map
-  @Input() ESRIObject: object = {};
+  ESRIObject: object = {};
+  ESRIObj_: object = {};
   PariveshGIS: any = {};
+
   outofIndiaFlag: boolean = false;
   qsData: any = {};
   childrenData: any = [];
@@ -38,21 +40,22 @@ export class CafComponent implements OnInit {
   counter: number = 0;
   finalIntResult: any = [];
 
-
   constructor(private route: ActivatedRoute, private http: HttpClient, private parivesh: PariveshServices) {
     _this = this;
     this.route.queryParams.subscribe(params => {
       if (Object.keys(params).length) {
         this.qsData = params;
-        this._createuserKMLLayer();
+        //this._createuserKMLLayer();
       }
     });
   }
 
   async ngOnInit() {
-    const t: any = this.ESRIObject;
-    this.PariveshGIS = await t.PariveshMap;
+    this.ESRIObj_ = this.ESRIObject;
+    this.PariveshGIS = await this.ESRIObject;
+    this._createuserKMLLayer();
   }
+
   async _createuserKMLLayer() {
     const _promiseObj = [];
     const [FeatureLayer, geometryEngine] = await loadModules(["esri/layers/FeatureLayer", "esri/geometry/geometryEngine"]);

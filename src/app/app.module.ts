@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { Component, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -9,12 +9,12 @@ import { DemoMaterialModule } from '../material-module'
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { HttpClientModule } from '@angular/common/http';
 import { PariveshServices } from './services/GISLayerMasters.service'
-//import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { APP_BASE_HREF } from '@angular/common';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
-import { GisComponentComponent } from './components/parivesh-map/parivesh-map.component';
+import { PariveshMapComponent } from './components/parivesh-map/parivesh-map.component';
 import { BufferComponent } from './components/buffer/buffer.component';
 import { ForestComponent } from './components/forest/forest.component';
 import { LayersComponent } from './components/layers/layers.component';
@@ -30,15 +30,23 @@ import { SearchComponent } from './components/search/search.component';
 import { TableComponent } from './commonComponents/table/table.component';
 import { DssToolsComponent } from './components/dss-tools/dss-tools.component';
 import { CafComponent } from './components/caf/caf.component';
-import { RouterModule } from '@angular/router';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { Routes, RouterModule } from '@angular/router';
 
+const _routes: Routes = [
+  { path: '', component: PariveshMapComponent },
+  { path: 'caf', component: CafComponent },
+  { path: 'kya', component: CafComponent },
+  { path: 'dss', component: DssToolsComponent },
+  { path: '**', component: PageNotFoundComponent }
+];
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     FooterComponent,
-    GisComponentComponent,
+    PariveshMapComponent,
     BufferComponent,
     ForestComponent,
     LayersComponent,
@@ -53,7 +61,13 @@ import { RouterModule } from '@angular/router';
     CafComponent
   ],
   imports: [
-    RouterModule.forRoot([]),
+    RouterModule.forRoot(_routes, {
+      useHash: false,
+      paramsInheritanceStrategy: "always",
+      scrollPositionRestoration: "enabled",
+      anchorScrolling: "enabled",
+      enableTracing: false
+    }),
     BrowserModule,
     HttpClientModule,
     BrowserAnimationsModule,
@@ -63,9 +77,9 @@ import { RouterModule } from '@angular/router';
     ReactiveFormsModule,
     MatNativeDateModule
   ],
-  providers: [{ provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } }, PariveshServices, LayersComponent],
+  providers: [{ provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } }, { provide: APP_BASE_HREF, useValue: '/pariveshgis/' }, PariveshServices, LayersComponent],
   bootstrap: [AppComponent],
-  exports: []
+  exports: [RouterModule]
 })
 export class AppModule { }
 

@@ -14,16 +14,22 @@ export class BufferComponent implements OnInit {
 
   bufferShow: boolean = false;
   //{To Access ESRI MapView object}
-  @Input() ESRIObject: object = {};
-  PariveshGIS: object = {};
+  @Input() MapData: any = {};
+  PariveshGIS: any = {};
 
   constructor(private dragable: DragableService) {
   }
   async bufferIcon(idName: any) {
     this.bufferShow = !this.bufferShow;
     this.dragable.registerDragElement(idName);
-    const t: any = this.ESRIObject;
-    this.PariveshGIS = await t.PariveshMap;   
+    const t: any = this.MapData;
+    if (t.ESRIObj_.hasOwnProperty("ESRIObj_"))
+      this.PariveshGIS = await t.ESRIObj_.ESRIObj_;
+    else
+      this.PariveshGIS = await t.ESRIObj_;
+
+    console.log(this.PariveshGIS);
+
   }
   ngOnInit(): void {
   }

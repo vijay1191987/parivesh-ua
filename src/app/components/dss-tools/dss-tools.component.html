@@ -1,10 +1,12 @@
 <!--For DSS Tools-->
-<app-swipe></app-swipe>
-<app-query-builder></app-query-builder>
-<app-measure></app-measure>
-<app-buffer></app-buffer>
-<app-xy></app-xy>
-<app-forest></app-forest>
-<app-spatial-search></app-spatial-search>
-<app-print></app-print>
-<app-screen-shot></app-screen-shot>
+<app-parivesh-map [MapData]="{ESRIObj_}">
+    <app-swipe></app-swipe>
+    <app-query-builder></app-query-builder>
+    <app-measure></app-measure>
+    <app-buffer [MapData]="{ESRIObj_}"></app-buffer>
+    <app-xy></app-xy>
+    <app-forest></app-forest>
+    <app-spatial-search></app-spatial-search>
+    <app-print></app-print>
+    <app-screen-shot></app-screen-shot>
+</app-parivesh-map>
