@@ -183,23 +183,6 @@ export class LayersComponent implements OnInit {
     }
   }
 
-  public submit() {
-    let result = this.dataSource.data.reduce(
-      (acc: string[], node: LayerNode) =>
-        acc.concat(
-          this.treeControl
-            .getDescendants(node)
-            .filter(node =>
-              (node.children == null || node.children.length === 0)
-              && node.selected
-              && !this.hideLeafNode(node))
-            .map((descendant) => descendant.LayerName.trim())
-        ),
-      [] as string[]
-    );
-    console.log(result.join(', '));
-  }
-
   public hideLeafNode(node: LayerNode): boolean {
     return this.showOnlySelected && !node.selected
       ? true

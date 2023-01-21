@@ -4,15 +4,29 @@
 <head>
   <meta charset="utf-8">
   <title>Parivesh GIS</title>
-  <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" />
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script type="text/javascript">
+    var base = document.createElement('base');
+    const _hostNM = window.location.host;
+    if (_hostNM.toLowerCase() === "localhost:4200")
+      base.href = "/";
+    else if (_hostNM.toLowerCase() === "stg.parivesh.nic.in")
+      base.href = "/pariveshgis/";
+    else if (_hostNM.toLowerCase() === "stgdev.parivesh.nic.in")
+      base.href = "/pariveshgis/";
+    else if (_hostNM.toLowerCase() === "parivesh.nic.in")
+      base.href = "/pariveshgis/";
+    document.getElementsByTagName('head')[0].appendChild(base);
+  </script>
 </head>
+
 <body>
   <app-root></app-root>
-  </body>
+</body>
+
 </html>

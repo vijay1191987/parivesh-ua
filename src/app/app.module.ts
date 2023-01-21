@@ -1,9 +1,8 @@
-import { Component, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
 import { NgOptimizedImage } from '@angular/common';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DemoMaterialModule } from '../material-module'
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
@@ -34,10 +33,10 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { Routes, RouterModule } from '@angular/router';
 
 const _routes: Routes = [
-  { path: '', component: PariveshMapComponent },
-  { path: 'caf', component: CafComponent },
-  { path: 'kya', component: CafComponent },
-  { path: 'dss', component: DssToolsComponent },
+  { path: '', component: PariveshMapComponent, title: 'Parivesh GIS' },
+  { path: 'caf', component: CafComponent, title: 'CAF GIS' },
+  { path: 'kya', component: CafComponent, title: 'KYA GIS' },
+  { path: 'dss', component: DssToolsComponent, title: 'DSS GIS' },
   { path: '**', component: PageNotFoundComponent }
 ];
 
@@ -82,5 +81,3 @@ const _routes: Routes = [
   exports: [RouterModule]
 })
 export class AppModule { }
-
-//platformBrowserDynamic().bootstrapModule(AppModule);.catch(err => console.error(err));

@@ -133,42 +133,38 @@ export const createMapImageLayer = async (_props: any) => {
     return layer;
 };
 export const getLayerMasters = async () => {
-    const res = axios.get("https://stgdev.parivesh.nic.in/ua-dev/gislayer/getlayerslist");
-    return res;
+    return axios({
+        url: "https://stgdev.parivesh.nic.in/ua-dev/gislayer/getlayerslist",
+        method: 'get',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
 };
-
 
 export const saveInterSectionResults = async (_d: any) => {
-    const _config = {
-        headers: { 'Content-Type': 'application/json' },
-    }
-    const res = axios.post("https://stgdev.parivesh.nic.in/gis-dev/api/InsertOutData", _d, _config);
-    return res;
+    return axios({
+        url: "https://stgdev.parivesh.nic.in/gis-dev/api/InsertOutData",
+        method: 'post',
+        data: _d,
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
 };
-// export const checkKMLGEOJSON = (_jsonData: any) => {
-//   let _finalJSONData = [];
-//   const _geoJSON: any = {
-//     type: "FeatureCollection", features: []
-//   };
-//   for (let i = 0; i < _jsonData.features.length; i++) {
-//     if (_jsonData.features[i].geometry.hasOwnProperty("geometries")) {
-//       for (let j = 0; j < _jsonData.features[i].geometry.geometries.length; j++) {
-//         if (_jsonData.features[i].geometry.geometries[j].geometry.type.toLowerCase() !== 'point') {
-//           const ab: any = {
-//             "type": "Feature", "id": "Feat" + j, geometry: _jsonData.features[i].geometry.geometries[j], properties: _jsonData.features[i].geometry.geometries[j].properties
-//           };
-//           _finalJSONData.push(ab);
-//         }
-//       }
-//     }
-//     else {
-//       if (_jsonData.features[i].geometry.type.toLowerCase() !== 'point')
-//         _finalJSONData.push(_jsonData.features[i]);
-//     }
-//   }
-//   _geoJSON.features = _finalJSONData;
-//   return _geoJSON;
-// }
+
+export const queryOKM = async (_URL: any, _d: object = {}) => {
+    return axios({
+        url: _URL,
+        method: 'get',
+        responseType: 'document',
+        params: _d,
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+};
+
 export const checkKMLGEOJSON = (_jsonData: any) => {
     let _finalJSONData = [];
     const bc: any = {
@@ -292,7 +288,7 @@ export const _TextSymbol: any = {
 };
 
 export const createCanvasImage = (_type: any, _color: any) => {
-    let _img64:string='';
+    let _img64: string = '';
     const canvas = document.createElement('canvas');
     const context: any = canvas.getContext("2d");
     const image = new Image();
@@ -315,6 +311,6 @@ export const createCanvasImage = (_type: any, _color: any) => {
         context.stroke();
         context.drawImage(image, 0, 0, 20, 20);
     }
-    _img64= canvas.toDataURL();
+    _img64 = canvas.toDataURL();
     return _img64;
 }

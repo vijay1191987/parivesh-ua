@@ -1,5 +1,5 @@
 import { isLoaded, loadModules } from 'esri-loader';
-import { NICStreetmap, Terrain, Bharatmaps } from "./localConfigs";
+import { NICStreetmap, Terrain } from "../components/gisHelper/localConfigs";
 
 const dojoConfig = {
   gfxRenderer: "svg,vml,canvas,silverlight",
@@ -9,7 +9,7 @@ const dojoConfig = {
   // packages: [
   //     {
   //         name: "DojoAPI",
-  //         location: "https://nvmbd1bkh150v02.rjil.ril.com/arcgisapi/4.15/DojoAPI/"
+  //         location: "https://xyz.com/arcgisapi/4.15/DojoAPI/"
   //     }
   // ]
 };
@@ -41,7 +41,13 @@ export const createGISInstance = async (_container: any) => {
     },
     center: [77.2324, 24.23423],
     zoom: 7,
+    highlightOptions: {
+      color: "cyan",
+      haloOpacity: 1,
+      fillOpacity: 0
+    },
     popup: {
+      defaultPopupTemplateEnabled: true,
       viewModel: {
         actions: {
           zoom: false
@@ -65,31 +71,31 @@ export const createGISInstance = async (_container: any) => {
     },
     spatialReference: {
       wkid: 102100
-    }  
+    }
   });
   view.container = _container;
-  return { ArcMap: webmap, MapView: view };
+  return { ArcMap: webmap, ArcView: view };
 };
 
-export const DrawMapZoomOut = async (mapView: any, event: any) => {
+export const DrawMapZoomOut = async (MapView: any, event: any) => {
   const [Draw, Extent, Point] = await loadModules(["esri/views/draw/Draw", "esri/geometry/Extent", "esri/geometry/Point"]);
   let action = null;
   const draw = new Draw({
-    view: mapView
+    view: MapView
   });
   if (event === undefined) {
-    mapView.surface.style.cursor = "zoom-out"; //url('assets/img/zoomin.cur'), auto
-    mapView.graphics.removeAll();
+    MapView.surface.style.cursor = "zoom-out"; //url('assets/img/zoomin.cur'), auto
+    MapView.graphics.removeAll();
     action = draw.create("rectangle");
-    mapView.focus();
-    action.on(["vertex-add", "cursor-update"], drawMapGraphics.bind(this, mapView));
-    action.on("draw-complete", DrawMapZoomOut.bind(this, mapView));
+    MapView.focus();
+    action.on(["vertex-add", "cursor-update"], drawMapGraphics.bind(this, MapView));
+    action.on("draw-complete", DrawMapZoomOut.bind(this, MapView));
   }
   if (isLoaded() && event !== undefined) {
     event.preventDefault();
     if (event.vertices.length === 1) {
-      var pnt = new Point({ x: event.vertices[0][0], y: event.vertices[0][1], spatialReference: mapView.spatialReference });
-      mapView.goTo({ target: pnt, scale: (mapView.scale * 2) });
+      var pnt = new Point({ x: event.vertices[0][0], y: event.vertices[0][1], spatialReference: MapView.spatialReference });
+      MapView.goTo({ target: pnt, scale: (MapView.scale * 2) });
       return;
     }
     var sx = event.vertices[0][0], sy = event.vertices[0][1];
@@ -99,15 +105,15 @@ export const DrawMapZoomOut = async (mapView: any, event: any) => {
       y: Math.max(sy, ey),
       width: Math.abs(sx - ex),
       height: Math.abs(sy - ey),
-      spatialReference: mapView.spatialReference
+      spatialReference: MapView.spatialReference
     };
     if (rect.width !== 0 || rect.height !== 0) {
-      var scrPnt1 = mapView.toScreen(rect);
-      var scrPnt2 = mapView.toScreen({ x: rect.x + rect.width, y: rect.y, spatialReference: rect.spatialReference });
-      var mWidth = mapView.extent.width;
-      var delta = (mWidth * mapView.width / Math.abs(scrPnt2.x - scrPnt1.x) - mWidth) / 2;
-      var vExtent = mapView.extent;
-      mapView.goTo(new Extent({
+      var scrPnt1 = MapView.toScreen(rect);
+      var scrPnt2 = MapView.toScreen({ x: rect.x + rect.width, y: rect.y, spatialReference: rect.spatialReference });
+      var mWidth = MapView.extent.width;
+      var delta = (mWidth * MapView.width / Math.abs(scrPnt2.x - scrPnt1.x) - mWidth) / 2;
+      var vExtent = MapView.extent;
+      MapView.goTo(new Extent({
         xmin: vExtent.xmin - delta,
         ymin: vExtent.ymin - delta,
         xmax: vExtent.xmax + delta,
@@ -115,40 +121,40 @@ export const DrawMapZoomOut = async (mapView: any, event: any) => {
         spatialReference: vExtent.spatialReference
       }));
       draw.reset();
-      mapView.surface.style.cursor = "default";
-      mapView.graphics.removeAll();
+      MapView.surface.style.cursor = "default";
+      MapView.graphics.removeAll();
     }
   }
 }
 
-export const DrawMapZoomIn = async (mapView: any, event: any) => {
+export const DrawMapZoomIn = async (MapView: any, event: any) => {
   const [Draw, Extent] = await loadModules(["esri/views/draw/Draw", "esri/geometry/Extent"]);
   let action = null;
   const draw = new Draw({
-    view: mapView
+    view: MapView
   });
   if (event === undefined) {
-    mapView.surface.style.cursor = "zoom-in";
-    mapView.graphics.removeAll();
+    MapView.surface.style.cursor = "zoom-in";
+    MapView.graphics.removeAll();
     action = draw.create("rectangle");
-    mapView.focus();
-    action.on(["vertex-add", "cursor-update"], drawMapGraphics.bind(this, mapView));
-    action.on("draw-complete", DrawMapZoomIn.bind(this, mapView));
+    MapView.focus();
+    action.on(["vertex-add", "cursor-update"], drawMapGraphics.bind(this, MapView));
+    action.on("draw-complete", DrawMapZoomIn.bind(this, MapView));
   }
   if (isLoaded() && event !== undefined) {
     event.preventDefault();
     if (event.vertices.length === 1) {
-      mapView.goTo({ scale: (mapView.scale * .5) });
+      MapView.goTo({ scale: (MapView.scale * .5) });
       return;
     }
-    let zoomExtent: any = getExtentfromVertices(event.vertices, mapView, Extent);
-    zoomExtent.spatialReference = mapView.spatialReference;
+    let zoomExtent: any = getExtentfromVertices(event.vertices, MapView, Extent);
+    zoomExtent.spatialReference = MapView.spatialReference;
     if (zoomExtent.width !== 0 || zoomExtent.height !== 0) {
-      mapView.goTo({ extent: zoomExtent });
+      MapView.goTo({ extent: zoomExtent });
     }
     draw.reset();
-    mapView.surface.style.cursor = "default";
-    mapView.graphics.removeAll();
+    MapView.surface.style.cursor = "default";
+    MapView.graphics.removeAll();
   }
 }
 
@@ -299,7 +305,7 @@ export const changeBaseMap = async (event: any, ArcMap: any) => {
 
 }
 
-async function drawMapGraphics(mapView: any, event: any) {
+async function drawMapGraphics(MapView: any, event: any) {
   const [Graphic, Extent] = await loadModules(["esri/Graphic", "esri/geometry/Extent"]);
   var vertices = event.vertices;
   //remove existing graphic
@@ -308,7 +314,7 @@ async function drawMapGraphics(mapView: any, event: any) {
     return;
   }
   // create a new extent
-  var extent: any = getExtentfromVertices(vertices, mapView, Extent);
+  var extent: any = getExtentfromVertices(vertices, MapView, Extent);
   extent.spatialReference = event.view.spatialReference;
   event.view.graphics.remove();
   var graphic = new Graphic({

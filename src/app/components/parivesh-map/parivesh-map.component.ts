@@ -42,21 +42,21 @@ export class PariveshMapComponent implements OnInit {
     this.mapExtent = [];
     this.NextExtent = [];
     const [reactiveUtils] = await loadModules(["esri/core/reactiveUtils"]);
-    this.PariveshGIS.MapView.on("key-down", function (event: any) {
+    this.PariveshGIS.ArcView.on("key-down", function (event: any) {
       var keyPressed = event.key;
       if (keyPressed.slice(0, 5) === "Arrow") {
         event.stopPropagation();
       }
     });
-    this.PariveshGIS.MapView.on("drag", function (event: any) {
+    this.PariveshGIS.ArcView.on("drag", function (event: any) {
       // prevents panning with the mouse drag event
       //    event.stopPropagation();
       console.log(event);
-      //this.PariveshGIS.MapView.surface.style.cursor = "default";
+      //this.PariveshGIS.ArcView.surface.style.cursor = "default";
     });
 
     reactiveUtils.watch(
-      () => [this.PariveshGIS.MapView.stationary, this.PariveshGIS.MapView.extent],
+      () => [this.PariveshGIS.ArcView.stationary, this.PariveshGIS.ArcView.extent],
       ([stationary, extent]: any, [wasStationary]: any) => {
         if (stationary) {
           let dTest = Math.abs(extent.xmax - extent.xmin);
@@ -95,16 +95,16 @@ export class PariveshMapComponent implements OnInit {
     else if (_tool === "Measure") {
       this.measurementList = !this.measurementList;
       const a = document.getElementById("measureTool");
-      this.PariveshGIS.MapView.ui.add(a, "top-right");
+      this.PariveshGIS.ArcView.ui.add(a, "top-right");
     }
     else if (_tool === "Extent")
       DrawMapZoomOut(this.PariveshGIS.MapView, undefined);
     else if (_tool === "Previous Extent")
-      DrawMapZoomOut(this.PariveshGIS.MapView, undefined);
+      this.zoomPreviousExtent();
     else if (_tool === "Next Extent")
-      DrawMapZoomOut(this.PariveshGIS.MapView, undefined);
+      this.zoomNextExtent();
     else if (_tool === "Pan")
-      this.PariveshGIS.MapView.surface.style.cursor = "pointer";
+      this.PariveshGIS.ArcView.surface.style.cursor = "pointer";
     else if (_tool === "Identify")
       DrawMapZoomOut(this.PariveshGIS.MapView, undefined);
   }
@@ -118,16 +118,16 @@ export class PariveshMapComponent implements OnInit {
       let lastEx = this.mapExtent[this.mapExtent.length - 1];
       let a = this.mapExtent.pop();
       this.NextExtent.push(a);
-      this.PariveshGIS.MapView.goTo({ target: lastEx });
+      this.PariveshGIS.ArcView.goTo({ target: lastEx });
     }
   }
   zoomNextExtent() {
-    this.PariveshGIS.MapView.goTo({ target: this.mapExtent[0] });
+    this.PariveshGIS.ArcView.goTo({ target: this.mapExtent[0] });
   }
   //measurement tool start-------
   KmlMeasurement(event: any, data: any) {
 
-    // this.PariveshGIS.MapView.ui.add("topbar", "bottom-left");
+    // this.PariveshGIS.ArcView.ui.add("topbar", "bottom-left");
 
     if (data == 'distance') {
 
@@ -164,7 +164,7 @@ export class PariveshMapComponent implements OnInit {
         activeWidget.watch("viewModel.measurement", function (measurement: any) {
           _this.MeasurementValue = measurement.length * 0.001;
         });
-        // this.PariveshGIS.MapView.ui.add(activeWidget, "bottom-right");
+        // this.PariveshGIS.ArcView.ui.add(activeWidget, "bottom-right");
         this.setActiveButton(document.getElementById("distanceButton"));
         break;
       case "area":
@@ -184,12 +184,12 @@ export class PariveshMapComponent implements OnInit {
           _this.MeasurementPerimeterValue = areameasurement.perimeter * 0.001;
         });
 
-        // this.PariveshGIS.MapView.ui.add(activeWidget, "bottom-right");
+        // this.PariveshGIS.ArcView.ui.add(activeWidget, "bottom-right");
         this.setActiveButton(document.getElementById("areaButton"));
         break;
       case null:
         if (activeWidget) {
-          this.PariveshGIS.MapView.ui.remove(activeWidget);
+          this.PariveshGIS.ArcView.ui.remove(activeWidget);
           // activeWidget.destroy();
           activeWidget = null;
         }
@@ -197,7 +197,7 @@ export class PariveshMapComponent implements OnInit {
     }
   }
   setActiveButton(selectedButton: any) {
-    this.PariveshGIS.MapView.focus();
+    this.PariveshGIS.ArcView.focus();
     var elements = document.getElementsByClassName("active");
     for (var i = 0; i < elements.length; i++) {
       elements[i].classList.remove("active");

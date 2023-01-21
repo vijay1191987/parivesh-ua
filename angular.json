@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/parivesh-gis",
+            "outputPath": "dist/pariveshgis",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -30,7 +30,6 @@
             "styles": [
               "./node_modules/bootstrap/dist/css/bootstrap.min.css",
               "./node_modules/bootstrap-icons/font/bootstrap-icons.css",
-              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/assets/css/style.css",
               "src/styles.css"
             ],
@@ -39,6 +38,11 @@
               "./node_modules/bootstrap/dist/js/bootstrap.min.js",
               "src/assets/js/togeojson.js",
               "src/assets/js/ArcgisToGeojsonUtils.js"
+            ],
+            "allowedCommonJsDependencies": [
+              "lodash",
+              "form-data",
+              "esri-loader"
             ]
           },
           "configurations": {
@@ -46,8 +50,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "1mb",
+                  "maximumError": "2mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -98,7 +102,6 @@
             "styles": [
               "./node_modules/bootstrap/dist/css/bootstrap.min.css",
               "./node_modules/bootstrap-icons/font/bootstrap-icons.css",
-              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/assets/css/style.css",
               "src/styles.css"
             ],

@@ -20,18 +20,18 @@ export class FooterComponent implements OnInit {
     const t: any = this.ESRIObject;
     t.PariveshMap.then((_view: any) => {
       this.PariveshGIS = _view;
-      _view.MapView.watch("scale", (value: number) => {
+      _view.ArcView.watch("scale", (value: number) => {
         this.mapScale = precisionRound(value, 0);
       });
-      _view.MapView.on("pointer-move", (evt: any) => {
-        this.mapPointer = mapPointerCords(_view.MapView.toMap({ x: evt.x, y: evt.y }), _view);
+      _view.ArcView.on("pointer-move", (evt: any) => {
+        this.mapPointer = mapPointerCords(_view.ArcView.toMap({ x: evt.x, y: evt.y }), _view);
       });
     }).catch((error: any) => console.log(error));
   }
   zoomInOut(event: string) {
     if (event === "OUT")
-      this.PariveshGIS.MapView.scale = this.mapScale * 2;
+      this.PariveshGIS.ArcView.scale = this.mapScale * 2;
     else
-      this.PariveshGIS.MapView.scale = this.mapScale * 0.5;
+      this.PariveshGIS.ArcView.scale = this.mapScale * 0.5;
   }
 }
