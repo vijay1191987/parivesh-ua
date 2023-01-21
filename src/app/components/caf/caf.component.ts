@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { newtokenbharatmaps__, OkmUrl } from "../gisHelper/localConfigs";
 import { PariveshServices } from 'src/app/services/GISLayerMasters.service';
 import { queryOKM, checkKMLGEOJSON, CreateEsrisymbol, fetchDataEsriService, _TextSymbol, saveInterSectionResults, createCanvasImage } from "./../gisHelper";
+import { animate } from '@angular/animations';
 
 declare const toGeoJSON: any;
 declare function geojsonToArcGIS(obj1: any, obj2: any): any;
@@ -64,53 +65,60 @@ export class CafComponent implements OnInit {
       uuid: this.qsData.uuid,
       version: this.qsData.version
     };
-    const _okmResponse = await queryOKM(OkmUrl, _OKMParams);
-
-    const _geoJson = toGeoJSON.kml(_okmResponse.data);
-    //KML Total Features
-    app.KMLData = checkKMLGEOJSON(_geoJson);
-    if (app.KMLData.hasPointData || app.KMLData.features.length == 0) {
-      alert("KML is not according to SOP");
-      return false;
-    }
+    const _okmResponse = await queryOKM(OkmUrl, _OKMParams).catch((error: any) => {
+      console.log("Error in OKM#### " + error.code + "::::::::" + error.message);
+      return error.response;
+    });
+    if (_okmResponse.data === null)
+      alert("Unable to upload document!! Please try after sometime.");
     else {
-      // check Out of India Boundery
-      const state_Boundaries_0 = new FeatureLayer({
-        url: 'https://gisservrsdiv.nic.in/bharatmaps/rest/services/parivesh2/Administrative_Boundaries/MapServer/0',
-        apiKey: newtokenbharatmaps__
-      });
-      const _kmlUnion = geometryEngine.union(app.KMLData.PolygonGeom.length == 0 ? app.KMLData.LineGeom : app.KMLData.PolygonGeom);
-
-      const query_inter: any = {
-        returnGeometry: false,
-        outFields: ["*"],
-        inSR: { wkid: 4326 },
-        spatialRelationship: "intersects",
-        geometry: _kmlUnion
-      };
-      let outInd: any = await fetchDataEsriService(query_inter, state_Boundaries_0);
-      if (outInd.features.length == 0) {
-        this.outofIndiaFlag = true;
-        query_inter.geometry = null;
-        this.goeBufferGeom = geometryEngine.geodesicBuffer(_kmlUnion, 2, "kilometers");
-        query_inter.geometry = this.goeBufferGeom;
-      }
-      const _response = await fetchDataEsriService(query_inter, state_Boundaries_0);
-      if (_response.features.length > 0)
-        _this.createKMLGraphics();
-      else if (_response.features.length == 0) {
-        _this.outofIndiaFlag = true;
-        alert("Project Location Falling Out of India Boundary.");
-        _this.createKMLGraphics();
+      const _geoJson = toGeoJSON.kml(_okmResponse.data);
+      //KML Total Features
+      app.KMLData = checkKMLGEOJSON(_geoJson);
+      if (app.KMLData.hasPointData || app.KMLData.features.length == 0) {
+        alert("KML is not according to SOP");
         return;
       }
       else {
-        _this.outofIndiaFlag = true;
-        alert("Project Location Falling Out of India Boundary.");
+        // check Out of India Boundery
+        const state_Boundaries_0 = new FeatureLayer({
+          url: 'https://gisservrsdiv.nic.in/bharatmaps/rest/services/parivesh2/Administrative_Boundaries/MapServer/0',
+          apiKey: newtokenbharatmaps__
+        });
+        const _kmlUnion = geometryEngine.union(app.KMLData.PolygonGeom.length == 0 ? app.KMLData.LineGeom : app.KMLData.PolygonGeom);
+
+        const query_inter: any = {
+          returnGeometry: false,
+          outFields: ["*"],
+          inSR: { wkid: 4326 },
+          spatialRelationship: "intersects",
+          geometry: _kmlUnion
+        };
+        let outInd: any = await fetchDataEsriService(query_inter, state_Boundaries_0);
+        if (outInd.features.length == 0) {
+          this.outofIndiaFlag = true;
+          query_inter.geometry = null;
+          this.goeBufferGeom = geometryEngine.geodesicBuffer(_kmlUnion, 2, "kilometers");
+          query_inter.geometry = this.goeBufferGeom;
+        }
+        const _response = await fetchDataEsriService(query_inter, state_Boundaries_0);
+        if (_response.features.length > 0)
+          _this.createKMLGraphics();
+        else if (_response.features.length == 0) {
+          _this.outofIndiaFlag = true;
+          alert("Project Location Falling Out of India Boundary.");
+          _this.createKMLGraphics();
+          return;
+        }
+        else {
+          _this.outofIndiaFlag = true;
+          alert("Project Location Falling Out of India Boundary.");
+          return;
+        }
         return;
       }
-      return true;
     }
+    return false;
   }
 
   async createKMLGraphics() {
@@ -146,11 +154,12 @@ export class CafComponent implements OnInit {
       bc.features = _kmlFeature;
       app.KMLData = bc;
       let _userGraphic = null;
-      const data: any = { LayerName: "User KML", LayerID: 999, children: [] };
+      const data: any = { LayerName: "User KML", selected: true, LayerID: 999, children: [] };
       if (bc.LineGeom != null) {
         let tp: LayerNode = {} as LayerNode;
         tp.LayerName = "Line Feature";
         tp.LayerID = 11;
+        tp.selected = true;
         tp.LegendPath = createCanvasImage("Line", "red");
         tp.reqType = "User";
         this.childrenData.push(tp);
@@ -186,6 +195,7 @@ export class CafComponent implements OnInit {
         let tp: LayerNode = {} as LayerNode;
         tp.LayerName = "Polygon Feature";
         tp.LayerID = 22;
+        tp.selected = true;
         tp.LegendPath = createCanvasImage("Rect", "red");
         tp.reqType = "User";
         this.childrenData.push(tp);
@@ -232,7 +242,7 @@ export class CafComponent implements OnInit {
       });
     }
     else {
-      const data: any = { LayerName: "User KML", LayerID: 999, children: [] };
+      const data: any = { LayerName: "User KML", selected: true, LayerID: 999, children: [] };
       for (let z = 0; z < app.KMLData.features.length; z++) {
         let _userGraphic = null;
         let _polyLineGeom = null;
@@ -312,6 +322,7 @@ export class CafComponent implements OnInit {
         let tp: LayerNode = {} as LayerNode;
         tp.LayerName = app.KMLData.features[z].geometry.type.toUpperCase() + "-" + (Number(z) + Number(1));
         tp.LayerID = (Number(z) + Number(1));
+        tp.selected = true;
         tp.LegendPath = createCanvasImage(app.KMLData.features[z].geometry.type.toLowerCase() == "polygon" ? "Rect" : "Line", "red");
         tp.reqType = "User";
         this.childrenData.push(tp);

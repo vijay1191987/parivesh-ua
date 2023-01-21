@@ -1,7 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { LayersComponent, LayerNode } from './../layers/layers.component'
 import { loadModules } from 'esri-loader';
-import { PariveshServices } from 'src/app/services/GISLayerMasters.service';
 
 @Component({
   selector: 'app-legend',
@@ -17,22 +15,18 @@ export class LegendComponent implements OnInit {
 
   legendShow: boolean = false;
   async legendIcon() {
+    const t: any = this.MapData;
+    if (t.ESRIObj_.hasOwnProperty("ESRIObj_"))
+      this.PariveshGIS = await t.ESRIObj_.ESRIObj_;
+    else
+      this.PariveshGIS = await t.ESRIObj_;
     if (!this.legendShow) {
       const [Legend] = await loadModules(["esri/widgets/Legend"]);
       let legend = new Legend({
-        view: this.PariveshGIS.MapView,
-        container: document.getElementById("legendDIV"),
-        style: {
-          type: "classic",
-          layout: "auto"
-        }
+        view: this.PariveshGIS.ArcView,
+        container: document.getElementById('legendDIV')
       });
-      const t: any = this.MapData;
-      if (t.ESRIObj_.hasOwnProperty("ESRIObj_"))
-        this.PariveshGIS = await t.ESRIObj_.ESRIObj_;
-      else
-        this.PariveshGIS = await t.ESRIObj_;
-      this.PariveshGIS.MapView.ui.add(legend, "bottom-right");
+      this.PariveshGIS.ArcView.ui.add(legend, "bottom-right");
     }
     this.legendShow = !this.legendShow;
   }

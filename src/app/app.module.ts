@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatNativeDateModule } from '@angular/material/core';
 import { NgOptimizedImage } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DemoMaterialModule } from '../material-module'
@@ -30,7 +30,7 @@ import { TableComponent } from './commonComponents/table/table.component';
 import { DssToolsComponent } from './components/dss-tools/dss-tools.component';
 import { CafComponent } from './components/caf/caf.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
-import { Routes, RouterModule } from '@angular/router';
+
 
 const _routes: Routes = [
   { path: '', component: PariveshMapComponent, title: 'Parivesh GIS' },
@@ -73,8 +73,7 @@ const _routes: Routes = [
     DemoMaterialModule,
     FormsModule,
     NgOptimizedImage,
-    ReactiveFormsModule,
-    MatNativeDateModule
+    ReactiveFormsModule
   ],
   providers: [{ provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } }, { provide: APP_BASE_HREF, useValue: '/pariveshgis/' }, PariveshServices, LayersComponent],
   bootstrap: [AppComponent],

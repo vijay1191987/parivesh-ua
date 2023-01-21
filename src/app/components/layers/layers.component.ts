@@ -147,10 +147,8 @@ export class LayersComponent implements OnInit {
     if (node.hasOwnProperty("reqType")) {
       const _lyr: any = this.PariveshGIS.ArcMap.findLayerById("EsriUserMap");
       let layerFeature = _lyr.graphics.items.filter((f: any) => f.id === node.LayerID);
-      // if (layerFeature[0].visible)
       layerFeature[0].visible = checked;
-      //else
-      //   layerFeature[0].visible = true;
+      this.PariveshGIS.ArcView.goTo({target:layerFeature});
     }
     else {
       const uniqueLayerID = layerConfigs.LayerName.trim() + "_" + layerConfigs.glayerid + "_" + layerConfigs.layerurl.trim().charAt(layerConfigs.layerurl.trim().length - 1);
