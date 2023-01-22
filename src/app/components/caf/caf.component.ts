@@ -5,7 +5,6 @@ import { ActivatedRoute } from '@angular/router';
 import { newtokenbharatmaps__, OkmUrl } from "../gisHelper/localConfigs";
 import { PariveshServices } from 'src/app/services/GISLayerMasters.service';
 import { queryOKM, checkKMLGEOJSON, CreateEsrisymbol, fetchDataEsriService, _TextSymbol, saveInterSectionResults, createCanvasImage } from "./../gisHelper";
-import { animate } from '@angular/animations';
 
 declare const toGeoJSON: any;
 declare function geojsonToArcGIS(obj1: any, obj2: any): any;
@@ -55,7 +54,6 @@ export class CafComponent implements OnInit {
   }
 
   async _createuserKMLLayer() {
-    const _promiseObj = [];
     const [FeatureLayer, geometryEngine] = await loadModules(["esri/layers/FeatureLayer", "esri/geometry/geometryEngine"]);
     app.KMLGraphics = [];
     const _OKMParams = {
@@ -122,7 +120,7 @@ export class CafComponent implements OnInit {
   }
 
   async createKMLGraphics() {
-    const [GraphicsLayer, Graphic, geometryEngine, Polyline, Polygon] = await loadModules(['esri/layers/GraphicsLayer', 'esri/Graphic', 'esri/geometry/geometryEngine', "esri/geometry/Polyline", "esri/geometry/Polygon"]);
+    const [GraphicsLayer, Graphic, geometryEngine, Polyline, Polygon, PopupTemplate] = await loadModules(['esri/layers/GraphicsLayer', 'esri/Graphic', 'esri/geometry/geometryEngine', "esri/geometry/Polyline", "esri/geometry/Polygon", "esri/PopupTemplate"]);
 
     this._customeGL = new GraphicsLayer();
     this._customeGL.id = "EsriUserMap";
@@ -173,7 +171,8 @@ export class CafComponent implements OnInit {
         let _attr = {
           patch_id: 1, Length: _length.toFixed(4),
           Ymin: bc.LineGeom.extent.ymin, Xmin: bc.LineGeom.extent.xmin,
-          Ymax: bc.LineGeom.extent.ymax, Xmax: bc.LineGeom.extent.xmax
+          Ymax: bc.LineGeom.extent.ymax, Xmax: bc.LineGeom.extent.xmax,
+          Description: app.KMLData.features[0].properties.hasOwnProperty('description') ? app.KMLData.features[0].properties.description : "No Information"
         }
 
         _userGraphic = new Graphic({
@@ -181,6 +180,24 @@ export class CafComponent implements OnInit {
           geometry: bc.LineGeom,
           symbol: CreateEsrisymbol("[226, 119, 40]", "red", "Line", "solid"),
           attributes: _attr
+        });
+        _userGraphic.popupTemplate = new PopupTemplate({
+          title: "KML Information",
+          content: [{
+            type: "fields",
+            fieldInfos: [{
+              fieldName: "patch_id",
+              label: "Patch ID"
+            },
+            {
+              fieldName: "Length",
+              label: "Length"
+            },
+            {
+              fieldName: "Description",
+              label: "Description"
+            }]
+          }]
         });
         if (this.qsData.ref_type.toUpperCase() == "FC") {
           _TextSymbol.text = 1;
@@ -214,14 +231,37 @@ export class CafComponent implements OnInit {
 
         let _attr = {
           patch_id: 2, Length: _length.toFixed(4), Area: _area.toFixed(4),
-          Ymin: bc.LineGeom.extent.ymin, Xmin: bc.LineGeom.extent.xmin,
-          Ymax: bc.LineGeom.extent.ymax, Xmax: bc.LineGeom.extent.xmax
+          Ymin: bc.PolygonGeom.extent.ymin, Xmin: bc.PolygonGeom.extent.xmin,
+          Ymax: bc.PolygonGeom.extent.ymax, Xmax: bc.PolygonGeom.extent.xmax,
+          Description: app.KMLData.features[0].properties.hasOwnProperty('description') ? app.KMLData.features[0].properties.description : "No Information"
         }
         _userGraphic = new Graphic({
           id: 22,
           geometry: bc.PolygonGeom,
           symbol: CreateEsrisymbol("yellow", "red", "Fill", "solid"),
           attributes: _attr
+        });
+        _userGraphic.popupTemplate = new PopupTemplate({
+          title: "KML Information",
+          content: [{
+            type: "fields",
+            fieldInfos: [{
+              fieldName: "patch_id",
+              label: "Patch ID"
+            },
+            {
+              fieldName: "Area",
+              label: "Area"
+            },
+            {
+              fieldName: "Length",
+              label: "Length"
+            },
+            {
+              fieldName: "Description",
+              label: "Description"
+            }]
+          }]
         });
         this._customeGL.add(_userGraphic);
         if (this.qsData.ref_type.toUpperCase() == "FC") {
@@ -263,7 +303,8 @@ export class CafComponent implements OnInit {
           let _attr = {
             patch_id: z + 1, Length: _length.toFixed(4),
             Ymin: _polyLineGeom.extent.ymin, Xmin: _polyLineGeom.extent.xmin,
-            Ymax: _polyLineGeom.extent.ymax, Xmax: _polyLineGeom.extent.xmax
+            Ymax: _polyLineGeom.extent.ymax, Xmax: _polyLineGeom.extent.xmax,
+            Description: app.KMLData.features[z].properties.hasOwnProperty('description') ? app.KMLData.features[z].properties.description : "No Information"
           }
           _userGraphic = new Graphic({
             id: (Number(z) + Number(1)),
@@ -271,6 +312,25 @@ export class CafComponent implements OnInit {
             symbol: CreateEsrisymbol(app.KMLData.features[z].properties.hasOwnProperty("styleHash") ? "#" + app.KMLData.features[z].properties.styleHash.slice(-6) : "[226, 119, 40]", "red", "Line", "solid"),
             attributes: _attr
           });
+          _userGraphic.popupTemplate = new PopupTemplate({
+            title: "KML Information",
+            content: [{
+              type: "fields",
+              fieldInfos: [{
+                fieldName: "patch_id",
+                label: "Patch ID"
+              },
+              {
+                fieldName: "Length",
+                label: "Length"
+              },
+              {
+                fieldName: "Description",
+                label: "Description"
+              }]
+            }]
+          });
+
           if (this.qsData.ref_type.toUpperCase() == "FC") {
             _TextSymbol.text = z + 1;
             const _textGraphic = new Graphic();
@@ -301,7 +361,8 @@ export class CafComponent implements OnInit {
           let _attr = {
             patch_id: z + 1, Length: _length.toFixed(4), Area: _area.toFixed(4),
             Ymin: _polygonGeom.extent.ymin, Xmin: _polygonGeom.extent.xmin,
-            Ymax: _polygonGeom.extent.ymax, Xmax: _polygonGeom.extent.xmax
+            Ymax: _polygonGeom.extent.ymax, Xmax: _polygonGeom.extent.xmax,
+            Description: app.KMLData.features[z].properties.hasOwnProperty('description') ? app.KMLData.features[z].properties.description : "No Information"
           }
 
           _userGraphic = new Graphic({
@@ -310,6 +371,29 @@ export class CafComponent implements OnInit {
             symbol: CreateEsrisymbol(app.KMLData.features[z].properties.hasOwnProperty("styleHash") ? "#" + app.KMLData.features[z].properties.styleHash.slice(-6) : "yellow", "red", "Fill", "solid"),
             attributes: _attr
           });
+          _userGraphic.popupTemplate = new PopupTemplate({
+            title: "KML Information",
+            content: [{
+              type: "fields",
+              fieldInfos: [{
+                fieldName: "patch_id",
+                label: "Patch ID"
+              },
+              {
+                fieldName: "Area",
+                label: "Area"
+              },
+              {
+                fieldName: "Length",
+                label: "Length"
+              },
+              {
+                fieldName: "Description",
+                label: "Description"
+              }]
+            }]
+          });
+
           if (this.qsData.ref_type.toUpperCase() == "FC") {
             _TextSymbol.text = z + 1;
             const _textGraphic = new Graphic();

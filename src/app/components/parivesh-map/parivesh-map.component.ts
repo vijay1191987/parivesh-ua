@@ -75,6 +75,15 @@ export class PariveshMapComponent implements OnInit {
         }
       }
     );
+
+    this.PariveshGIS.ArcView.popup.autoOpenEnabled = false;
+    this.PariveshGIS.ArcView.on("click", (event: any) => {
+      this.PariveshGIS.ArcView.hitTest(event).then((res: any) => {
+        this.PariveshGIS.ArcView.popup.open({
+          features : res.results[0].layer.graphics.items
+        });
+      });
+    });
   }
 
   baseLayer() {

@@ -2,9 +2,8 @@ import { isLoaded, loadModules } from 'esri-loader';
 import axios from 'axios';
 import Polygon from "@arcgis/core/geometry/Polygon";
 import Polyline from "@arcgis/core/geometry/Polyline";
-import { AsyncAction } from 'rxjs/internal/scheduler/AsyncAction';
-import { async } from '@angular/core/testing';
-import { retry } from 'rxjs';
+import * as promiseUtils from "@arcgis/core/core/promiseUtils";
+import { async } from 'rxjs';
 
 /*****************************************************************
  <<<<< COMMON FUNCTION TO RE-USE IN ENTIRE APPLICATION >>>>>

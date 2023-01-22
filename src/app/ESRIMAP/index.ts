@@ -47,6 +47,7 @@ export const createGISInstance = async (_container: any) => {
       fillOpacity: 0
     },
     popup: {
+      autoOpenEnabled: false,
       defaultPopupTemplateEnabled: true,
       viewModel: {
         actions: {

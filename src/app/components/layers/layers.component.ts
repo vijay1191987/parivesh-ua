@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, Injectable } from '@angular/core';
-import { Observable, Subject, Subscription } from 'rxjs';
 import { NestedTreeControl } from "@angular/cdk/tree";
 import { MatTreeNestedDataSource } from "@angular/material/tree";
 import { groupByJsonData, renameJSONKey, createMapImageLayer, getLayerMasters } from "./../gisHelper";
@@ -26,7 +25,6 @@ export interface LayerNode {
 })
 @Injectable({ providedIn: 'root' })
 export class LayersComponent implements OnInit {
-  //private subscriptionName: Subscription; //important to create a subscription
   //{To Access ESRI MapView object}
   @Input() MapData: any = {};
   PariveshGIS: any = {};
@@ -44,21 +42,10 @@ export class LayersComponent implements OnInit {
       const _kj = this.dataSource.data;
       this.dataSource.data = [];
       this.dataSource.data = [...layerData, ..._kj];
-    })
-
+    });
   }
   ngOnDestroy() { // It's a good practice to unsubscribe to ensure no memory leaks
     //this.subscriptionName.unsubscribe();
-  }
-
-  private subjectName = new Subject<any>(); //need to create a subject
-
-  sendUpdate(message: LayerNode[]) { //the component that wants to update something, calls this fn
-    this.subjectName.next({ treeData: message }); //next() will feed the value in Subject
-  }
-
-  getUpdate(): Observable<any> { //the receiver component calls this function 
-    return this.subjectName.asObservable(); //it returns as an observable to which the receiver funtion will subscribe
   }
 
   async ngOnInit() {
@@ -148,7 +135,7 @@ export class LayersComponent implements OnInit {
       const _lyr: any = this.PariveshGIS.ArcMap.findLayerById("EsriUserMap");
       let layerFeature = _lyr.graphics.items.filter((f: any) => f.id === node.LayerID);
       layerFeature[0].visible = checked;
-      this.PariveshGIS.ArcView.goTo({target:layerFeature});
+      this.PariveshGIS.ArcView.goTo({ target: layerFeature });
     }
     else {
       const uniqueLayerID = layerConfigs.LayerName.trim() + "_" + layerConfigs.glayerid + "_" + layerConfigs.layerurl.trim().charAt(layerConfigs.layerurl.trim().length - 1);
