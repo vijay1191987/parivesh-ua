@@ -2,10 +2,9 @@ import { Component, OnInit, Input, Injectable } from '@angular/core';
 import { NestedTreeControl } from "@angular/cdk/tree";
 import { MatTreeNestedDataSource } from "@angular/material/tree";
 import { groupByJsonData, renameJSONKey, createMapImageLayer, getLayerMasters } from "./../gisHelper";
+import { Bharatmaps } from "./../gisHelper/localConfigs";
 import axios from 'axios';
 import { PariveshServices } from 'src/app/services/GISLayerMasters.service';
-
-const _ESRIToken = 'sewVmRXTzUj0E0Cwu6TJcTn8r8a1FuoGf2P9ANXJEnbFvKkKKY2HR3gc0Lfz7r-IWF2LCZC0S6hwtZjvvTOgTA..';
 
 export interface LayerNode {
   LayerName: string;
@@ -69,7 +68,7 @@ export class LayersComponent implements OnInit {
           const _URL = _ur[0] + "MapServer/";
           axios.get(_URL + "legend", {
             params: {
-              token: _ESRIToken,
+              token: Bharatmaps,
               f: "pjson"
             }
           }).then((responseData: any) => {
@@ -142,10 +141,10 @@ export class LayersComponent implements OnInit {
       const _layer = this.PariveshGIS.ArcMap.findLayerById(uniqueLayerID);
       if (checked && _layer === undefined) {
         const _params = {
-          apiKey: _ESRIToken,
+          apiKey: Bharatmaps,
           url: layerConfigs.layerurl.trim().slice(0, -1),
           copyright: layerConfigs.layer_description,
-          customParameters: { token: _ESRIToken },
+          customParameters: { token: Bharatmaps },
           legendEnabled: true,//layerConfigs.legend_enabled,
           opacity: layerConfigs.gglopacity,
           title: layerConfigs.LayerName.trim(),

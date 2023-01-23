@@ -136,8 +136,6 @@ export class PariveshMapComponent implements OnInit {
   //measurement tool start-------
   KmlMeasurement(event: any, data: any) {
 
-    // this.PariveshGIS.ArcView.ui.add("topbar", "bottom-left");
-
     if (data == 'distance') {
 
       this.setActiveWidget(null);

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LayerNode } from './../layers/layers.component'
 import { loadModules } from 'esri-loader';
 import { ActivatedRoute } from '@angular/router';
-import { newtokenbharatmaps__, OkmUrl } from "../gisHelper/localConfigs";
+import { Bharatmaps, OkmUrl } from "../gisHelper/localConfigs";
 import { PariveshServices } from 'src/app/services/GISLayerMasters.service';
 import { queryOKM, checkKMLGEOJSON, CreateEsrisymbol, fetchDataEsriService, _TextSymbol, saveInterSectionResults, createCanvasImage } from "./../gisHelper";
 
@@ -41,9 +41,12 @@ export class CafComponent implements OnInit {
   constructor(private route: ActivatedRoute, private parivesh: PariveshServices) {
     _this = this;
     this.route.queryParams.subscribe(params => {
-      if (Object.keys(params).length) {
+      if (Object.keys(params).length == 6) {
         this.qsData = params;
         this._createuserKMLLayer();
+      }
+      else {
+        alert("Request parameters does not match!");
       }
     });
   }
@@ -81,7 +84,7 @@ export class CafComponent implements OnInit {
         // check Out of India Boundery
         const state_Boundaries_0 = new FeatureLayer({
           url: 'https://gisservrsdiv.nic.in/bharatmaps/rest/services/parivesh2/Administrative_Boundaries/MapServer/0',
-          apiKey: newtokenbharatmaps__
+          apiKey: Bharatmaps
         });
         const _kmlUnion = geometryEngine.union(app.KMLData.PolygonGeom.length == 0 ? app.KMLData.LineGeom : app.KMLData.PolygonGeom);
 
@@ -433,22 +436,22 @@ export class CafComponent implements OnInit {
 
     this.villageBoundryLayer = new FeatureLayer({
       url: 'https://gisservrsdiv.nic.in/bharatmaps/rest/services/parivesh2/Administrative_Boundaries/MapServer/3',
-      apiKey: newtokenbharatmaps__
+      apiKey: Bharatmaps
     });
 
     this.toposheetBoundryLayer = new FeatureLayer({
       url: 'https://gisservrsdiv.nic.in/bharatmaps/rest/services/parivesh2/Grid50k_osm/MapServer/1',
-      apiKey: newtokenbharatmaps__
+      apiKey: Bharatmaps
     });
 
     const villagePointLayer = new FeatureLayer({
       url: 'https://gisservrsdiv.nic.in/bharatmaps/rest/services/parivesh2/Village_Point_Grid/MapServer/0',
-      apiKey: newtokenbharatmaps__
+      apiKey: Bharatmaps
     });
 
     const subDistrictLayer = new FeatureLayer({
       url: 'https://gisservrsdiv.nic.in/bharatmaps/rest/services/parivesh2/SubDistrictGrid/MapServer/0',
-      apiKey: newtokenbharatmaps__,
+      apiKey: Bharatmaps,
       visible: false
     });
 

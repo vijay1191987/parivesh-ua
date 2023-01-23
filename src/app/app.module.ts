@@ -9,7 +9,6 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { HttpClientModule } from '@angular/common/http';
 import { PariveshServices } from './services/GISLayerMasters.service'
 import { APP_BASE_HREF } from '@angular/common';
-
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
@@ -30,12 +29,14 @@ import { TableComponent } from './commonComponents/table/table.component';
 import { DssToolsComponent } from './components/dss-tools/dss-tools.component';
 import { CafComponent } from './components/caf/caf.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { KyaComponent } from './components/kya/kya.component';
+
 
 
 const _routes: Routes = [
   { path: '', component: PariveshMapComponent, title: 'Parivesh GIS' },
   { path: 'caf', component: CafComponent, title: 'CAF GIS' },
-  { path: 'kya', component: CafComponent, title: 'KYA GIS' },
+  { path: 'kya', component: KyaComponent, title: 'KYA GIS' },
   { path: 'dss', component: DssToolsComponent, title: 'DSS GIS' },
   { path: '**', component: PageNotFoundComponent }
 ];
@@ -57,11 +58,12 @@ const _routes: Routes = [
     ScreenShotComponent, SwipeComponent, MeasureComponent, SearchComponent,
     TableComponent,
     DssToolsComponent,
-    CafComponent
+    CafComponent,
+    KyaComponent
   ],
   imports: [
     RouterModule.forRoot(_routes, {
-      useHash: false,
+      useHash: true,
       paramsInheritanceStrategy: "always",
       scrollPositionRestoration: "enabled",
       anchorScrolling: "enabled",
@@ -75,7 +77,7 @@ const _routes: Routes = [
     NgOptimizedImage,
     ReactiveFormsModule
   ],
-  providers: [{ provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } }, { provide: APP_BASE_HREF, useValue: '/pariveshgis/' }, PariveshServices, LayersComponent],
+  providers: [{ provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } }, { provide: APP_BASE_HREF, useValue: '/apps/' }, PariveshServices, LayersComponent],
   bootstrap: [AppComponent],
   exports: [RouterModule]
 })
