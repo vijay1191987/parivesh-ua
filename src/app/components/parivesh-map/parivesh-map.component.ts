@@ -12,6 +12,7 @@ let _this: any = null;
 
 export class PariveshMapComponent implements OnInit {
   qsData:object = {};
+  public shouldShow = false;
   mapLayer: boolean = false;
   measurementList: boolean = true;
   MeasurementValue: any;
