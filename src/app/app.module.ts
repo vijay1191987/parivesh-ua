@@ -35,6 +35,7 @@ import { KyaComponent } from './components/kya/kya.component';
 
 const _routes: Routes = [
   { path: '', component: PariveshMapComponent, title: 'Parivesh GIS' },
+  { path: 'pariveshgis', component: PariveshMapComponent, title: 'Parivesh GIS' },
   { path: 'caf', component: CafComponent, title: 'CAF GIS' },
   { path: 'kya', component: KyaComponent, title: 'KYA GIS' },
   { path: 'dss', component: DssToolsComponent, title: 'DSS GIS' },
@@ -77,7 +78,8 @@ const _routes: Routes = [
     NgOptimizedImage,
     ReactiveFormsModule
   ],
-  providers: [{ provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } }, { provide: APP_BASE_HREF, useValue: '/apps/' }, PariveshServices, LayersComponent],
+  // { provide: APP_BASE_HREF, useValue: '/apps/' },
+  providers: [{ provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } },  PariveshServices, LayersComponent],
   bootstrap: [AppComponent],
   exports: [RouterModule]
 })
