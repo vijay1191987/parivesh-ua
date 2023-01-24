@@ -62,6 +62,7 @@ const _routes: Routes = [
     CafComponent,
     KyaComponent
   ],
+
   imports: [
     RouterModule.forRoot(_routes, {
       useHash: true,
