@@ -4,7 +4,7 @@ import { loadModules } from 'esri-loader';
 import { ActivatedRoute } from '@angular/router';
 import { Bharatmaps, OkmUrl } from "../gisHelper/localConfigs";
 import { PariveshServices } from 'src/app/services/GISLayerMasters.service';
-import { queryOKM, checkKMLGEOJSON, CreateEsrisymbol, fetchDataEsriService, _TextSymbol, saveInterSectionResults, createCanvasImage } from "./../gisHelper";
+import { queryOKM, checkKMLGEOJSON, createKMLGraphics, fetchDataEsriService, _TextSymbol, saveInterSectionResults, createCanvasImage } from "./../gisHelper";
 
 declare const toGeoJSON: any;
 declare function geojsonToArcGIS(obj1: any, obj2: any): any;
@@ -24,10 +24,10 @@ export class CafComponent implements OnInit {
   // for ESRI Map
   ESRIObject: object = {};
   ESRIObj_: object = {};
-  PariveshGIS: any = {};
-
-  outofIndiaFlag: boolean = false;
   qsData: any = {};
+  PariveshGIS: any = {};
+  outofIndiaFlag: boolean = false;
+
   childrenData: any = [];
   goeBufferGeom: any = null;
   villageBoundryLayer: any;
@@ -38,22 +38,19 @@ export class CafComponent implements OnInit {
   counter: number = 0;
   finalIntResult: any = [];
 
-  constructor(private route: ActivatedRoute, private parivesh: PariveshServices) {
-    _this = this;
-    this.route.queryParams.subscribe(params => {
-      if (Object.keys(params).length == 6) {
-        this.qsData = params;
-        this._createuserKMLLayer();
-      }
-      else {
-        alert("Request parameters does not match!");
-      }
-    });
-  }
+  constructor(private parivesh: PariveshServices) { }
 
   async ngOnInit() {
+    _this = this;
     this.ESRIObj_ = this.ESRIObject;
     this.PariveshGIS = await this.ESRIObject;
+    if (Object.keys(this.qsData).length == 6) {
+      this.qsData = this.qsData;
+      this._createuserKMLLayer();
+    }
+    else {
+      alert("Request parameters does not match!");
+    }
   }
 
   async _createuserKMLLayer() {
@@ -78,7 +75,6 @@ export class CafComponent implements OnInit {
       app.KMLData = checkKMLGEOJSON(_geoJson);
       if (app.KMLData.hasPointData || app.KMLData.features.length == 0) {
         alert("KML is not according to SOP");
-        return;
       }
       else {
         // check Out of India Boundery
@@ -103,332 +99,33 @@ export class CafComponent implements OnInit {
           query_inter.geometry = this.goeBufferGeom;
         }
         const _response = await fetchDataEsriService(query_inter, state_Boundaries_0);
-        if (_response.features.length > 0)
-          _this.createKMLGraphics();
+        if (_response.features.length > 0) {
+          let f = await createKMLGraphics(app.KMLData, this.qsData.ref_type);
+          this.parivesh.updateLayer(f.TD);
+          this.PariveshGIS.ArcMap.layers.addMany([f.GL, f.TL]);
+          this.PariveshGIS.ArcView.goTo({
+            target: f.GL.graphics.items
+          });
+          this.kmlIntersection();
+          return;
+        }
         else if (_response.features.length == 0) {
           _this.outofIndiaFlag = true;
           alert("Project Location Falling Out of India Boundary.");
-          _this.createKMLGraphics();
-          return;
+          let f = await createKMLGraphics(app.KMLData, this.qsData.ref_type);
+          this.parivesh.updateLayer(f.TD);
+          this.PariveshGIS.ArcMap.layers.addMany([f.GL, f.TL]);
+          this.PariveshGIS.ArcView.goTo({
+            target: f.GL.graphics.items
+          });
+          this.kmlIntersection();
         }
         else {
           _this.outofIndiaFlag = true;
           alert("Project Location Falling Out of India Boundary.");
-          return;
         }
-        return;
       }
     }
-    return false;
-  }
-
-  async createKMLGraphics() {
-    const [GraphicsLayer, Graphic, geometryEngine, Polyline, Polygon, PopupTemplate] = await loadModules(['esri/layers/GraphicsLayer', 'esri/Graphic', 'esri/geometry/geometryEngine', "esri/geometry/Polyline", "esri/geometry/Polygon", "esri/PopupTemplate"]);
-
-    this._customeGL = new GraphicsLayer();
-    this._customeGL.id = "EsriUserMap";
-    const _textGL = new GraphicsLayer();
-    this.childrenData = [];
-    this.childrenData = [];
-    let treeData: any[] = [];
-    let _kmlFeature = [];
-    if (app.KMLData.features.length >= 50) {
-      this.childrenData = [];
-      const bc: any = {
-        type: "FeatureCollection", features: [], featureExceed: true, LineGeom: app.KMLData.LineGeom.length > 0 ? geometryEngine.union(app.KMLData.LineGeom) : null, PolygonGeom: app.KMLData.PolygonGeom.length > 0 ? geometryEngine.union(app.KMLData.PolygonGeom) : null
-      };
-      if (app.KMLData.LineGeom.length > 0) {
-        _kmlFeature.push({
-          "type": "Feature", "id": 1, geometry: { coordinates: [bc.LineGeom.paths], type: "LineString" }, properties: app.KMLData.features[0].properties
-        });
-      }
-      if (app.KMLData.PolygonGeom.length > 0) {
-        _kmlFeature.push({
-          "type": "Feature", "id": 2, geometry: { coordinates: [bc.PolygonGeom.rings], type: "Polygon" }, properties: app.KMLData.features[0].properties
-        });
-      }
-      if (bc.LineGeom === null)
-        delete bc.LineGeom;
-      if (bc.PolygonGeom === null)
-        delete bc.PolygonGeom;
-
-      bc.features = _kmlFeature;
-      app.KMLData = bc;
-      let _userGraphic = null;
-      const data: any = { LayerName: "User KML", selected: true, LayerID: 999, children: [] };
-      if (bc.LineGeom != null) {
-        let tp: LayerNode = {} as LayerNode;
-        tp.LayerName = "Line Feature";
-        tp.LayerID = 11;
-        tp.selected = true;
-        tp.LegendPath = createCanvasImage("Line", "red");
-        tp.reqType = "User";
-        this.childrenData.push(tp);
-
-        let _length = geometryEngine.geodesicLength(bc.LineGeom, "kilometers");
-        if (_length < 0)
-          _length = _length * -1;
-        else
-          _length = _length
-
-        let _attr = {
-          patch_id: 1, Length: _length.toFixed(4),
-          Ymin: bc.LineGeom.extent.ymin, Xmin: bc.LineGeom.extent.xmin,
-          Ymax: bc.LineGeom.extent.ymax, Xmax: bc.LineGeom.extent.xmax,
-          Description: app.KMLData.features[0].properties.hasOwnProperty('description') ? app.KMLData.features[0].properties.description : "No Information"
-        }
-
-        _userGraphic = new Graphic({
-          id: 11,
-          geometry: bc.LineGeom,
-          symbol: CreateEsrisymbol("[226, 119, 40]", "red", "Line", "solid"),
-          attributes: _attr
-        });
-        _userGraphic.popupTemplate = new PopupTemplate({
-          title: "KML Information",
-          content: [{
-            type: "fields",
-            fieldInfos: [{
-              fieldName: "patch_id",
-              label: "Patch ID"
-            },
-            {
-              fieldName: "Length",
-              label: "Length"
-            },
-            {
-              fieldName: "Description",
-              label: "Description"
-            }]
-          }]
-        });
-        if (this.qsData.ref_type.toUpperCase() == "FC") {
-          _TextSymbol.text = 1;
-          const _textGraphic = new Graphic();
-          _textGraphic.geometry = bc.LineGeom.extent.center;
-          _textGraphic.symbol = _TextSymbol;
-          _textGL.add(_textGraphic);
-        }
-        this._customeGL.add(_userGraphic);
-      }
-      if (bc.PolygonGeom != null) {
-        let tp: LayerNode = {} as LayerNode;
-        tp.LayerName = "Polygon Feature";
-        tp.LayerID = 22;
-        tp.selected = true;
-        tp.LegendPath = createCanvasImage("Rect", "red");
-        tp.reqType = "User";
-        this.childrenData.push(tp);
-
-        let _area = geometryEngine.geodesicArea(bc.PolygonGeom, "square-meters");
-        if (_area < 0)
-          _area = _area * -1;
-        else
-          _area = _area
-        _area = _area * 0.0001;
-        let _length = geometryEngine.geodesicLength(bc.PolygonGeom, "kilometers");
-        if (_length < 0)
-          _length = _length * -1;
-        else
-          _length = _length
-
-        let _attr = {
-          patch_id: 2, Length: _length.toFixed(4), Area: _area.toFixed(4),
-          Ymin: bc.PolygonGeom.extent.ymin, Xmin: bc.PolygonGeom.extent.xmin,
-          Ymax: bc.PolygonGeom.extent.ymax, Xmax: bc.PolygonGeom.extent.xmax,
-          Description: app.KMLData.features[0].properties.hasOwnProperty('description') ? app.KMLData.features[0].properties.description : "No Information"
-        }
-        _userGraphic = new Graphic({
-          id: 22,
-          geometry: bc.PolygonGeom,
-          symbol: CreateEsrisymbol("yellow", "red", "Fill", "solid"),
-          attributes: _attr
-        });
-        _userGraphic.popupTemplate = new PopupTemplate({
-          title: "KML Information",
-          content: [{
-            type: "fields",
-            fieldInfos: [{
-              fieldName: "patch_id",
-              label: "Patch ID"
-            },
-            {
-              fieldName: "Area",
-              label: "Area"
-            },
-            {
-              fieldName: "Length",
-              label: "Length"
-            },
-            {
-              fieldName: "Description",
-              label: "Description"
-            }]
-          }]
-        });
-        this._customeGL.add(_userGraphic);
-        if (this.qsData.ref_type.toUpperCase() == "FC") {
-          _TextSymbol.text = bc.LineGeom == null ? 1 : 2;
-          const _textGraphic = new Graphic();
-          _textGraphic.geometry = bc.PolygonGeom.centroid;
-          _textGraphic.symbol = _TextSymbol;
-          _textGL.add(_textGraphic);
-        }
-      }
-      data.children = this.childrenData;
-      treeData.push(data);
-      const TREE_DATA: LayerNode[] = treeData;
-      this.parivesh.updateLayer(TREE_DATA);
-      _this.PariveshGIS.ArcMap.layers.addMany([this._customeGL, _textGL]);
-      _this.PariveshGIS.ArcView.goTo({
-        target: this._customeGL.graphics.items
-      });
-    }
-    else {
-      const data: any = { LayerName: "User KML", selected: true, LayerID: 999, children: [] };
-      for (let z = 0; z < app.KMLData.features.length; z++) {
-        let _userGraphic = null;
-        let _polyLineGeom = null;
-        let _polygonGeom = null;
-        if (app.KMLData.features[z].geometry.type.toLowerCase() === "linestring") {
-          _polyLineGeom = new Polyline({
-            paths: (app.KMLData.features[z].geometry.coordinates.length > 1) ? app.KMLData.features[z].geometry.coordinates : app.KMLData.features[z].geometry.coordinates[0],
-            hasZ: false,
-            hasM: false,
-            spatialReference: { wkid: 4326 }
-          });
-          let _length = geometryEngine.geodesicLength(_polyLineGeom, "kilometers");
-          if (_length < 0)
-            _length = _length * -1;
-          else
-            _length = _length
-
-          let _attr = {
-            patch_id: z + 1, Length: _length.toFixed(4),
-            Ymin: _polyLineGeom.extent.ymin, Xmin: _polyLineGeom.extent.xmin,
-            Ymax: _polyLineGeom.extent.ymax, Xmax: _polyLineGeom.extent.xmax,
-            Description: app.KMLData.features[z].properties.hasOwnProperty('description') ? app.KMLData.features[z].properties.description : "No Information"
-          }
-          _userGraphic = new Graphic({
-            id: (Number(z) + Number(1)),
-            geometry: _polyLineGeom,
-            symbol: CreateEsrisymbol(app.KMLData.features[z].properties.hasOwnProperty("styleHash") ? "#" + app.KMLData.features[z].properties.styleHash.slice(-6) : "[226, 119, 40]", "red", "Line", "solid"),
-            attributes: _attr
-          });
-          _userGraphic.popupTemplate = new PopupTemplate({
-            title: "KML Information",
-            content: [{
-              type: "fields",
-              fieldInfos: [{
-                fieldName: "patch_id",
-                label: "Patch ID"
-              },
-              {
-                fieldName: "Length",
-                label: "Length"
-              },
-              {
-                fieldName: "Description",
-                label: "Description"
-              }]
-            }]
-          });
-
-          if (this.qsData.ref_type.toUpperCase() == "FC") {
-            _TextSymbol.text = z + 1;
-            const _textGraphic = new Graphic();
-            _textGraphic.geometry = _polyLineGeom.extent.center;
-            _textGraphic.symbol = _TextSymbol;
-            _textGL.add(_textGraphic);
-          }
-        }
-        else if (app.KMLData.features[z].geometry.type.toLowerCase() == "polygon") {
-          _polygonGeom = new Polygon({
-            hasZ: true,
-            hasM: false,
-            rings: (app.KMLData.features[z].geometry.coordinates.length > 1) ? app.KMLData.features[z].geometry.coordinates : app.KMLData.features[z].geometry.coordinates[0],
-            spatialReference: { wkid: 4326 }
-          });
-          let _area = geometryEngine.geodesicArea(_polygonGeom, "square-meters");
-          if (_area < 0)
-            _area = _area * -1;
-          else
-            _area = _area
-          _area = _area * 0.0001;
-          let _length = geometryEngine.geodesicLength(_polygonGeom, "kilometers");
-          if (_length < 0)
-            _length = _length * -1;
-          else
-            _length = _length
-
-          let _attr = {
-            patch_id: z + 1, Length: _length.toFixed(4), Area: _area.toFixed(4),
-            Ymin: _polygonGeom.extent.ymin, Xmin: _polygonGeom.extent.xmin,
-            Ymax: _polygonGeom.extent.ymax, Xmax: _polygonGeom.extent.xmax,
-            Description: app.KMLData.features[z].properties.hasOwnProperty('description') ? app.KMLData.features[z].properties.description : "No Information"
-          }
-
-          _userGraphic = new Graphic({
-            id: (Number(z) + Number(1)),
-            geometry: _polygonGeom,
-            symbol: CreateEsrisymbol(app.KMLData.features[z].properties.hasOwnProperty("styleHash") ? "#" + app.KMLData.features[z].properties.styleHash.slice(-6) : "yellow", "red", "Fill", "solid"),
-            attributes: _attr
-          });
-          _userGraphic.popupTemplate = new PopupTemplate({
-            title: "KML Information",
-            content: [{
-              type: "fields",
-              fieldInfos: [{
-                fieldName: "patch_id",
-                label: "Patch ID"
-              },
-              {
-                fieldName: "Area",
-                label: "Area"
-              },
-              {
-                fieldName: "Length",
-                label: "Length"
-              },
-              {
-                fieldName: "Description",
-                label: "Description"
-              }]
-            }]
-          });
-
-          if (this.qsData.ref_type.toUpperCase() == "FC") {
-            _TextSymbol.text = z + 1;
-            const _textGraphic = new Graphic();
-            _textGraphic.geometry = _polygonGeom.centroid;
-            _textGraphic.symbol = _TextSymbol;
-            _textGL.add(_textGraphic);
-          }
-        }
-        this._customeGL.add(_userGraphic);
-        let tp: LayerNode = {} as LayerNode;
-        tp.LayerName = app.KMLData.features[z].geometry.type.toUpperCase() + "-" + (Number(z) + Number(1));
-        tp.LayerID = (Number(z) + Number(1));
-        tp.selected = true;
-        tp.LegendPath = createCanvasImage(app.KMLData.features[z].geometry.type.toLowerCase() == "polygon" ? "Rect" : "Line", "red");
-        tp.reqType = "User";
-        this.childrenData.push(tp);
-        data.children = this.childrenData;
-      }
-      treeData.push(data);
-      const TREE_DATA: LayerNode[] = treeData;
-      this.parivesh.updateLayer(TREE_DATA);
-      _this.PariveshGIS.ArcView.when(function () {
-        _this.PariveshGIS.ArcMap.layers.addMany([_this._customeGL, _textGL]);
-        _this.PariveshGIS.ArcView.goTo({
-          target: _this._customeGL.graphics.items
-        });
-      }).catch(function (err: any) {
-        console.error("MapView rejected:", err);
-      });
-    }
-    this.kmlIntersection();
-    return true;
   }
 
   async kmlIntersection() {

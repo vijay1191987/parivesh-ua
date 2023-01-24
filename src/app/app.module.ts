@@ -63,7 +63,7 @@ const _routes: Routes = [
   ],
   imports: [
     RouterModule.forRoot(_routes, {
-      useHash: true,
+      useHash: false,
       paramsInheritanceStrategy: "always",
       scrollPositionRestoration: "enabled",
       anchorScrolling: "enabled",

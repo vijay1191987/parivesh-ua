@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./kya.component.css']
 })
 export class KyaComponent {
-
+  qsData: any = {};
 }

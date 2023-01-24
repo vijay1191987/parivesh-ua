@@ -9,6 +9,7 @@ export class DssToolsComponent {
   //{To Access ESRI MapView object}
   ESRIObject: object = {};
   ESRIObj_: object = {};
+  qsData: any = {};
 
   async ngOnInit() {
     this.ESRIObj_ = this.ESRIObject;

@@ -3,6 +3,8 @@ import { createGISInstance } from './ESRIMAP';
 import { PariveshMapComponent } from './components/parivesh-map/parivesh-map.component';
 import { CafComponent } from './components/caf/caf.component';
 import { DssToolsComponent } from './components/dss-tools/dss-tools.component';
+import { ActivatedRoute } from '@angular/router';
+import { PariveshServices } from './services/GISLayerMasters.service';
 
 @Component({
   selector: 'app-root',
@@ -12,10 +14,16 @@ import { DssToolsComponent } from './components/dss-tools/dss-tools.component';
 export class AppComponent {
   title = 'Parivesh GIS';
   public PariveshMap: Object;
-  constructor() {
+  public qsParams: any;
+  constructor(private route: ActivatedRoute, private parivesh: PariveshServices) {
+    this.route.queryParams.subscribe(params => {
+      this.qsParams = params;
+
+    });
     this.PariveshMap = createGISInstance("pariveshMAPdiv");
   }
   onOutletLoaded(component: PariveshMapComponent | CafComponent | DssToolsComponent) {
     component.ESRIObject = this.PariveshMap;
+    component.qsData = this.qsParams;
   }
 }
