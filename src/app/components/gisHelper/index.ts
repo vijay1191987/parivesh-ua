@@ -612,5 +612,6 @@ export const createKMLGraphics = async (_kmlData: any, _reqType: any = null) => 
     _outData.TL = _textGL;
     _outData.TD = TREE_DATA;
   }
+//
   return _outData;
 }
