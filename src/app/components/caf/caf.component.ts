@@ -67,8 +67,8 @@ export class CafComponent implements OnInit {
       console.log("Error in OKM#### " + error.code + "::::::::" + error.message);
       return error.response;
     });
-    if (_okmResponse.data === null)
-      alert("Unable to upload document!! Please try after sometime.");
+    if (_okmResponse.data === null || _okmResponse.status == 404)
+      alert("Unable to fetch document!! Please try after sometime.");
     else {
       const _geoJson = toGeoJSON.kml(_okmResponse.data);
       //KML Total Features

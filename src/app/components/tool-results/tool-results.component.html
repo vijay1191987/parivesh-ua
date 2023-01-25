@@ -2,5 +2,7 @@
   <button mat-icon-button class="close-button " [mat-dialog-close]="true" (click)="closeBotton($event)">
     <mat-icon class="close-icon" color="warn">close</mat-icon>
   </button>
-  Result
+
+  <app-table [HeadArray]="headArray" [GridArray]="usersList"></app-table>
+
 </mat-nav-list>

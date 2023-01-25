@@ -18,7 +18,6 @@ import { ForestComponent } from './components/forest/forest.component';
 import { LayersComponent } from './components/layers/layers.component';
 import { PrintComponent } from './components/print/print.component';
 import { QueryBuilderComponent } from './components/query-builder/query-builder.component';
-import { LegendComponent } from './components/legend/legend.component';
 import { XyComponent } from './components/xy/xy.component';
 import { SpatialSearchComponent } from './components/spatial-search/spatial-search.component';
 import { ScreenShotComponent } from './components/screen-shot/screen-shot.component';
@@ -31,8 +30,6 @@ import { CafComponent } from './components/caf/caf.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { KyaComponent } from './components/kya/kya.component';
 import { ToolResultsComponent } from './components/tool-results/tool-results.component';
-
-
 
 const _routes: Routes = [
   { path: '', component: PariveshMapComponent, title: 'Parivesh GIS' },
@@ -54,7 +51,6 @@ const _routes: Routes = [
     LayersComponent,
     PrintComponent,
     QueryBuilderComponent,
-    LegendComponent,
     XyComponent,
     SpatialSearchComponent,
     ScreenShotComponent, SwipeComponent, MeasureComponent, SearchComponent,

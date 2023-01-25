@@ -58,7 +58,7 @@ export class PariveshMapComponent implements OnInit {
     this.PariveshGIS.ArcView.on("drag", function (event: any) {
       // prevents panning with the mouse drag event
       //    event.stopPropagation();
-      console.log(event);
+      // console.log(event);
       //this.PariveshGIS.ArcView.surface.style.cursor = "default";
     });
 
@@ -93,13 +93,13 @@ export class PariveshMapComponent implements OnInit {
     });
 
     const _legend = new Legend({
-      view: this.PariveshGIS.ArcView,
-      container: "legend"
+      view: this.PariveshGIS.ArcView
     });
 
     const layerListExpand = new Expand({
       expandIconClass: "esri-icon-layer-list",
       view: this.PariveshGIS.ArcView,
+      container: document.createElement("div"),
       content: _legend
     });
 
@@ -118,7 +118,6 @@ export class PariveshMapComponent implements OnInit {
 
   baseLayer() {
     this.mapLayer = !this.mapLayer;
-
   }
 
   handleBasemapEvent(event: any) {

@@ -615,3 +615,20 @@ export const createKMLGraphics = async (_kmlData: any, _reqType: any = null) => 
 //
   return _outData;
 }
+
+
+export const getProposalDetails = async (_d: any) => {
+  return axios({
+    url: "https://stgdev.parivesh.nic.in/ua-dev/parivesh/GetProposalData",
+    method: 'get',
+    params: _d,
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then(function (response) {
+    return response;
+  })
+    .catch(function (error) {
+      return error;
+    })
+};
