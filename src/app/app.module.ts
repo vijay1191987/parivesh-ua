@@ -30,6 +30,7 @@ import { DssToolsComponent } from './components/dss-tools/dss-tools.component';
 import { CafComponent } from './components/caf/caf.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { KyaComponent } from './components/kya/kya.component';
+import { ToolResultsComponent } from './components/tool-results/tool-results.component';
 
 
 
@@ -60,12 +61,13 @@ const _routes: Routes = [
     TableComponent,
     DssToolsComponent,
     CafComponent,
-    KyaComponent
+    KyaComponent,
+    ToolResultsComponent
   ],
 
   imports: [
     RouterModule.forRoot(_routes, {
-      useHash: true,
+      useHash: false,
       paramsInheritanceStrategy: "always",
       scrollPositionRestoration: "enabled",
       anchorScrolling: "enabled",
@@ -80,7 +82,7 @@ const _routes: Routes = [
     ReactiveFormsModule
   ],
   // { provide: APP_BASE_HREF, useValue: '/apps/' },
-  providers: [{ provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } },{ provide: APP_BASE_HREF, useValue: 'apps/' },  PariveshServices, LayersComponent],
+  providers: [{ provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } },{ provide: APP_BASE_HREF, useValue: '/apps/' },  PariveshServices, LayersComponent],
   bootstrap: [AppComponent],
   exports: [RouterModule]
 })

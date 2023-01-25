@@ -1,6 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { DrawMapZoomIn, DrawMapZoomOut, changeBaseMap } from '../../ESRIMAP'
 import { loadModules } from 'esri-loader';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { ToolResultsComponent } from "./../tool-results/tool-results.component";
 
 let _this: any = null;
 
@@ -11,7 +13,7 @@ let _this: any = null;
 })
 
 export class PariveshMapComponent implements OnInit {
-  qsData:object = {};
+  qsData: object = {};
   public shouldShow = false;
   mapLayer: boolean = false;
   measurementList: boolean = true;
@@ -30,6 +32,9 @@ export class PariveshMapComponent implements OnInit {
   ESRIObj_: any = null;
   PariveshGIS: any = {};
 
+  constructor(private bottomSheet: MatBottomSheet) {
+
+  }
   async ngOnInit() {
     _this = this;
     if (this.MapData === null) {
@@ -43,7 +48,7 @@ export class PariveshMapComponent implements OnInit {
     }
     this.mapExtent = [];
     this.NextExtent = [];
-    const [reactiveUtils] = await loadModules(["esri/core/reactiveUtils"]);
+    const [reactiveUtils, Expand, Legend] = await loadModules(["esri/core/reactiveUtils", "esri/widgets/Expand", "esri/widgets/Legend"]);
     this.PariveshGIS.ArcView.on("key-down", function (event: any) {
       var keyPressed = event.key;
       if (keyPressed.slice(0, 5) === "Arrow") {
@@ -82,14 +87,38 @@ export class PariveshMapComponent implements OnInit {
     this.PariveshGIS.ArcView.on("click", (event: any) => {
       this.PariveshGIS.ArcView.hitTest(event).then((res: any) => {
         this.PariveshGIS.ArcView.popup.open({
-          features : res.results[0].layer.graphics.items
+          features: res.results[0].layer.graphics.items
         });
       });
+    });
+
+    const _legend = new Legend({
+      view: this.PariveshGIS.ArcView,
+      container: "legend"
+    });
+
+    const layerListExpand = new Expand({
+      expandIconClass: "esri-icon-layer-list",
+      view: this.PariveshGIS.ArcView,
+      content: _legend
+    });
+
+    this.PariveshGIS.ArcView.ui.add(layerListExpand, "bottom-right");
+  }
+
+  //  bottom sheet
+  openBottomSheet(): void {
+    this.bottomSheet.open(ToolResultsComponent, {
+      ariaLabel: 'Share on social media',
+      hasBackdrop: true,
+      closeOnNavigation: false,
+      disableClose: true,
     });
   }
 
   baseLayer() {
     this.mapLayer = !this.mapLayer;
+
   }
 
   handleBasemapEvent(event: any) {
