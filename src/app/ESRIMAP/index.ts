@@ -302,8 +302,6 @@ export const changeBaseMap = async (event: any, ArcMap: any) => {
 
     default: ArcMap.basemap = null;
   }
-
-
 }
 
 async function drawMapGraphics(MapView: any, event: any) {
@@ -311,14 +309,13 @@ async function drawMapGraphics(MapView: any, event: any) {
   var vertices = event.vertices;
   //remove existing graphic
   event.view.graphics.removeAll();
-  if (vertices.length < 2) {
+  if (vertices.length < 2)
     return;
-  }
   // create a new extent
   var extent: any = getExtentfromVertices(vertices, MapView, Extent);
   extent.spatialReference = event.view.spatialReference;
   event.view.graphics.remove();
-  var graphic = new Graphic({
+  const graphic = new Graphic({
     geometry: extent,
     symbol: {
       type: "simple-fill",
@@ -330,7 +327,7 @@ async function drawMapGraphics(MapView: any, event: any) {
       }
     }
   });
-  event.view.graphics.add(graphic);
+  MapView.graphics.add(graphic);
 }
 
 function getExtentfromVertices(vertices: any, MapView: any, Extent: any): any {

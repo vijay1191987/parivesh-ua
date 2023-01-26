@@ -34,9 +34,9 @@ import { ToolResultsComponent } from './components/tool-results/tool-results.com
 const _routes: Routes = [
   { path: '', component: PariveshMapComponent, title: 'Parivesh GIS' },
   { path: 'pariveshgis', component: PariveshMapComponent, title: 'Parivesh GIS' },
-  { path: 'caf', component: CafComponent, title: 'CAF GIS' },
-  { path: 'kya', component: KyaComponent, title: 'KYA GIS' },
-  { path: 'dss', component: DssToolsComponent, title: 'DSS GIS' },
+  { path: 'caf', component: CafComponent, title: 'Parivesh :: CAF-GIS' },
+  { path: 'kya', component: KyaComponent, title: 'Parivesh :: Know your Approvals' },
+  { path: 'dss', component: DssToolsComponent, title: 'Parivesh :: Decision Support System(DSS)' },
   { path: '**', component: PageNotFoundComponent }
 ];
 
@@ -65,9 +65,9 @@ const _routes: Routes = [
     RouterModule.forRoot(_routes, {
       useHash: false,
       paramsInheritanceStrategy: "always",
-      scrollPositionRestoration: "enabled",
-      anchorScrolling: "enabled",
-      enableTracing: false
+      // scrollPositionRestoration: "enabled",
+      // anchorScrolling: "enabled",
+      // enableTracing: false
     }),
     BrowserModule,
     HttpClientModule,
@@ -78,7 +78,7 @@ const _routes: Routes = [
     ReactiveFormsModule
   ],
   // ,{ provide: APP_BASE_HREF, useValue: '/apps/' },
-  providers: [{ provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } },  PariveshServices, LayersComponent],
+  providers: [{ provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } }, PariveshServices, LayersComponent],
   bootstrap: [AppComponent],
   exports: [RouterModule]
 })

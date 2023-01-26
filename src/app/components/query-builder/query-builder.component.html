@@ -9,9 +9,6 @@
         <i class="fas fa-caret-down close-drag-window px-2 p-1" (click)="queryBuilderIcon('query_builder')"></i>
     </div> 
     <div class="tool-popup-inner">
-        <app-table [HeadArray]="headArray" [GridArray]="usersList"
-        (onEdit)="editUser($event)" (onDelete)="deleteUser($event)"></app-table>
-        
             <div class="query-frame pe-4 position-relative">
                 <!-- <a href="javascript:void(0);" class="drag-btn"><i class="bi bi-grip-vertical"></i></a> -->
             <form class="row">

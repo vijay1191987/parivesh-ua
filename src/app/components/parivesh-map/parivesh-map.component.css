@@ -20,9 +20,9 @@
 
 .tool-drawer {
     position: fixed;
-    top: 0;
+    top: 15vh;
     bottom: 0px;
-    height: 100%;
+    height: 65vh;
     display: grid;
     place-content: center;
     right: 0px;

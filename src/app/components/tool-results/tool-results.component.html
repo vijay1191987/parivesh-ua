@@ -1,8 +1,6 @@
-<mat-nav-list>
-  <button mat-icon-button class="close-button " [mat-dialog-close]="true" (click)="closeBotton($event)">
-    <mat-icon class="close-icon" color="warn">close</mat-icon>
-  </button>
+<button mat-icon-button class="close-button" (click)="closeBotton($event)">
+  <mat-icon class="close-icon" color="warn">close</mat-icon>
+</button>
 
-  <app-table [HeadArray]="headArray" [GridArray]="usersList"></app-table>
-
-</mat-nav-list>
+<app-table [HeadArray]="headArray" [GridArray]="usersList" (onEdit)="editUser($event)"
+  (onDelete)="deleteUser($event)"></app-table>

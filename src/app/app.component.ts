@@ -4,7 +4,6 @@ import { PariveshMapComponent } from './components/parivesh-map/parivesh-map.com
 import { CafComponent } from './components/caf/caf.component';
 import { DssToolsComponent } from './components/dss-tools/dss-tools.component';
 import { ActivatedRoute } from '@angular/router';
-import { PariveshServices } from './services/GISLayerMasters.service';
 
 @Component({
   selector: 'app-root',
@@ -15,10 +14,9 @@ export class AppComponent {
   title = 'Parivesh GIS';
   public PariveshMap: Object;
   public qsParams: any;
-  constructor(private route: ActivatedRoute, private parivesh: PariveshServices) {
+  constructor(private route: ActivatedRoute) {
     this.route.queryParams.subscribe(params => {
       this.qsParams = params;
-
     });
     this.PariveshMap = createGISInstance("pariveshMAPdiv");
   }

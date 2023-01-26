@@ -93,14 +93,16 @@ export class PariveshMapComponent implements OnInit {
     });
 
     const _legend = new Legend({
-      view: this.PariveshGIS.ArcView
+      view: this.PariveshGIS.ArcView,
+      label: "Map Legends"
     });
 
     const layerListExpand = new Expand({
       expandIconClass: "esri-icon-layer-list",
       view: this.PariveshGIS.ArcView,
       container: document.createElement("div"),
-      content: _legend
+      content: _legend,
+      label: "Map Legends"
     });
 
     this.PariveshGIS.ArcView.ui.add(layerListExpand, "bottom-right");
@@ -109,7 +111,6 @@ export class PariveshMapComponent implements OnInit {
   //  bottom sheet
   openBottomSheet(): void {
     this.bottomSheet.open(ToolResultsComponent, {
-      ariaLabel: 'Share on social media',
       hasBackdrop: true,
       closeOnNavigation: false,
       disableClose: true,
@@ -128,16 +129,16 @@ export class PariveshMapComponent implements OnInit {
     const _tool = event.currentTarget.parentElement.title;
 
     if (_tool === "ZoomIN")
-      DrawMapZoomIn(this.PariveshGIS.MapView, undefined);
+      DrawMapZoomIn(this.PariveshGIS.ArcView, undefined);
     else if (_tool === "ZoomOUT")
-      DrawMapZoomOut(this.PariveshGIS.MapView, undefined);
+      DrawMapZoomOut(this.PariveshGIS.ArcView, undefined);
     else if (_tool === "Measure") {
       this.measurementList = !this.measurementList;
       const a = document.getElementById("measureTool");
       this.PariveshGIS.ArcView.ui.add(a, "top-right");
     }
     else if (_tool === "Extent")
-      DrawMapZoomOut(this.PariveshGIS.MapView, undefined);
+      DrawMapZoomOut(this.PariveshGIS.ArcView, undefined);
     else if (_tool === "Previous Extent")
       this.zoomPreviousExtent();
     else if (_tool === "Next Extent")
@@ -145,7 +146,7 @@ export class PariveshMapComponent implements OnInit {
     else if (_tool === "Pan")
       this.PariveshGIS.ArcView.surface.style.cursor = "pointer";
     else if (_tool === "Identify")
-      DrawMapZoomOut(this.PariveshGIS.MapView, undefined);
+      DrawMapZoomOut(this.PariveshGIS.ArcView, undefined);
   }
 
   commonClose(event: any) {
@@ -193,7 +194,7 @@ export class PariveshMapComponent implements OnInit {
         _this.MeasurementdistanceMeter = false;
         _this.MeasurementareaMeter = true;
         activeWidget = new DistanceMeasurement2D({
-          view: this.PariveshGIS.MapView,
+          view: this.PariveshGIS.ArcView,
           unit: "kilometers"
         });
 
@@ -210,7 +211,7 @@ export class PariveshMapComponent implements OnInit {
         _this.MeasurementareaMeter = false;
 
         activeWidget = new AreaMeasurement2D({
-          view: this.PariveshGIS.MapView,
+          view: this.PariveshGIS.ArcView,
           unit: "square-kilometers"
         });
         // skip the initial 'new measurement' button

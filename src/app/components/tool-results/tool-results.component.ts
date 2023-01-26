@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-sheet';
+import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 
 @Component({
   selector: 'app-tool-results',
@@ -21,9 +21,17 @@ export class ToolResultsComponent {
   constructor(private bottomSheetRef: MatBottomSheetRef<ToolResultsComponent>, private http: HttpClient) {
     this.loadUsers();
   }
+
   closeBotton(event: MouseEvent): void {
-    this.bottomSheetRef.dismiss();
     event.preventDefault();
+    this.bottomSheetRef.dismiss();
+  }
+  editUser(item: any) {
+    console.log(item);
+    ;
+  }
+  deleteUser(item: any) {
+    console.log(item);
   }
 
   loadUsers() {
