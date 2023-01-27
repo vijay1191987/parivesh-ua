@@ -1,4 +1,4 @@
-let NICStreetmap = '5R5ftJZp67OS1L5l-xLGvAr1nGAHJi5Tq8GZN-IpCWL0m-eHYez26Dxh-XXJ-6Pu';
+let NICStreetmap = '8nTEokHIiOP_AXnFAMHUepBxidEABCSa2MhxgaVcupLu2ZdHQKsYpIQuFgvuZWga_uiIhUQ5hM39UwNMIpsXAw..';
 const Terrain = 'J5v_0Qf9lOFHIaX8fCGrpNDpqgIJ_tLlSD--Pgq10pjih3B7bfYmJe5DmdWiDQOj';
 let Bharatmaps = '5ewlhladvLt1Pq7VEKutoe_-1y7XqH7v_cvKCgvUcbS-GC94tqrrsftiWi-osv0H';
 let NICTerrain = "J5v_0Qf9lOFHIaX8fCGrpNDpqgIJ_tLlSD--Pgq10pjih3B7bfYmJe5DmdWiDQOj";
