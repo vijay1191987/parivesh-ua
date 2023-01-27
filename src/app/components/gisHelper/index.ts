@@ -316,11 +316,15 @@ export const createCanvasImage = (_type: any, _color: any) => {
 }
 
 
-export const createKMLGraphics = async (_kmlData: any, _reqType: any = null) => {
+export const createKMLGraphics = async (_kmlData: any, _qsData: any = null, _featIndex: any = null) => {
   const [GraphicsLayer, Graphic, geometryEngine, Polyline, Polygon, PopupTemplate] = await loadModules(['esri/layers/GraphicsLayer', 'esri/Graphic', 'esri/geometry/geometryEngine', "esri/geometry/Polyline", "esri/geometry/Polygon", "esri/PopupTemplate"]);
   const _outData: any = {};
-  const _customeGL = new GraphicsLayer();
-  _customeGL.id = "EsriUserMap";
+  const _customeGL = new GraphicsLayer({
+    UUID: _qsData.uuid,
+    title: _qsData.uploadedname,
+    id: "EsriUserMap" + _featIndex,
+  });
+  //_customeGL.id = "EsriUserMap";
   const _textGL = new GraphicsLayer();
   let childrenData = [];
   let treeData: any[] = [];
@@ -355,7 +359,7 @@ export const createKMLGraphics = async (_kmlData: any, _reqType: any = null) => 
       tp.LayerID = 11;
       tp.selected = true;
       tp.LegendPath = createCanvasImage("Line", "red");
-      tp.reqType = "User";
+      tp.reqType = "CAF";
       childrenData.push(tp);
 
       let _length = geometryEngine.geodesicLength(bc.LineGeom, "kilometers");
@@ -395,8 +399,8 @@ export const createKMLGraphics = async (_kmlData: any, _reqType: any = null) => 
           }]
         }]
       });
-      if (_reqType != null) {
-        if (_reqType.toUpperCase() == "FC") {
+      if (_qsData.hasOwnProperty('ref_type')) {
+        if (_qsData.ref_type.toUpperCase() == "FC") {
           _TextSymbol.text = 1;
           const _textGraphic = new Graphic();
           _textGraphic.geometry = bc.LineGeom.extent.center;
@@ -412,10 +416,10 @@ export const createKMLGraphics = async (_kmlData: any, _reqType: any = null) => 
       tp.LayerID = 22;
       tp.selected = true;
       tp.LegendPath = createCanvasImage("Rect", "red");
-      tp.reqType = "User";
+      tp.reqType = "CAF";
       childrenData.push(tp);
 
-      let _area = geometryEngine.geodesicArea(bc.PolygonGeom, "square-meters");
+      let _area = geometryEngine.geodesicArea(bc.PolygonGeom, "square-kilometers");
       if (_area < 0)
         _area = _area * -1;
       else
@@ -462,8 +466,8 @@ export const createKMLGraphics = async (_kmlData: any, _reqType: any = null) => 
         }]
       });
       _customeGL.add(_userGraphic);
-      if (_reqType != null) {
-        if (_reqType.toUpperCase() == "FC") {
+      if (_qsData.hasOwnProperty('ref_type')) {
+        if (_qsData.ref_type.toUpperCase() == "FC") {
           _TextSymbol.text = bc.LineGeom == null ? 1 : 2;
           const _textGraphic = new Graphic();
           _textGraphic.geometry = bc.PolygonGeom.centroid;
@@ -528,8 +532,8 @@ export const createKMLGraphics = async (_kmlData: any, _reqType: any = null) => 
             }]
           }]
         });
-        if (_reqType != null) {
-          if (_reqType.toUpperCase() == "FC") {
+        if (_qsData.hasOwnProperty('ref_type')) {
+          if (_qsData.ref_type.toUpperCase() == "FC") {
             _TextSymbol.text = z + 1;
             const _textGraphic = new Graphic();
             _textGraphic.geometry = _polyLineGeom.extent.center;
@@ -545,7 +549,7 @@ export const createKMLGraphics = async (_kmlData: any, _reqType: any = null) => 
           rings: (_kmlData.features[z].geometry.coordinates.length > 1) ? _kmlData.features[z].geometry.coordinates : _kmlData.features[z].geometry.coordinates[0],
           spatialReference: { wkid: 4326 }
         });
-        let _area = geometryEngine.geodesicArea(_polygonGeom, "square-meters");
+        let _area = geometryEngine.geodesicArea(_polygonGeom, "square-kilometers");
         if (_area < 0)
           _area = _area * -1;
         else
@@ -592,8 +596,8 @@ export const createKMLGraphics = async (_kmlData: any, _reqType: any = null) => 
             }]
           }]
         });
-        if (_reqType != null) {
-          if (_reqType.toUpperCase() == "FC") {
+        if (_qsData.hasOwnProperty('ref_type')) {
+          if (_qsData.ref_type.toUpperCase() == "FC") {
             _TextSymbol.text = z + 1;
             const _textGraphic = new Graphic();
             _textGraphic.geometry = _polygonGeom.centroid;
@@ -608,7 +612,7 @@ export const createKMLGraphics = async (_kmlData: any, _reqType: any = null) => 
       tp.LayerID = (Number(z) + Number(1));
       tp.selected = true;
       tp.LegendPath = createCanvasImage(_kmlData.features[z].geometry.type.toLowerCase() == "polygon" ? "Rect" : "Line", "red");
-      tp.reqType = "User";
+      tp.reqType = "CAF";
       childrenData.push(tp);
       data.children = childrenData;
     }
@@ -616,7 +620,8 @@ export const createKMLGraphics = async (_kmlData: any, _reqType: any = null) => 
     const TREE_DATA: LayerNode[] = treeData;
     _outData.GL = _customeGL;
     _outData.TL = _textGL;
-    _outData.TD = TREE_DATA;
+    if (_qsData.hasOwnProperty('ref_type'))
+      _outData.TD = TREE_DATA;
   }
   //
   return _outData;

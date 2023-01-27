@@ -131,8 +131,18 @@ export class LayersComponent implements OnInit {
     }
     this.checkAllParents(node);
     if (node.hasOwnProperty("reqType")) {
-      const _lyr: any = this.PariveshGIS.ArcMap.findLayerById("EsriUserMap");
-      let layerFeature = _lyr.graphics.items.filter((f: any) => f.id === node.LayerID);
+      let layerFeature = null;
+      if (node.reqType === "CAF") {
+        const _lyr: any = this.PariveshGIS.ArcMap.findLayerById("EsriUserMap");
+        layerFeature = _lyr.graphics.items.filter((f: any) => f.id === node.LayerID);
+      }
+      else if (node.reqType === "DSS") {
+        // layerFeature = this.PariveshGIS.ArcMap.allLayers.find(function (layer: any) {
+        //   return layer.title === node.LayerName;
+        // });
+        layerFeature = [this.PariveshGIS.ArcMap.findLayerById("EsriUserMap" + node.LayerID)];
+        //layerFeature = _lyr.graphics.items.filter((f: any) => f.id === node.LayerID);
+      }
       layerFeature[0].visible = checked;
       this.PariveshGIS.ArcView.goTo({ target: layerFeature });
     }

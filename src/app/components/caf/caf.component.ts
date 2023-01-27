@@ -117,7 +117,8 @@ export class CafComponent implements OnInit {
         }
         const _response = await fetchDataEsriService(query_inter, this.adminBoundary.findSublayerById(0));
         if (_response.features.length > 0) {
-          let f = await createKMLGraphics(app.KMLData, this.qsData.ref_type);
+          // this.qsData.ref_type
+          let f = await createKMLGraphics(app.KMLData, this.qsData, null);
           this._customeGL = f.GL;
           this.parivesh.updateLayer(f.TD);
           this.PariveshGIS.ArcMap.layers.addMany([this.adminBoundary, f.GL, f.TL]);
@@ -130,7 +131,7 @@ export class CafComponent implements OnInit {
         else if (_response.features.length == 0) {
           _this.outofIndiaFlag = true;
           alert("Project Location Falling Out of India Boundary.");
-          let f = await createKMLGraphics(app.KMLData, this.qsData.ref_type);
+          let f = await createKMLGraphics(app.KMLData, this.qsData,null);
           this._customeGL = f.GL;
           this.parivesh.updateLayer(f.TD);
           this.PariveshGIS.ArcMap.layers.addMany([this.adminBoundary, f.GL, f.TL]);

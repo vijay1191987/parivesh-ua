@@ -27,7 +27,7 @@ export class DssToolsComponent {
   public _createTreeChildren(_data: any) {
     return _data.map((e: any, i: any) => {
       let v = {};
-      v = { LayerName: e.uploadedname, selected: true, reqType: "User", LayerID: i, LegendPath: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAS0lEQVQ4jWMpyi/czsTE6MBABfDv3/8DLExMjA4dXj4c1DCwYtsWBxZqGIQMRg0cNXDUwFEDRw2EGvjv3/8DFdu2OFDDsH///h8AAJBpE3+6+WDuAAAAAElFTkSuQmCC" };
+      v = { LayerName: e.uploadedname, selected: true, reqType: "DSS", LayerID: i, LegendPath: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAS0lEQVQ4jWMpyi/czsTE6MBABfDv3/8DLExMjA4dXj4c1DCwYtsWBxZqGIQMRg0cNXDUwFEDRw2EGvjv3/8DFdu2OFDDsH///h8AAJBpE3+6+WDuAAAAAElFTkSuQmCC" };
       return v;
     });
   }
@@ -38,8 +38,8 @@ export class DssToolsComponent {
     let treeData: any = [];
     Object.keys(layerMasters).forEach((element: any) => {
       const data = {
-        LayerName: element.replace('_',' '),
-        reqType: "User",
+        LayerName: element.replace('_', ' '),
+        reqType: "DSS",
         selected: true,
         children: this._createTreeChildren(layerMasters[element])
       };
@@ -64,9 +64,12 @@ export class DssToolsComponent {
       });
       const _geoJson = toGeoJSON.kml(_okmResponse.data);
       app.KMLData = checkKMLGEOJSON(_geoJson);
-      let f = await createKMLGraphics(app.KMLData, null);
+      let f = await createKMLGraphics(app.KMLData, pData.data[i], i);
       this.PariveshGIS = await this.ESRIObj_;
       this.PariveshGIS.ArcMap.layers.addMany([f.GL, f.TL]);
+      if (pData.data[i].docname.toUpperCase() == "MAIN_KML") {
+        this.PariveshGIS.ArcView.goTo(f.GL);
+      }
     }
     const TREE_DATA: LayerNode[] = [tdata];
     this.parivesh.updateLayer(TREE_DATA);
