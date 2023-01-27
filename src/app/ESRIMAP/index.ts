@@ -1,5 +1,5 @@
 import { isLoaded, loadModules } from 'esri-loader';
-import { NICStreetmap, Terrain } from "../components/gisHelper/localConfigs";
+import { NICStreetmap, Bharatmaps, Terrain } from "../components/gisHelper/localConfigs";
 
 const dojoConfig = {
   gfxRenderer: "svg,vml,canvas,silverlight",
@@ -16,22 +16,34 @@ const dojoConfig = {
 const g = { version: 'next', css: true, dojoConfig: dojoConfig };
 
 export const createGISInstance = async (_container: any) => {
-  const [Basemap, WebTileLayer, Map, MapView] = await loadModules(["esri/Basemap", "esri/layers/WebTileLayer", "esri/Map", "esri/views/MapView"], g);
-  const googleLayer = new WebTileLayer({
-    urlTemplate: "https://mts{subDomain}.google.com/vt/lyrs=m@186112443&hl=x-local&src=app&x={col}&y={row}&z={level}&s=Galile",
-    subDomains: ["0", "1", "2", "3"],
-    copyright: "Google Maps - Parivesh",
-    capabilities: "TilesOnly,Tilemap",
-    exportTilesAllowed: true
+  const [Basemap, MapImageLayer, Map, MapView] = await loadModules(["esri/Basemap", "esri/layers/MapImageLayer", "esri/Map", "esri/views/MapView"], g);
+  const _baseMapLayer = new MapImageLayer({
+    url: "https://gisservrsdiv.nic.in/bharatmaps/rest/services/parivesh2/Administrative_Boundaries/MapServer/",
+    apiKey: Bharatmaps,
+    visible : true,
+    sublayers: [
+      {  // sets a definition expression on sublayer 3
+        id: 0,
+        visible : true
+      },
+      {  // sets a definition expression on sublayer 3
+        id: 1,
+        visible : true
+      },
+    ],
+    minScale: 0,
+    maxScale: 0,
+    id: "Streetmap"
   });
-  const googleBasemap = new Basemap({
-    baseLayers: [googleLayer],
-    id: "Google_Basemap",
-    thumbnailUrl: "https://jiogis.ril.com/JioMetryEnterprise/basemap/Images/map_ramp1.png",
-    title: "Google Basemap"
+  const _baseMapOBJ = new Basemap({
+    baseLayers: [_baseMapLayer],
+    thumbnailUrl: "https://stamen-tiles.a.ssl.fastly.net/terrain/10/177/409.png",
+    title: "Streetmap",
+    id: "basemap_streetmap"
   });
+
   const webmap = new Map({
-    basemap: googleBasemap
+    basemap: _baseMapOBJ
   });
   const view = new MapView({
     id: "PariveshMapView",

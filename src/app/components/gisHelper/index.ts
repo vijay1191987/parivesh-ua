@@ -318,7 +318,7 @@ export const createCanvasImage = (_type: any, _color: any) => {
 
 export const createKMLGraphics = async (_kmlData: any, _reqType: any = null) => {
   const [GraphicsLayer, Graphic, geometryEngine, Polyline, Polygon, PopupTemplate] = await loadModules(['esri/layers/GraphicsLayer', 'esri/Graphic', 'esri/geometry/geometryEngine', "esri/geometry/Polyline", "esri/geometry/Polygon", "esri/PopupTemplate"]);
-  const _outData:any={};
+  const _outData: any = {};
   const _customeGL = new GraphicsLayer();
   _customeGL.id = "EsriUserMap";
   const _textGL = new GraphicsLayer();
@@ -395,12 +395,14 @@ export const createKMLGraphics = async (_kmlData: any, _reqType: any = null) => 
           }]
         }]
       });
-      if (_reqType.toUpperCase() == "FC") {
-        _TextSymbol.text = 1;
-        const _textGraphic = new Graphic();
-        _textGraphic.geometry = bc.LineGeom.extent.center;
-        _textGraphic.symbol = _TextSymbol;
-        _textGL.add(_textGraphic);
+      if (_reqType != null) {
+        if (_reqType.toUpperCase() == "FC") {
+          _TextSymbol.text = 1;
+          const _textGraphic = new Graphic();
+          _textGraphic.geometry = bc.LineGeom.extent.center;
+          _textGraphic.symbol = _TextSymbol;
+          _textGL.add(_textGraphic);
+        }
       }
       _customeGL.add(_userGraphic);
     }
@@ -460,12 +462,14 @@ export const createKMLGraphics = async (_kmlData: any, _reqType: any = null) => 
         }]
       });
       _customeGL.add(_userGraphic);
-      if (_reqType.toUpperCase() == "FC") {
-        _TextSymbol.text = bc.LineGeom == null ? 1 : 2;
-        const _textGraphic = new Graphic();
-        _textGraphic.geometry = bc.PolygonGeom.centroid;
-        _textGraphic.symbol = _TextSymbol;
-        _textGL.add(_textGraphic);
+      if (_reqType != null) {
+        if (_reqType.toUpperCase() == "FC") {
+          _TextSymbol.text = bc.LineGeom == null ? 1 : 2;
+          const _textGraphic = new Graphic();
+          _textGraphic.geometry = bc.PolygonGeom.centroid;
+          _textGraphic.symbol = _TextSymbol;
+          _textGL.add(_textGraphic);
+        }
       }
     }
     data.children = childrenData;
@@ -524,13 +528,14 @@ export const createKMLGraphics = async (_kmlData: any, _reqType: any = null) => 
             }]
           }]
         });
-
-        if (_reqType.toUpperCase() == "FC") {
-          _TextSymbol.text = z + 1;
-          const _textGraphic = new Graphic();
-          _textGraphic.geometry = _polyLineGeom.extent.center;
-          _textGraphic.symbol = _TextSymbol;
-          _textGL.add(_textGraphic);
+        if (_reqType != null) {
+          if (_reqType.toUpperCase() == "FC") {
+            _TextSymbol.text = z + 1;
+            const _textGraphic = new Graphic();
+            _textGraphic.geometry = _polyLineGeom.extent.center;
+            _textGraphic.symbol = _TextSymbol;
+            _textGL.add(_textGraphic);
+          }
         }
       }
       else if (_kmlData.features[z].geometry.type.toLowerCase() == "polygon") {
@@ -587,13 +592,14 @@ export const createKMLGraphics = async (_kmlData: any, _reqType: any = null) => 
             }]
           }]
         });
-
-        if (_reqType.toUpperCase() == "FC") {
-          _TextSymbol.text = z + 1;
-          const _textGraphic = new Graphic();
-          _textGraphic.geometry = _polygonGeom.centroid;
-          _textGraphic.symbol = _TextSymbol;
-          _textGL.add(_textGraphic);
+        if (_reqType != null) {
+          if (_reqType.toUpperCase() == "FC") {
+            _TextSymbol.text = z + 1;
+            const _textGraphic = new Graphic();
+            _textGraphic.geometry = _polygonGeom.centroid;
+            _textGraphic.symbol = _TextSymbol;
+            _textGL.add(_textGraphic);
+          }
         }
       }
       _customeGL.add(_userGraphic);
@@ -612,7 +618,7 @@ export const createKMLGraphics = async (_kmlData: any, _reqType: any = null) => 
     _outData.TL = _textGL;
     _outData.TD = TREE_DATA;
   }
-//
+  //
   return _outData;
 }
 

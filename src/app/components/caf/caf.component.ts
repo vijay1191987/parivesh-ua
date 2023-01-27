@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { LayerNode } from './../layers/layers.component'
 import { loadModules } from 'esri-loader';
-import { ActivatedRoute } from '@angular/router';
 import { Bharatmaps, OkmUrl } from "../gisHelper/localConfigs";
 import { PariveshServices } from 'src/app/services/GISLayerMasters.service';
-import { queryOKM, checkKMLGEOJSON, createKMLGraphics, fetchDataEsriService, _TextSymbol, saveInterSectionResults, createCanvasImage } from "./../gisHelper";
+import { queryOKM, checkKMLGEOJSON, createKMLGraphics, fetchDataEsriService, _TextSymbol, saveInterSectionResults} from "./../gisHelper";
 
 declare const toGeoJSON: any;
 declare function geojsonToArcGIS(obj1: any, obj2: any): any;
@@ -101,6 +99,7 @@ export class CafComponent implements OnInit {
         const _response = await fetchDataEsriService(query_inter, state_Boundaries_0);
         if (_response.features.length > 0) {
           let f = await createKMLGraphics(app.KMLData, this.qsData.ref_type);
+          this._customeGL = f.GL;
           this.parivesh.updateLayer(f.TD);
           this.PariveshGIS.ArcMap.layers.addMany([f.GL, f.TL]);
           this.PariveshGIS.ArcView.goTo({
@@ -113,6 +112,7 @@ export class CafComponent implements OnInit {
           _this.outofIndiaFlag = true;
           alert("Project Location Falling Out of India Boundary.");
           let f = await createKMLGraphics(app.KMLData, this.qsData.ref_type);
+          this._customeGL = f.GL;
           this.parivesh.updateLayer(f.TD);
           this.PariveshGIS.ArcMap.layers.addMany([f.GL, f.TL]);
           this.PariveshGIS.ArcView.goTo({
@@ -303,7 +303,6 @@ export class CafComponent implements OnInit {
       this.finalIntResult = [...this.finalIntResult, ...geoDataArr];
     if (this.counter == this._customeGL.graphics.items.length) {
       const res = await saveInterSectionResults(this.finalIntResult);
-
     }
   }
 }
