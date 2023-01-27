@@ -91,7 +91,22 @@ export class PariveshMapComponent implements OnInit {
         });
       });
     });
-
+    //Identify Layers
+    // Listen for any layer being added or removed in the Map
+    this.PariveshGIS.ArcMap.allLayers.on("after-add", function (event: any) {
+      if (event.item.type === "map-image") {
+        const _LayerAdded = event.item;
+        _this.PariveshGIS.ArcView.whenLayerView(event.item).then(function (lv: any) {
+          lv.layer.sublayers.forEach(function (sublayer: any) {
+            sublayer.createFeatureLayer()
+              .then((featureLayer: any) => featureLayer.load())
+              .then((featureLayer: any) => {
+                sublayer.popupTemplate = featureLayer.createPopupTemplate();
+              })
+          });
+        });
+      }
+    });
     const _legend = new Legend({
       view: this.PariveshGIS.ArcView,
       label: "Map Legends"

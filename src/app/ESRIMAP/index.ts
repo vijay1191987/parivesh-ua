@@ -1,5 +1,5 @@
 import { isLoaded, loadModules } from 'esri-loader';
-import { NICStreetmap, Bharatmaps, Terrain } from "../components/gisHelper/localConfigs";
+import { NICStreetmap, Bharatmaps, NICTerrain } from "../components/gisHelper/localConfigs";
 
 const dojoConfig = {
   gfxRenderer: "svg,vml,canvas,silverlight",
@@ -18,19 +18,9 @@ const g = { version: 'next', css: true, dojoConfig: dojoConfig };
 export const createGISInstance = async (_container: any) => {
   const [Basemap, MapImageLayer, Map, MapView] = await loadModules(["esri/Basemap", "esri/layers/MapImageLayer", "esri/Map", "esri/views/MapView"], g);
   const _baseMapLayer = new MapImageLayer({
-    url: "https://gisservrsdiv.nic.in/bharatmaps/rest/services/parivesh2/Administrative_Boundaries/MapServer/",
-    apiKey: Bharatmaps,
-    visible : true,
-    sublayers: [
-      {  // sets a definition expression on sublayer 3
-        id: 0,
-        visible : true
-      },
-      {  // sets a definition expression on sublayer 3
-        id: 1,
-        visible : true
-      },
-    ],
+    url: "https://mapservice.gov.in/mapserviceserv176/rest/services/Street/StreetMap/MapServer",
+    apiKey: NICStreetmap,
+    visible: true,
     minScale: 0,
     maxScale: 0,
     id: "Streetmap"
@@ -196,6 +186,7 @@ export const changeBaseMap = async (event: any, ArcMap: any) => {
       _baseMapLayer = new MapImageLayer({
         url: "https://mapservice.gov.in/mapserviceserv176/rest/services/Street/StreetMap/MapServer",
         apiKey: NICStreetmap,
+        visible:true,
         minScale: 0,
         maxScale: 0,
         id: "Streetmap"
@@ -208,9 +199,11 @@ export const changeBaseMap = async (event: any, ArcMap: any) => {
       });
       ArcMap.basemap = _baseMapOBJ;
       break;
+
     case 'NSatellite':
       _baseMapLayer = new MapImageLayer({
-        url: "https://mapservice.gov.in/mapserviceserv176/rest/services/Street/StreetMap/MapServer",
+        url: "https://imageservice.nic.in/NIC/esri/rest/services/State/MapServer",
+        visible:true,
         apiKey: NICStreetmap,
         minScale: 0,
         maxScale: 0,
@@ -264,7 +257,8 @@ export const changeBaseMap = async (event: any, ArcMap: any) => {
     case 'Terrain':
       _baseMapLayer = new MapImageLayer({
         url: "https://webgis1.nic.in/publishing/rest/services/bharatmaps/terrain2019/MapServer",
-        apiKey: Terrain,
+        visible:true,
+        apiKey: NICTerrain,
         minScale: 0,
         maxScale: 0,
         id: "Terrain"
@@ -282,6 +276,7 @@ export const changeBaseMap = async (event: any, ArcMap: any) => {
     case 'Topo':
       _baseMapLayer = new MapImageLayer({
         url: "https://services.arcgisonline.com/arcgis/rest/services/World_Topo_Map/MapServer",
+        visible:true,
         minScale: 0,
         maxScale: 0,
         id: "WorldTopo"
@@ -299,6 +294,7 @@ export const changeBaseMap = async (event: any, ArcMap: any) => {
     case 'ESatellite':
       _baseMapLayer = new TileLayer({
         url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
+        visible:true,
         minScale: 0,
         maxScale: 0,
         id: "EsriSatillite"

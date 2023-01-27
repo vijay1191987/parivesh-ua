@@ -1,6 +1,7 @@
 const NICStreetmap = '5R5ftJZp67OS1L5l-xLGvAr1nGAHJi5Tq8GZN-IpCWL0m-eHYez26Dxh-XXJ-6Pu';
 const Terrain = 'J5v_0Qf9lOFHIaX8fCGrpNDpqgIJ_tLlSD--Pgq10pjih3B7bfYmJe5DmdWiDQOj';
 let Bharatmaps = '5ewlhladvLt1Pq7VEKutoe_-1y7XqH7v_cvKCgvUcbS-GC94tqrrsftiWi-osv0H';
+const NICTerrain = "J5v_0Qf9lOFHIaX8fCGrpNDpqgIJ_tLlSD--Pgq10pjih3B7bfYmJe5DmdWiDQOj";
 
 
 let OkmUrl = '';
@@ -24,4 +25,4 @@ else if (_hostNM.toLowerCase() === "parivesh.nic.in") {
   OkmUrl = 'https://parivesh.nic.in/dms/okm/downloadDocument?';
 }
 
-export { NICStreetmap, Terrain, Bharatmaps, OkmUrl }
+export { NICStreetmap, Terrain, Bharatmaps, OkmUrl,NICTerrain  }

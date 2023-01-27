@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { loadModules } from 'esri-loader';
 import { Bharatmaps, OkmUrl } from "../gisHelper/localConfigs";
 import { PariveshServices } from 'src/app/services/GISLayerMasters.service';
-import { queryOKM, checkKMLGEOJSON, createKMLGraphics, fetchDataEsriService, _TextSymbol, saveInterSectionResults} from "./../gisHelper";
+import { queryOKM, checkKMLGEOJSON, createKMLGraphics, fetchDataEsriService, _TextSymbol, saveInterSectionResults } from "./../gisHelper";
 
 declare const toGeoJSON: any;
 declare function geojsonToArcGIS(obj1: any, obj2: any): any;
@@ -12,6 +12,7 @@ let villnamesoi: any;
 let mapNo: any;
 let stName: any;
 let dtName: any;
+
 
 @Component({
   selector: 'app-caf',
@@ -28,13 +29,13 @@ export class CafComponent implements OnInit {
 
   childrenData: any = [];
   goeBufferGeom: any = null;
-  villageBoundryLayer: any;
   toposheetBoundryLayer: any;
   subdistrictBoundryLayer: any;
   intersectionResult: any = null;
   _customeGL: any = null;
   counter: number = 0;
   finalIntResult: any = [];
+  adminBoundary: any = {};
 
   constructor(private parivesh: PariveshServices) { }
 
@@ -52,8 +53,30 @@ export class CafComponent implements OnInit {
   }
 
   async _createuserKMLLayer() {
-    const [FeatureLayer, geometryEngine] = await loadModules(["esri/layers/FeatureLayer", "esri/geometry/geometryEngine"]);
+    const [MapImageLayer, geometryEngine] = await loadModules(["esri/layers/MapImageLayer", "esri/geometry/geometryEngine"]);
     app.KMLGraphics = [];
+    this.adminBoundary = new MapImageLayer({
+      url: 'https://gisservrsdiv.nic.in/bharatmaps/rest/services/parivesh2/Administrative_Boundaries/MapServer/',
+      apiKey: Bharatmaps,
+      sublayers: [
+        {
+          id: 3,
+          visible: true
+        },
+        {
+          id: 2,
+          visible: false
+        },
+        {
+          id: 1,
+          visible: false
+        },
+        {
+          id: 0,
+          visible: true
+        },
+      ]
+    });
     const _OKMParams = {
       docTypemappingId: this.qsData.documenttypeamapid,
       refId: this.qsData.ref_id,
@@ -76,10 +99,6 @@ export class CafComponent implements OnInit {
       }
       else {
         // check Out of India Boundery
-        const state_Boundaries_0 = new FeatureLayer({
-          url: 'https://gisservrsdiv.nic.in/bharatmaps/rest/services/parivesh2/Administrative_Boundaries/MapServer/0',
-          apiKey: Bharatmaps
-        });
         const _kmlUnion = geometryEngine.union(app.KMLData.PolygonGeom.length == 0 ? app.KMLData.LineGeom : app.KMLData.PolygonGeom);
 
         const query_inter: any = {
@@ -89,19 +108,19 @@ export class CafComponent implements OnInit {
           spatialRelationship: "intersects",
           geometry: _kmlUnion
         };
-        let outInd: any = await fetchDataEsriService(query_inter, state_Boundaries_0);
+        let outInd: any = await fetchDataEsriService(query_inter, this.adminBoundary.findSublayerById(0));
         if (outInd.features.length == 0) {
           this.outofIndiaFlag = true;
           query_inter.geometry = null;
           this.goeBufferGeom = geometryEngine.geodesicBuffer(_kmlUnion, 2, "kilometers");
           query_inter.geometry = this.goeBufferGeom;
         }
-        const _response = await fetchDataEsriService(query_inter, state_Boundaries_0);
+        const _response = await fetchDataEsriService(query_inter, this.adminBoundary.findSublayerById(0));
         if (_response.features.length > 0) {
           let f = await createKMLGraphics(app.KMLData, this.qsData.ref_type);
           this._customeGL = f.GL;
           this.parivesh.updateLayer(f.TD);
-          this.PariveshGIS.ArcMap.layers.addMany([f.GL, f.TL]);
+          this.PariveshGIS.ArcMap.layers.addMany([this.adminBoundary, f.GL, f.TL]);
           this.PariveshGIS.ArcView.goTo({
             target: f.GL.graphics.items
           });
@@ -114,7 +133,7 @@ export class CafComponent implements OnInit {
           let f = await createKMLGraphics(app.KMLData, this.qsData.ref_type);
           this._customeGL = f.GL;
           this.parivesh.updateLayer(f.TD);
-          this.PariveshGIS.ArcMap.layers.addMany([f.GL, f.TL]);
+          this.PariveshGIS.ArcMap.layers.addMany([this.adminBoundary, f.GL, f.TL]);
           this.PariveshGIS.ArcView.goTo({
             target: f.GL.graphics.items
           });
@@ -130,12 +149,6 @@ export class CafComponent implements OnInit {
 
   async kmlIntersection() {
     const [FeatureLayer] = await loadModules(["esri/layers/FeatureLayer"]);
-
-    this.villageBoundryLayer = new FeatureLayer({
-      url: 'https://gisservrsdiv.nic.in/bharatmaps/rest/services/parivesh2/Administrative_Boundaries/MapServer/3',
-      apiKey: Bharatmaps
-    });
-
     this.toposheetBoundryLayer = new FeatureLayer({
       url: 'https://gisservrsdiv.nic.in/bharatmaps/rest/services/parivesh2/Grid50k_osm/MapServer/1',
       apiKey: Bharatmaps
@@ -145,13 +158,6 @@ export class CafComponent implements OnInit {
       url: 'https://gisservrsdiv.nic.in/bharatmaps/rest/services/parivesh2/Village_Point_Grid/MapServer/0',
       apiKey: Bharatmaps
     });
-
-    const subDistrictLayer = new FeatureLayer({
-      url: 'https://gisservrsdiv.nic.in/bharatmaps/rest/services/parivesh2/SubDistrictGrid/MapServer/0',
-      apiKey: Bharatmaps,
-      visible: false
-    });
-
     const query_inter = {
       where: "1=1",
       returnGeometry: false,
@@ -164,14 +170,14 @@ export class CafComponent implements OnInit {
       //  village query 63001
       if (app.KMLData.hasOwnProperty("featureExceed")) {
         query_inter.geometry = this.outofIndiaFlag ? this.goeBufferGeom : app.KMLData.PolygonGeom === null ? app.KMLData.LineGeom : app.KMLData.PolygonGeom;
-        this.intersectionResult = await fetchDataEsriService(query_inter, this.villageBoundryLayer);
+        this.intersectionResult = await fetchDataEsriService(query_inter, this.adminBoundary.findSublayerById(3));
         if (this.intersectionResult.features.length > 0)
           this.saveKmlIntersectionData(this.intersectionResult, this._customeGL.graphics.items[0]);
       }
       else {
         for (let index = 0; index < this._customeGL.graphics.items.length; index++) {
           query_inter.geometry = this.outofIndiaFlag ? this.goeBufferGeom : this._customeGL.graphics.items[index].geometry;
-          this.intersectionResult = await fetchDataEsriService(query_inter, this.villageBoundryLayer);
+          this.intersectionResult = await fetchDataEsriService(query_inter, this.adminBoundary.findSublayerById(3));
           if (this.intersectionResult.features.length > 0)
             this.saveKmlIntersectionData(this.intersectionResult, this._customeGL.graphics.items[index]);
         }
@@ -207,7 +213,7 @@ export class CafComponent implements OnInit {
         query.geometry = this.outofIndiaFlag ? this.goeBufferGeom : app.KMLData.PolygonGeom === null ? app.KMLData.LineGeom : app.KMLData.PolygonGeom;
         let response = await fetchDataEsriService(query, villagePointLayer);
         if (response.features.length === 0) {
-          let subDistResult = await fetchDataEsriService(query, subDistrictLayer);
+          let subDistResult = await fetchDataEsriService(query, this.adminBoundary.findSublayerById(2));
           let _costalstateName = ['gujarat', 'maharashtra', 'goa', 'karnataka', 'kerala', 'tamil nadu', 'odisha', 'west bengal', 'daman & diu', 'puducherry', 'andaman & nicobar', 'lakshadweep'];
           if (subDistResult.features.length > 0) {
             for (let t = 0; t < subDistResult.features.length; t++) {
@@ -238,7 +244,7 @@ export class CafComponent implements OnInit {
           query.geometry = this.outofIndiaFlag ? this.goeBufferGeom : this._customeGL.graphics.items[index].geometry;
           let response = await fetchDataEsriService(query, villagePointLayer);
           if (response.features.length === 0) {
-            let subdistResult = await fetchDataEsriService(query, subDistrictLayer);
+            let subdistResult = await fetchDataEsriService(query, this.adminBoundary.findSublayerById(2));
             if (subdistResult.features.length > 0)
               this.saveKmlIntersectionData(subdistResult, this._customeGL.graphics.items[index]);
           }
