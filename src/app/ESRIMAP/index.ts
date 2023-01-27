@@ -213,7 +213,6 @@ export const changeBaseMap = async (event: any, ArcMap: any) => {
       _baseMapLayer = new MapImageLayer({
         url: "https://imageservice.nic.in/NIC/esri/rest/services/State/MapServer",
         visible: true,
-        apiKey: NICStreetmap,
         minScale: 0,
         maxScale: 0,
         id: "Streetmap"
