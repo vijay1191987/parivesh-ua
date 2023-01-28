@@ -68,14 +68,16 @@ export class PariveshMapComponent implements OnInit {
         if (stationary) {
           let dTest = Math.abs(extent.xmax - extent.xmin);
           let dFactor = dTest / 100;
-          if (Math.abs(extent.xmax - this.previousMapExtent.xmax) > dFactor ||
-            Math.abs(extent.xmin - this.previousMapExtent.xmin) > dFactor ||
-            Math.abs(extent.ymax - this.previousMapExtent.ymax) > dFactor ||
-            Math.abs(extent.ymin - this.previousMapExtent.ymin) > dFactor)
-            _this.mapExtent.push(extent);
-          if (_this.mapExtent.length > 40)
-            _this.mapExtent.shift();
-          this.previousMapExtent = extent;
+          if (this.previousMapExtent != null) {
+            if (Math.abs(extent.xmax - this.previousMapExtent.xmax) > dFactor ||
+              Math.abs(extent.xmin - this.previousMapExtent.xmin) > dFactor ||
+              Math.abs(extent.ymax - this.previousMapExtent.ymax) > dFactor ||
+              Math.abs(extent.ymin - this.previousMapExtent.ymin) > dFactor)
+              _this.mapExtent.push(extent);
+            if (_this.mapExtent.length > 40)
+              _this.mapExtent.shift();
+            this.previousMapExtent = extent;
+          }
         }
         else if (wasStationary) {
           this.previousMapExtent = extent;
@@ -94,8 +96,7 @@ export class PariveshMapComponent implements OnInit {
     //Identify Layers
     // Listen for any layer being added or removed in the Map
     this.PariveshGIS.ArcMap.allLayers.on("after-add", function (event: any) {
-      if (event.item.type === "map-image") {
-        const _LayerAdded = event.item;
+      if (event.item.type === "map-image") {        
         _this.PariveshGIS.ArcView.whenLayerView(event.item).then(function (lv: any) {
           lv.layer.sublayers.forEach(function (sublayer: any) {
             sublayer.createFeatureLayer()

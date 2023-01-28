@@ -1,14 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { LayerNode } from './../layers/layers.component'
-
 import { OkmUrl } from "../gisHelper/localConfigs";
 import { queryOKM, checkKMLGEOJSON, createKMLGraphics, _TextSymbol, getProposalDetails, groupByJsonData } from "./../gisHelper";
 import { PariveshServices } from 'src/app/services/GISLayerMasters.service';
 
-
 declare const toGeoJSON: any;
-declare function geojsonToArcGIS(obj1: any, obj2: any): any;
 const app: any = {};
+
 @Component({
   selector: 'app-dss-tools',
   templateUrl: './dss-tools.component.html',
@@ -33,6 +31,8 @@ export class DssToolsComponent {
   }
   async ngOnInit() {
     this.ESRIObj_ = this.ESRIObject;
+    this.PariveshGIS = await this.ESRIObject;
+
     const pData = await getProposalDetails(this.qsData);
     let layerMasters = groupByJsonData(pData.data, "docname");
     let treeData: any = [];
@@ -65,10 +65,9 @@ export class DssToolsComponent {
       const _geoJson = toGeoJSON.kml(_okmResponse.data);
       app.KMLData = checkKMLGEOJSON(_geoJson);
       let f = await createKMLGraphics(app.KMLData, pData.data[i], i);
-      this.PariveshGIS = await this.ESRIObj_;
       this.PariveshGIS.ArcMap.layers.addMany([f.GL, f.TL]);
       if (pData.data[i].docname.toUpperCase() == "MAIN_KML") {
-        this.PariveshGIS.ArcView.goTo(f.GL);
+        this.PariveshGIS.ArcView.goTo({ target: f.GL.graphics.items, zoom: 16 });
       }
     }
     const TREE_DATA: LayerNode[] = [tdata];

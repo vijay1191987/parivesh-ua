@@ -322,9 +322,8 @@ export const createKMLGraphics = async (_kmlData: any, _qsData: any = null, _fea
   const _customeGL = new GraphicsLayer({
     UUID: _qsData.uuid,
     title: _qsData.uploadedname,
-    id: "EsriUserMap" + _featIndex,
+    id: _featIndex === null ? "EsriUserMap" : "EsriUserMap_" + _qsData.uploadedname.replace(' ', ''),
   });
-  //_customeGL.id = "EsriUserMap";
   const _textGL = new GraphicsLayer();
   let childrenData = [];
   let treeData: any[] = [];
@@ -391,7 +390,7 @@ export const createKMLGraphics = async (_kmlData: any, _qsData: any = null, _fea
           },
           {
             fieldName: "Length",
-            label: "Length"
+            label: "Length(Km)"
           },
           {
             fieldName: "Description",
@@ -453,11 +452,11 @@ export const createKMLGraphics = async (_kmlData: any, _qsData: any = null, _fea
           },
           {
             fieldName: "Area",
-            label: "Area"
+            label: "Area(Km)"
           },
           {
             fieldName: "Length",
-            label: "Length"
+            label: "Length(Km)"
           },
           {
             fieldName: "Description",
@@ -524,7 +523,7 @@ export const createKMLGraphics = async (_kmlData: any, _qsData: any = null, _fea
             },
             {
               fieldName: "Length",
-              label: "Length"
+              label: "Length(Km)"
             },
             {
               fieldName: "Description",
@@ -584,11 +583,11 @@ export const createKMLGraphics = async (_kmlData: any, _qsData: any = null, _fea
             },
             {
               fieldName: "Area",
-              label: "Area"
+              label: "Area(Km)"
             },
             {
               fieldName: "Length",
-              label: "Length"
+              label: "Length(Km)"
             },
             {
               fieldName: "Description",
@@ -623,7 +622,6 @@ export const createKMLGraphics = async (_kmlData: any, _qsData: any = null, _fea
     if (_qsData.hasOwnProperty('ref_type'))
       _outData.TD = TREE_DATA;
   }
-  //
   return _outData;
 }
 

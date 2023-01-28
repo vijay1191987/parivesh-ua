@@ -5,7 +5,6 @@ import { PariveshServices } from 'src/app/services/GISLayerMasters.service';
 import { queryOKM, checkKMLGEOJSON, createKMLGraphics, fetchDataEsriService, _TextSymbol, saveInterSectionResults } from "./../gisHelper";
 
 declare const toGeoJSON: any;
-declare function geojsonToArcGIS(obj1: any, obj2: any): any;
 let app: any = {};
 let _this: any;
 let villnamesoi: any;
@@ -47,9 +46,8 @@ export class CafComponent implements OnInit {
       this.qsData = this.qsData;
       this._createuserKMLLayer();
     }
-    else {
+    else
       alert("Request parameters does not match!");
-    }
   }
 
   async _createuserKMLLayer() {
@@ -69,12 +67,12 @@ export class CafComponent implements OnInit {
         },
         {
           id: 1,
-          visible: false
+          visible: true
         },
         {
           id: 0,
           visible: true
-        },
+        }
       ]
     });
     const _OKMParams = {
@@ -123,7 +121,8 @@ export class CafComponent implements OnInit {
           this.parivesh.updateLayer(f.TD);
           this.PariveshGIS.ArcMap.layers.addMany([this.adminBoundary, f.GL, f.TL]);
           this.PariveshGIS.ArcView.goTo({
-            target: f.GL.graphics.items
+            target: f.GL.graphics.items,
+            zoom: 16
           });
           this.kmlIntersection();
           return;
@@ -131,12 +130,13 @@ export class CafComponent implements OnInit {
         else if (_response.features.length == 0) {
           _this.outofIndiaFlag = true;
           alert("Project Location Falling Out of India Boundary.");
-          let f = await createKMLGraphics(app.KMLData, this.qsData,null);
+          let f = await createKMLGraphics(app.KMLData, this.qsData, null);
           this._customeGL = f.GL;
           this.parivesh.updateLayer(f.TD);
           this.PariveshGIS.ArcMap.layers.addMany([this.adminBoundary, f.GL, f.TL]);
           this.PariveshGIS.ArcView.goTo({
-            target: f.GL.graphics.items
+            target: f.GL.graphics.items,
+            zoom: 16
           });
           this.kmlIntersection();
         }

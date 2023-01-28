@@ -41,6 +41,9 @@ export class LayersComponent implements OnInit {
       const _kj = this.dataSource.data;
       this.dataSource.data = [];
       this.dataSource.data = [...layerData, ..._kj];
+      Object.keys(this.dataSource.data).forEach((key: any) => {
+        this.setParent(this.dataSource.data[key]);
+      });
     });
   }
   ngOnDestroy() { // It's a good practice to unsubscribe to ensure no memory leaks
@@ -137,11 +140,7 @@ export class LayersComponent implements OnInit {
         layerFeature = _lyr.graphics.items.filter((f: any) => f.id === node.LayerID);
       }
       else if (node.reqType === "DSS") {
-        // layerFeature = this.PariveshGIS.ArcMap.allLayers.find(function (layer: any) {
-        //   return layer.title === node.LayerName;
-        // });
-        layerFeature = [this.PariveshGIS.ArcMap.findLayerById("EsriUserMap" + node.LayerID)];
-        //layerFeature = _lyr.graphics.items.filter((f: any) => f.id === node.LayerID);
+        layerFeature = [this.PariveshGIS.ArcMap.findLayerById("EsriUserMap_" + node.LayerName.replace(' ', ''))];
       }
       layerFeature[0].visible = checked;
       this.PariveshGIS.ArcView.goTo({ target: layerFeature });

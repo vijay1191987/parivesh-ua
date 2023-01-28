@@ -16,14 +16,13 @@ const dojoConfig = {
 const g = { version: 'next', css: true, dojoConfig: dojoConfig };
 
 export const createGISInstance = async (_container: any) => {
-  const [Basemap, MapImageLayer, Map, MapView, esriConfig] = await loadModules(["esri/Basemap", "esri/layers/MapImageLayer", "esri/Map", "esri/views/MapView", "esri/config"], g);
-  const _baseMapLayer = new MapImageLayer({
-    url: "https://mapservice.gov.in/mapserviceserv176/rest/services/Street/StreetMap/MapServer",
-    apiKey: NICStreetmap,
+  const [Basemap, Map, MapView, esriConfig, TileLayer] = await loadModules(["esri/Basemap", "esri/Map", "esri/views/MapView", "esri/config", "esri/layers/TileLayer"], g);
+  const _baseMapLayer = new TileLayer({
+    url: "https://imageservice.nic.in/NIC/esri/rest/services/State/MapServer",
     visible: true,
     minScale: 0,
     maxScale: 0,
-    id: "Streetmap"
+    id: "NICSatellite"
   });
   const _baseMapOBJ = new Basemap({
     baseLayers: [_baseMapLayer],
@@ -42,7 +41,7 @@ export const createGISInstance = async (_container: any) => {
       rotationEnabled: false
     },
     center: [77.2324, 24.23423],
-    zoom: 7,
+    zoom: 5,
     highlightOptions: {
       color: "cyan",
       haloOpacity: 1,
@@ -71,13 +70,10 @@ export const createGISInstance = async (_container: any) => {
     },
     ui: {
       components: ["attribution"]
-    },
-    spatialReference: {
-      wkid: 102100
     }
   });
-  view.container = _container;
 
+  view.container = _container;
   esriConfig.apiKey = Bharatmaps;
   esriConfig.request.interceptors.push({
     urls: [/FeatureServer\/\d+/, /MapServer\/\d+/, /MapServer\/\legend+/],
@@ -187,12 +183,11 @@ export const changeBaseMap = async (event: any, ArcMap: any) => {
         id: "Bing-Map",
         thumbnailUrl: "D:\\Bing.jpeg"
       });
-
       ArcMap.basemap = _baseMapOBJ;
       break;
 
     case 'NIC_Street':
-      _baseMapLayer = new MapImageLayer({
+      _baseMapLayer = new TileLayer({
         url: "https://mapservice.gov.in/mapserviceserv176/rest/services/Street/StreetMap/MapServer",
         apiKey: NICStreetmap,
         visible: true,
@@ -210,12 +205,12 @@ export const changeBaseMap = async (event: any, ArcMap: any) => {
       break;
 
     case 'NSatellite':
-      _baseMapLayer = new MapImageLayer({
+      _baseMapLayer = new TileLayer({
         url: "https://imageservice.nic.in/NIC/esri/rest/services/State/MapServer",
         visible: true,
         minScale: 0,
         maxScale: 0,
-        id: "Streetmap"
+        id: "NICSatellite"
       });
       _baseMapOBJ = new Basemap({
         baseLayers: [_baseMapLayer],
@@ -263,7 +258,7 @@ export const changeBaseMap = async (event: any, ArcMap: any) => {
       break;
 
     case 'Terrain':
-      _baseMapLayer = new MapImageLayer({
+      _baseMapLayer = new TileLayer({
         url: "https://webgis1.nic.in/publishing/rest/services/bharatmaps/terrain2019/MapServer",
         visible: true,
         apiKey: NICTerrain,
@@ -282,7 +277,7 @@ export const changeBaseMap = async (event: any, ArcMap: any) => {
       break;
 
     case 'Topo':
-      _baseMapLayer = new MapImageLayer({
+      _baseMapLayer = new TileLayer({
         url: "https://services.arcgisonline.com/arcgis/rest/services/World_Topo_Map/MapServer",
         visible: true,
         minScale: 0,

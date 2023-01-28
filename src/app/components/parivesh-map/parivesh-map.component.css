@@ -1,14 +1,17 @@
-#pariveshMAPdiv{
-    height: calc(100% - 110px);
+#pariveshMAPdiv {
+    height: calc(100% - 120px);
 }
+
 .map-area {
     position: absolute;
     padding: 0;
     margin: 0;
     height: 100%;
     width: 100%;
+    background-color: #fff;
 }
-.basemapIcon{
+
+.basemapIcon {
     pointer-events: stroke;
 }
 
@@ -110,21 +113,22 @@
 }
 
 
-.basemap-gallery{
+.basemap-gallery {
     width: 300px;
     height: 130px;
 
     background: #fff;
     border: solid 1px #ddd;
-     padding: 5px;
+    padding: 5px;
     box-shadow: 0px 0px 8px #0000009c;
     position: absolute;
     right: 40px;
     top: 35px;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
     /* box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset, rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset, rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px; */
-  }
-  .mydivheader {
+}
+
+.mydivheader {
     width: 300px;
     padding: 10px;
     cursor: move;
@@ -138,25 +142,25 @@
     margin-bottom: 10px;
     left: 15px;
     top: 12px;
-  }
+}
 
-  .action-button {
+.action-button {
     position: relative;
     top: 20px;
     left: 20px;
     padding: 7px 14px;
     border: solid 1px #fff;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
-  }
+}
 
 
-  /*  */
-  /*  */
-  /*  */
-  /*  */
+/*  */
+/*  */
+/*  */
+/*  */
 
 
-  .footer-toogle-icon {
+.footer-toogle-icon {
     position: absolute;
     right: 0;
     bottom: 36px;
@@ -166,6 +170,7 @@
     z-index: 10;
     transition: 0.25s;
 }
+
 .footer-toogle-icon.circle {
     bottom: 106px;
     transition: 0.25s;
@@ -185,7 +190,7 @@
     transition: 0.5s;
 }
 
-.footer-toogle-icon.circle a{
+.footer-toogle-icon.circle a {
     border-radius: 25px;
     transform: rotate(180deg);
     transition: 0.5s;
@@ -195,6 +200,7 @@
     bottom: -45px;
     transition: 0.5s;
 }
+
 .bottom-toolbar.show {
     bottom: inherit;
     transition: 0.5s;
