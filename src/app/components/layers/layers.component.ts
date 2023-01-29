@@ -162,7 +162,8 @@ export class LayersComponent implements OnInit {
           sublayers: [
             {
               id: layerConfigs.layerurl.trim().charAt(layerConfigs.layerurl.trim().length - 1),
-              visible: true
+              visible: true,
+              popupEnabled: true
             }
           ]
         };

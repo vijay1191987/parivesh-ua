@@ -65,19 +65,17 @@ export class PariveshMapComponent implements OnInit {
     reactiveUtils.watch(
       () => [this.PariveshGIS.ArcView.stationary, this.PariveshGIS.ArcView.extent],
       ([stationary, extent]: any, [wasStationary]: any) => {
-        if (stationary) {
+        if (stationary && this.previousMapExtent != null) {
           let dTest = Math.abs(extent.xmax - extent.xmin);
           let dFactor = dTest / 100;
-          if (this.previousMapExtent != null) {
-            if (Math.abs(extent.xmax - this.previousMapExtent.xmax) > dFactor ||
-              Math.abs(extent.xmin - this.previousMapExtent.xmin) > dFactor ||
-              Math.abs(extent.ymax - this.previousMapExtent.ymax) > dFactor ||
-              Math.abs(extent.ymin - this.previousMapExtent.ymin) > dFactor)
-              _this.mapExtent.push(extent);
-            if (_this.mapExtent.length > 40)
-              _this.mapExtent.shift();
-            this.previousMapExtent = extent;
-          }
+          if (Math.abs(extent.xmax - this.previousMapExtent.xmax) > dFactor ||
+            Math.abs(extent.xmin - this.previousMapExtent.xmin) > dFactor ||
+            Math.abs(extent.ymax - this.previousMapExtent.ymax) > dFactor ||
+            Math.abs(extent.ymin - this.previousMapExtent.ymin) > dFactor)
+            _this.mapExtent.push(extent);
+          if (_this.mapExtent.length > 40)
+            _this.mapExtent.shift();
+          this.previousMapExtent = extent;
         }
         else if (wasStationary) {
           this.previousMapExtent = extent;
@@ -85,36 +83,40 @@ export class PariveshMapComponent implements OnInit {
       }
     );
 
-    this.PariveshGIS.ArcView.popup.autoOpenEnabled = false;
-    this.PariveshGIS.ArcView.on("click", (event: any) => {
-      this.PariveshGIS.ArcView.hitTest(event).then((res: any) => {
-        this.PariveshGIS.ArcView.popup.open({
-          features: res.results[0].layer.graphics.items
-        });
-      });
-    });
     //Identify Layers
     // Listen for any layer being added or removed in the Map
-    this.PariveshGIS.ArcMap.allLayers.on("after-add", function (event: any) {
-      if (event.item.type === "map-image") {        
+    this.PariveshGIS.ArcMap.allLayers.on("before-add", function (event: any) {
+      if (event.item.type === "map-image") {
         _this.PariveshGIS.ArcView.whenLayerView(event.item).then(function (lv: any) {
           lv.layer.sublayers.forEach(function (sublayer: any) {
             sublayer.createFeatureLayer()
               .then((featureLayer: any) => featureLayer.load())
               .then((featureLayer: any) => {
-                sublayer.popupTemplate = featureLayer.createPopupTemplate();
+                const _template = featureLayer.createPopupTemplate();
+                const _modified = _template.fieldInfos.filter((field: any) => {
+                  if (field.fieldName.includes('de11'))
+                    field.visible = false;
+                  if (field.fieldName.includes('_code'))
+                    field.visible = false;
+                  if (field.fieldName.includes('_lgd'))
+                    field.visible = false;
+                  return field;
+                });
+                _template.fieldInfos = _modified;
+                sublayer.popupTemplate = _template;
               })
           });
         });
       }
     });
+    //Identify Ends
     const _legend = new Legend({
       view: this.PariveshGIS.ArcView,
       label: "Map Legends"
     });
 
     const layerListExpand = new Expand({
-      expandIconClass: "esri-icon-layer-list",
+      expandIconClass: "esri-icon-legend",
       view: this.PariveshGIS.ArcView,
       container: document.createElement("div"),
       content: _legend,
