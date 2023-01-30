@@ -1,1 +1,154 @@
+<style>
+  .loader-fixed {
+    position: fixed;
+    height: 100vh;
+    width: 100%;
+    z-index: 1032;
+    display: grid;
+    place-content: center;
+    background: rgba(0, 0, 0, 0.603);
+    justify-items: center;
+  }
+
+  #loading-bar-spinner.spinner {
+    background: #fff;
+    border-radius: 50%;
+    padding: 9px;
+
+  }
+
+  .spinner-icon {
+    width: 70px;
+    height: 70px;
+    border: solid 5px #ffffff00;
+    border-top-color: #0098ff !important;
+    border-left-color: #000000 !important;
+    border-radius: 50%;
+    animation: loading-bar-spinner 400ms linear infinite;
+  }
+
+  @keyframes loading-bar-spinner {
+    0% {
+      transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
+
+  .loader-content {
+    background-color: #ffffff;
+    padding: 9px;
+    border-radius: 10px;
+    text-align: center;
+    color: rgb(0, 0, 0);
+    margin-top: 15px;
+    text-transform: uppercase;
+    font-size: 12px;
+    width: 350px;
+    overflow: hidden;
+  }
+
+  .loading-img {
+    width: 55px;
+    position: absolute;
+    margin: 7px;
+  }
+
+
+
+
+
+
+  * {
+    box-sizing: border-box;
+  }
+
+  @-webkit-keyframes ticker {
+    0% {
+      -webkit-transform: translate3d(0, 0, 0);
+      transform: translate3d(0, 0, 0);
+      visibility: visible;
+    }
+
+    100% {
+      -webkit-transform: translate3d(-100%, 0, 0);
+      transform: translate3d(-100%, 0, 0);
+    }
+  }
+
+  @keyframes ticker {
+    0% {
+      -webkit-transform: translate3d(0, 0, 0);
+      transform: translate3d(0, 0, 0);
+      visibility: visible;
+    }
+
+    100% {
+      -webkit-transform: translate3d(-100%, 0, 0);
+      transform: translate3d(-100%, 0, 0);
+    }
+  }
+
+  /* .ticker-wrap {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  overflow: hidden;
+  height: 4rem;
+  background-color: rgba(0, 0, 0, 0.9);
+  padding-left: 100%;
+  box-sizing: content-box;
+} */
+  .ticker-wrap .ticker {
+    display: inline-block;
+    height: 2rem;
+    line-height: 2rem;
+    white-space: nowrap;
+    padding-right: 100%;
+    box-sizing: content-box;
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+    animation-timing-function: linear;
+    -webkit-animation-name: ticker;
+    animation-name: ticker;
+    -webkit-animation-duration: 30s;
+    animation-duration: 30s;
+  }
+
+  .ticker-wrap .ticker__item {
+    display: inline-block;
+    padding: 0 2rem;
+    font-size: 0.8rem;
+    color: rgb(19, 3, 3);
+  }
+</style>
+
+
+<!-- d-none for the close -->
+<div class="loader-fixed" *ngIf="loaderFlag">
+  <div id="loading-bar-spinner" class="spinner">
+    <img src="assets/img/p-loader.png" class="loading-img">
+    <div class="spinner-icon"></div>
+  </div>
+  <div class="loader-content">
+    <div class="ticker-wrap">
+      <div class="ticker">
+        <div class="ticker__item"><b>Did you know ?</b>Parivesh 2.0 was launch on 15th August 2022</div>
+        <div class="ticker__item">PARIVESH is a web based, role based workflow application which has been developed for
+          online submission and monitoring of the proposals submitted by the proponents</div>
+        <div class="ticker__item"><b>Did you know ?</b> Proponents can know approval require without login</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
 <app-parivesh-map [MapData]="{ESRIObj_}"></app-parivesh-map>

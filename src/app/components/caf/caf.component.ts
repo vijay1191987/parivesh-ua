@@ -35,10 +35,12 @@ export class CafComponent implements OnInit {
   counter: number = 0;
   finalIntResult: any = [];
   adminBoundary: any = {};
+  loaderFlag: any = false;
 
   constructor(private parivesh: PariveshServices) { }
 
   async ngOnInit() {
+    this.loaderFlag = true;
     _this = this;
     this.ESRIObj_ = this.ESRIObject;
     this.PariveshGIS = await this.ESRIObject;
@@ -46,8 +48,10 @@ export class CafComponent implements OnInit {
       this.qsData = this.qsData;
       this._createuserKMLLayer();
     }
-    else
+    else {
+      this.loaderFlag = false;
       alert("Request parameters does not match!");
+    }
   }
 
   async _createuserKMLLayer() {
@@ -86,13 +90,16 @@ export class CafComponent implements OnInit {
       console.log("Error in OKM#### " + error.code + "::::::::" + error.message);
       return error.response;
     });
-    if (_okmResponse.data === null || _okmResponse.status == 404)
+    if (_okmResponse.data === null || _okmResponse.status == 404) {
+      this.loaderFlag = false;
       alert("Unable to fetch document!! Please try after sometime.");
+    }
     else {
       const _geoJson = toGeoJSON.kml(_okmResponse.data);
       //KML Total Features
       app.KMLData = checkKMLGEOJSON(_geoJson);
       if (app.KMLData.hasPointData || app.KMLData.features.length == 0) {
+        this.loaderFlag = false;
         alert("KML is not according to SOP");
       }
       else {
@@ -128,7 +135,7 @@ export class CafComponent implements OnInit {
           return;
         }
         else if (_response.features.length == 0) {
-          _this.outofIndiaFlag = true;
+          _this.outofIndiaFlag = false;
           alert("Project Location Falling Out of India Boundary.");
           let f = await createKMLGraphics(app.KMLData, this.qsData, null);
           this._customeGL = f.GL;
@@ -138,10 +145,9 @@ export class CafComponent implements OnInit {
             target: f.GL.graphics.items,
             zoom: 16
           });
-          this.kmlIntersection();
         }
         else {
-          _this.outofIndiaFlag = true;
+          _this.outofIndiaFlag = false;
           alert("Project Location Falling Out of India Boundary.");
         }
       }
@@ -223,6 +229,7 @@ export class CafComponent implements OnInit {
                   this.saveKmlIntersectionData(response, this._customeGL.graphics.items[0]);
                 }
                 else {
+                  this.loaderFlag = false;
                   alert("Project Location Falling Out of India Boundary.");
                   break;
                 }
@@ -230,6 +237,7 @@ export class CafComponent implements OnInit {
             }
           }
           else {
+            this.loaderFlag = false;
             alert("Project Location Falling Out of India Boundary.");
             return;
           }
@@ -310,6 +318,8 @@ export class CafComponent implements OnInit {
       this.finalIntResult = [...this.finalIntResult, ...geoDataArr];
     if (this.counter == this._customeGL.graphics.items.length) {
       const res = await saveInterSectionResults(this.finalIntResult);
+      console.log("data successfully inserted....");
+      this.loaderFlag = false;
     }
   }
 }
