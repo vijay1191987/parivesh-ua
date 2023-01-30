@@ -126,14 +126,6 @@ export class PariveshMapComponent implements OnInit {
     this.PariveshGIS.ArcView.ui.add(layerListExpand, "bottom-right");
   }
 
-  //  bottom sheet
-  openBottomSheet(): void {
-    this.bottomSheet.open(ToolResultsComponent, {
-      hasBackdrop: true,
-      closeOnNavigation: false,
-      disableClose: true,
-    });
-  }
 
   baseLayer() {
     this.mapLayer = !this.mapLayer;
@@ -141,6 +133,7 @@ export class PariveshMapComponent implements OnInit {
 
   handleBasemapEvent(event: any) {
     changeBaseMap(event, this.PariveshGIS.ArcMap);
+    this.mapLayer = false;
   }
 
   handleMapToolButtons(event: any) {

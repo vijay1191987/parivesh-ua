@@ -3,6 +3,8 @@ import { LayerNode } from './../layers/layers.component'
 import { OkmUrl } from "../gisHelper/localConfigs";
 import { queryOKM, checkKMLGEOJSON, createKMLGraphics, _TextSymbol, getProposalDetails, groupByJsonData } from "./../gisHelper";
 import { PariveshServices } from 'src/app/services/GISLayerMasters.service';
+import { ToolResultsComponent } from "./../tool-results/tool-results.component";
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
 
 declare const toGeoJSON: any;
 const app: any = {};
@@ -20,7 +22,7 @@ export class DssToolsComponent {
   qsData: any = {};
 
 
-  constructor(private parivesh: PariveshServices) { }
+  constructor(private parivesh: PariveshServices, private bottomSheet: MatBottomSheet) { }
 
   public _createTreeChildren(_data: any) {
     return _data.map((e: any, i: any) => {
@@ -29,6 +31,16 @@ export class DssToolsComponent {
       return v;
     });
   }
+
+  //  bottom sheet
+  openBottomSheet(): void {
+    this.bottomSheet.open(ToolResultsComponent, {
+      hasBackdrop: true,
+      closeOnNavigation: false,
+      disableClose: true,
+    });
+  }
+
   async ngOnInit() {
     this.ESRIObj_ = this.ESRIObject;
     this.PariveshGIS = await this.ESRIObject;

@@ -10,7 +10,9 @@ body {
 .mat-bottom-sheet-container {
   padding: 0px !important;
   min-width: 100vw !important;
+  max-height: 54vh !important;
 }
+
 .mat-bottom-sheet-container .mat-nav-list .mat-list-item {
   margin-bottom: 10px;
 }
@@ -20,16 +22,19 @@ body {
   font-size: 44px;
   text-align: center;
 }
+
 .mat-bottom-sheet-container .fa-facebook-square {
   color: #425f9c;
 }
+
 .mat-bottom-sheet-container .fa-twitter {
   color: #1da1f2;
 }
+
 .mat-bottom-sheet-container .fa-instagram {
   color: #f75240;
 }
+
 .mat-bottom-sheet-container .fa-linkedin {
   color: #2277b5;
 }
-

@@ -134,7 +134,6 @@
     <a href="javascript:void(0);" class="toogle-icon" (click)="shouldShow = !shouldShow">
       <i class="fas fa-chevron-up" style="z-index: 9;"></i>
     </a>
-    <button style="position: absolute;left: 557px;bottom: 8px;" mat-raised-button (click)="openBottomSheet()" color="primary">Results</button>
   </div>
   <ul class="mx-auto bottom-toolbar" [ngClass]="{show: shouldShow, hide: !shouldShow}">
     <app-layers [MapData]="{ESRIObj_}"></app-layers>

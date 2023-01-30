@@ -1,6 +1,8 @@
 <!--For DSS Tools-->
 <app-search></app-search>
-<app-parivesh-map [MapData]="{ESRIObj_}">    
+<app-parivesh-map [MapData]="{ESRIObj_}">
+  <button style="bottom: 8px;" mat-raised-button (click)="openBottomSheet()"
+  color="primary">Results</button>
     <app-swipe></app-swipe>
     <app-query-builder></app-query-builder>
     <app-measure></app-measure>

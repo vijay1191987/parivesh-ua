@@ -18,7 +18,8 @@ const g = { version: 'next', css: true, dojoConfig: dojoConfig };
 export const createGISInstance = async (_container: any) => {
   const [Basemap, Map, MapView, esriConfig, TileLayer] = await loadModules(["esri/Basemap", "esri/Map", "esri/views/MapView", "esri/config", "esri/layers/TileLayer"], g);
   const _baseMapLayer = new TileLayer({
-    url: "https://imageservice.nic.in/NIC/esri/rest/services/State/MapServer",
+     url: "https://mapservice.gov.in/mapserviceserv176/rest/services/Street/StreetMap/MapServer",
+    apiKey: NICStreetmap,
     visible: true,
     minScale: 0,
     maxScale: 0,
