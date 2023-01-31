@@ -3,8 +3,6 @@ import { LayerNode } from './../layers/layers.component'
 import { OkmUrl } from "../gisHelper/localConfigs";
 import { queryOKM, checkKMLGEOJSON, createKMLGraphics, _TextSymbol, getProposalDetails, groupByJsonData } from "./../gisHelper";
 import { PariveshServices } from 'src/app/services/GISLayerMasters.service';
-import { ToolResultsComponent } from "./../tool-results/tool-results.component";
-import { MatBottomSheet } from '@angular/material/bottom-sheet';
 
 declare const toGeoJSON: any;
 const app: any = {};
@@ -22,22 +20,13 @@ export class DssToolsComponent {
   qsData: any = {};
 
 
-  constructor(private parivesh: PariveshServices, private bottomSheet: MatBottomSheet) { }
+  constructor(private parivesh: PariveshServices) { }
 
   public _createTreeChildren(_data: any) {
     return _data.map((e: any, i: any) => {
       let v = {};
       v = { LayerName: e.uploadedname, selected: true, reqType: "DSS", LayerID: i, LegendPath: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAS0lEQVQ4jWMpyi/czsTE6MBABfDv3/8DLExMjA4dXj4c1DCwYtsWBxZqGIQMRg0cNXDUwFEDRw2EGvjv3/8DFdu2OFDDsH///h8AAJBpE3+6+WDuAAAAAElFTkSuQmCC" };
       return v;
-    });
-  }
-
-  //  bottom sheet
-  openBottomSheet(): void {
-    this.bottomSheet.open(ToolResultsComponent, {
-      hasBackdrop: true,
-      closeOnNavigation: false,
-      disableClose: true,
     });
   }
 

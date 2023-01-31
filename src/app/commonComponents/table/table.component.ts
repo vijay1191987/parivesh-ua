@@ -1,20 +1,23 @@
-import { Component, OnInit, Input, Output,EventEmitter } from '@angular/core';
-
+import { Component, OnInit, Input, Output, EventEmitter, Inject } from '@angular/core';
+import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.css']
 })
 export class TableComponent implements OnInit {
-   
-//   countries = COUNTRIES;
-@Input() HeadArray :any[] = [];
-  @Input() GridArray :any[] = []; 
+
+  //   countries = COUNTRIES;
+  HeadArray: any[] = [];
+  GridArray: any[] = [];
   @Output() onEdit = new EventEmitter<any>();
   @Output() onDelete = new EventEmitter<any>();
-  constructor() { } 
+  constructor(private bottomSheetRef: MatBottomSheetRef, @Inject(MAT_BOTTOM_SHEET_DATA) public tableData: { tableHeader: string[], rowData: string[] }) { }
 
   ngOnInit(): void {
+    console.log(this.tableData);
+    this.HeadArray = this.tableData.tableHeader;
+    this.GridArray = this.tableData.rowData;
   }
   edit(item: any) {
     console.log(item);
@@ -22,6 +25,10 @@ export class TableComponent implements OnInit {
   }
   delete(item: any) {
     //this.onDelete.emit(item);
+  }
+  closeBotton(event: MouseEvent): void {
+    event.preventDefault();
+    this.bottomSheetRef.dismiss();
   }
 }
 

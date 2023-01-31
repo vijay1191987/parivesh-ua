@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ToolResultsComponent } from './tool-results.component';
+import { ProximityComponent } from './proximity.component';
 
-describe('ToolResultsComponent', () => {
-  let component: ToolResultsComponent;
-  let fixture: ComponentFixture<ToolResultsComponent>;
+describe('ProximityComponent', () => {
+  let component: ProximityComponent;
+  let fixture: ComponentFixture<ProximityComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ToolResultsComponent ]
+      declarations: [ ProximityComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ToolResultsComponent);
+    fixture = TestBed.createComponent(ProximityComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

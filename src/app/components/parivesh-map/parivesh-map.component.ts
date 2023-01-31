@@ -1,8 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { DrawMapZoomIn, DrawMapZoomOut, changeBaseMap } from '../../ESRIMAP'
 import { loadModules } from 'esri-loader';
-import { MatBottomSheet } from '@angular/material/bottom-sheet';
-import { ToolResultsComponent } from "./../tool-results/tool-results.component";
+
+
 
 let _this: any = null;
 
@@ -32,7 +32,7 @@ export class PariveshMapComponent implements OnInit {
   ESRIObj_: any = null;
   PariveshGIS: any = {};
 
-  constructor(private bottomSheet: MatBottomSheet) {
+  constructor() {
 
   }
   async ngOnInit() {
@@ -127,6 +127,7 @@ export class PariveshMapComponent implements OnInit {
   }
 
 
+
   baseLayer() {
     this.mapLayer = !this.mapLayer;
   }
@@ -148,8 +149,11 @@ export class PariveshMapComponent implements OnInit {
       const a = document.getElementById("measureTool");
       this.PariveshGIS.ArcView.ui.add(a, "top-right");
     }
-    else if (_tool === "Extent")
-      DrawMapZoomOut(this.PariveshGIS.ArcView, undefined);
+    else if (_tool === "Extent"){
+      const kmlLayer = this.PariveshGIS.ArcMap.findLayerById('EsriUserMap');
+      this.PariveshGIS.ArcView.goTo({ target: kmlLayer.graphics.items});
+    }
+
     else if (_tool === "Previous Extent")
       this.zoomPreviousExtent();
     else if (_tool === "Next Extent")
