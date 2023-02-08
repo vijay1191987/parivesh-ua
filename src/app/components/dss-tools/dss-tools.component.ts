@@ -18,6 +18,7 @@ export class DssToolsComponent {
   ESRIObj_: object = {};
   PariveshGIS: any = {};
   qsData: any = {};
+  dssToolLayers: any;
 
 
   constructor(private parivesh: PariveshServices) { }
@@ -36,6 +37,7 @@ export class DssToolsComponent {
 
     const pData = await getProposalDetails(this.qsData);
     let layerMasters = groupByJsonData(pData.data, "docname");
+    this.dssToolLayers = layerMasters;
     let treeData: any = [];
     Object.keys(layerMasters).forEach((element: any) => {
       const data = {

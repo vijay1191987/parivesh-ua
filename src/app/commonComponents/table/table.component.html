@@ -19,9 +19,8 @@
             <div *ngIf="head.FieldName != ''">
               {{item[head.FieldName]}}
             </div>
-            <div *ngIf="head.FieldName == ''">
-              <button class="btn btn-sm btn-primary" (click)="edit(item)" style="line-height: 0.7;">Edit</button>
-              <!-- <button class="btn btn-sm btn-primary" (click)="delete(item)" style="margin-left: 10px;">Delete</button> -->
+            <div *ngIf="(head.FieldName == 'ViewButton' && item.Name !== 'NA' )">
+              <button class="btn btn-sm btn-primary" (click)="handleSelected($event,item)" style="line-height: 0.7;">View</button>
             </div>
           </td>
         </tr>

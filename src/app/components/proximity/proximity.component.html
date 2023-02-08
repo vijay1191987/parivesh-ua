@@ -1,51 +1,41 @@
 <!-- icon start -->
-<li class="nav-item" (click)="swipeIcon('swipe')">
+<li class="nav-item" (click)="proximityIcon('proximity')">
   <a class="nav-link bottom-menu-btn" aria-current="page" href="javascript:void(0);" data-bs-toggle="tooltip"
-    data-bs-placement="bottom" title="Swipe"><img src="assets/img/icon/1.svg" alt="Toolbar" /></a>
+    data-bs-placement="bottom" title="Proximity"><img src="assets/img/icon/1.svg" alt="Toolbar" /></a>
 </li>
 <!-- icon end -->
-
-<div id="swipe" class="tool-popup" [hidden]="!swipeShow">
-  <div class="tool-popup-header"> <img class="header-icon invert" src="assets/img/icon/1.svg"> Proximity Tool (Click
-    here to drag)
-
-    <i class="fas fa-caret-down close-drag-window px-2 p-1" (click)="swipeIcon('swipe')"></i>
+<div id="proximity" class="tool-popup" [hidden]="!proximityShow" style="width: 500px;top: 100px;left: 469px;">
+  <div class="tool-popup-header"> <img class="header-icon invert" src="assets/img/icon/1.svg"> Proximity Tool (Click here to drag)
+    <i class="fas fa-caret-down close-drag-window px-2 p-1" (click)="proximityIcon('swipe')"></i>
   </div>
-
-  <div class="tool-popup-inner">
+  <div class="" style="background: #fff;  padding: 20px 20px;  max-height: 340px;overflow:hidden">
     <form class="">
       <div class="mb-3">
         <label class="mb-1" for="">Source Layer: </label>
-        <select class="form-select" id="">
-          <option>Select</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-        </select>
+        <ng-multiselect-dropdown *ngIf="refresh" [placeholder]="'Select KML Layer'" [settings]="dropdownSettings_1"
+          [data]="proposalAllKMLs" [(ngModel)]="selectedSourceLayer" (onSelect)="onItemSelect($event)
+        ">
+        </ng-multiselect-dropdown>
       </div>
       <div class="mb-3">
         <label class="mb-1" for="">Target Layer:</label>
-        <select class="form-select" id="">
-          <option>Select</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-        </select>
-      </div>
-      <div class="mb-3">
-        <label class="mb-1" for="">Layer 1</label>
-        <select class="form-select" id="">
-          <option>Select</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-        </select>
+        <ng-multiselect-dropdown [placeholder]="'Select Decision Layers'" [settings]="dropdownSettings"
+          [data]="decisionLayers" [(ngModel)]="selectedItems_DecisionLayers"
+          (onSelectAll)="onSelectAll($event)" (onSelect)="onTargetlayerSelect($event)">
+        </ng-multiselect-dropdown>
       </div>
     </form>
-  </div>
-  <div class="tool-popup-footer text-end">
-    <button type="button" class="btn btn-link me-2">Reset</button>
-    <button type="button" class="btn btn-tool-popup" (click)="openBottomSheet
+    <div class="alert alert-danger" role="alert" style="font-size: x-small;">
+      <b>Disclaimer :</b>Forest data for Arunachal Pradesh, Assam, Himachal Pradesh, Meghalaya, Mizoram, Nagaland and
+      Uttar Pradesh is Partially available. Forest data for Ladakh, Lakshdweep, Manipur, Bihar and Punjab not available.
+    </div>
+    <div>
+      <button type="button" id="proxiBuffer" class="btn btn-sm btn-primary" (click)="openBottomSheet
       ()">Execute</button>
+      <button class="btn btn-sm btn-danger mx-2" id="clearFilter" type="submit" (click)="clearProximityfiltr()">
+        Clear
+      </button>
+      <!-- <button class="btn btn-sm btn-success " title="Download Report">Report</button> -->
+    </div>
   </div>
 </div>

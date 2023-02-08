@@ -36,10 +36,14 @@ export class CafComponent implements OnInit {
   finalIntResult: any = [];
   adminBoundary: any = {};
   loaderFlag: any = false;
+  btnProceed: any;
+
 
   constructor(private parivesh: PariveshServices) { }
 
   async ngOnInit() {
+    this.btnProceed = window.parent.document.getElementById('btn-proceed');
+    this.btnProceed.disabled = true;
     this.loaderFlag = true;
     _this = this;
     this.ESRIObj_ = this.ESRIObject;
@@ -51,6 +55,7 @@ export class CafComponent implements OnInit {
     else {
       this.loaderFlag = false;
       alert("Request parameters does not match!");
+      this.btnProceed.disabled = true;
     }
   }
 
@@ -93,6 +98,7 @@ export class CafComponent implements OnInit {
     if (_okmResponse.data === null || _okmResponse.status == 404) {
       this.loaderFlag = false;
       alert("Unable to fetch document!! Please try after sometime.");
+      this.btnProceed.disabled = true;
     }
     else {
       const _geoJson = toGeoJSON.kml(_okmResponse.data);
@@ -101,6 +107,7 @@ export class CafComponent implements OnInit {
       if (app.KMLData.hasPointData || app.KMLData.features.length == 0) {
         this.loaderFlag = false;
         alert("KML is not according to SOP");
+        this.btnProceed.disabled = true;
       }
       else {
         // check Out of India Boundery
@@ -145,10 +152,12 @@ export class CafComponent implements OnInit {
             target: f.GL.graphics.items,
             zoom: 16
           });
+          this.btnProceed.disabled = true;
         }
         else {
           _this.outofIndiaFlag = false;
           alert("Project Location Falling Out of India Boundary.");
+          this.btnProceed.disabled = true;
         }
       }
     }
@@ -231,6 +240,7 @@ export class CafComponent implements OnInit {
                 else {
                   this.loaderFlag = false;
                   alert("Project Location Falling Out of India Boundary.");
+                  this.btnProceed.disabled = true;
                   break;
                 }
               }
@@ -239,6 +249,7 @@ export class CafComponent implements OnInit {
           else {
             this.loaderFlag = false;
             alert("Project Location Falling Out of India Boundary.");
+            this.btnProceed.disabled = true;
             return;
           }
           if (subDistResult.features.length > 0)
@@ -271,7 +282,6 @@ export class CafComponent implements OnInit {
     if (_gisData.features.length > 0) {
       for (let i = 0; i < _gisData.features.length; i++) {
         let geoData: any = {};
-
         geoData.patchId = _geometry.attributes.patch_id;
         geoData.area = _geometry.attributes.Area != undefined ? _geometry.attributes.Area : '';
         geoData.length = _geometry.attributes.Length;
@@ -320,6 +330,7 @@ export class CafComponent implements OnInit {
       const res = await saveInterSectionResults(this.finalIntResult);
       console.log("data successfully inserted....");
       this.loaderFlag = false;
+      this.btnProceed.disabled = false;
     }
   }
 }

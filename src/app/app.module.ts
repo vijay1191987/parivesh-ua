@@ -30,6 +30,7 @@ import { CafComponent } from './components/caf/caf.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { KyaComponent } from './components/kya/kya.component';
 import { ProximityComponent } from './components/proximity/proximity.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 const _routes: Routes = [
   { path: '', component: PariveshMapComponent, title: 'Parivesh GIS' },
@@ -74,7 +75,8 @@ const _routes: Routes = [
     DemoMaterialModule,
     FormsModule,
     NgOptimizedImage,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgMultiSelectDropDownModule.forRoot()
   ],
   // ,{ provide: APP_BASE_HREF, useValue: '/apps/' },
   providers: [{ provide: APP_BASE_HREF, useValue: '/apps/' }, PariveshServices, LayersComponent],
