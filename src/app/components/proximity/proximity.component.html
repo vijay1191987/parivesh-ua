@@ -8,7 +8,7 @@
   <div class="tool-popup-header"> <img class="header-icon invert" src="assets/img/icon/1.svg"> Proximity Tool (Click here to drag)
     <i class="fas fa-caret-down close-drag-window px-2 p-1" (click)="proximityIcon('swipe')"></i>
   </div>
-  <div class="" style="background: #fff;  padding: 20px 20px;  max-height: 340px;overflow:hidden">
+  <div class="tool-popup-inner">
     <form class="">
       <div class="mb-3">
         <label class="mb-1" for="">Source Layer: </label>
@@ -21,7 +21,9 @@
         <label class="mb-1" for="">Target Layer:</label>
         <ng-multiselect-dropdown [placeholder]="'Select Decision Layers'" [settings]="dropdownSettings"
           [data]="decisionLayers" [(ngModel)]="selectedItems_DecisionLayers"
-          (onSelectAll)="onSelectAll($event)" (onSelect)="onTargetlayerSelect($event)">
+          (onSelectAll)="onSelectAll($event)" (onSelect)="onTargetlayerSelect($event)"
+          (onDeSelect)="onItemDeSelect($event)"
+          >
         </ng-multiselect-dropdown>
       </div>
     </form>

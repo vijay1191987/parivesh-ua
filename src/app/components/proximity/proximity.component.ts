@@ -33,6 +33,44 @@ export class ProximityComponent implements OnInit {
   refresh: boolean = false;
   selectedSourceLayer: any = [];
   selectedItems_DecisionLayers: any = [];
+  headArray = [
+    { 'Head': 'Source', 'FieldName': 'Source' },
+    { 'Head': 'Name', 'FieldName': 'Name' },
+    { 'Head': 'Distance', 'FieldName': 'Distance' },
+    { 'Head': 'Action', 'FieldName': 'ViewButton' }
+  ];
+  dropdownSettings_1: IDropdownSettings = {
+    singleSelection: true,
+    idField: 'item_id',
+    textField: 'item_text',
+    selectAllText: 'Select All',
+    unSelectAllText: 'UnSelect All',
+    itemsShowLimit: 5,
+    allowSearchFilter: false,
+    closeDropDownOnSelection: true,
+    //allowRemoteDataSearch: true
+  };
+
+  dropdownSettings: IDropdownSettings = {
+    singleSelection: false,
+    idField: 'item_id',
+    textField: 'item_text',
+    selectAllText: 'Select All',
+    unSelectAllText: 'UnSelect All',
+    itemsShowLimit: 5,
+    allowSearchFilter: false,
+    closeDropDownOnSelection: true
+  };
+
+  decisionLayers: any = [
+    { item_id: "Enviorenmentlayer", item_text: 'ESZ Layer' },
+    { item_id: "Forest", item_text: 'Forest Layer' },
+    { item_id: "pawll", item_text: 'PA WLL' },
+    { item_id: "school", item_text: 'School' },
+    { item_id: "parivesh1ec", item_text: 'Environment Clearance' },
+    { item_id: "parivesh1fcab", item_text: 'Forest Clearances - Diversion & Renewal of Lease on Forest Land' },
+    { item_id: "parivesh1fcc", item_text: 'Forest Clearances - For seeking prior approval for exploration and Survey' }
+  ]
 
   PariveshGIS: any = {};
   usersList: any[] = [];
@@ -113,59 +151,16 @@ export class ProximityComponent implements OnInit {
     this.PariveshGIS.ArcMap.addMany([Enviorenmentlayer, Forest_0, Protectarealayer_0, school, Environmentclearance, forestclearanceformab, forestclearanceformc]);
   }
 
-
   ngOnChanges(changes: SimpleChanges) {
-    if (Object.keys(this.dssLayerTool.dssToolLayers).length != 0 || typeof this.dssLayerTool.dssToolLayers != undefined) {
-      for (let index = 0; index < this.dssLayerTool.dssToolLayers.FC_KML.length; index++) {
-        const f = { item_id: index, item_text: this.dssLayerTool.dssToolLayers.FC_KML[index].uploadedname };
-        this.proposalAllKMLs.push(f);
-        this.refresh = true;
+    if (this.dssLayerTool.dssToolLayers != undefined) {
+      if (Object.keys(this.dssLayerTool.dssToolLayers).length != 0 || typeof this.dssLayerTool.dssToolLayers != undefined) {
+        for (let index = 0; index < this.dssLayerTool.dssToolLayers.FC_KML.length; index++) {
+          const f = { item_id: index, item_text: this.dssLayerTool.dssToolLayers.FC_KML[index].uploadedname };
+          this.proposalAllKMLs.push(f);
+          this.refresh = true;
+        }
       }
     }
-  }
-
-
-
-
-  dropdownSettings_1: IDropdownSettings = {
-    singleSelection: true,
-    idField: 'item_id',
-    textField: 'item_text',
-    selectAllText: 'Select All',
-    unSelectAllText: 'UnSelect All',
-    itemsShowLimit: 5,
-    allowSearchFilter: false,
-    closeDropDownOnSelection: true,
-    //allowRemoteDataSearch: true
-  };
-
-  dropdownSettings: IDropdownSettings = {
-    singleSelection: false,
-    idField: 'item_id',
-    textField: 'item_text',
-    selectAllText: 'Select All',
-    unSelectAllText: 'UnSelect All',
-    itemsShowLimit: 5,
-    allowSearchFilter: false,
-    closeDropDownOnSelection: true
-  };
-
-  decisionLayers: any = [
-    { item_id: "Enviorenmentlayer", item_text: 'ESZ Layer' },
-    { item_id: "Forest", item_text: 'Forest Layer' },
-    { item_id: "pawll", item_text: 'PA WLL' },
-    { item_id: "school", item_text: 'School' },
-    { item_id: "parivesh1ec", item_text: 'Environment Clearance' },
-    { item_id: "parivesh1fcab", item_text: 'Forest Clearances - Diversion & Renewal of Lease on Forest Land' },
-    { item_id: "parivesh1fcc", item_text: 'Forest Clearances - For seeking prior approval for exploration and Survey' }
-  ]
-
-  onItemSelect(data: any) {
-    const _gl = this.PariveshGIS.ArcMap.layers.items.filter(function (_d: any) {
-      if (_d.title === data.item_text)
-        return _d;
-    });
-    this.PariveshGIS.ArcView.goTo({ target: _gl[0].graphics.items[0].geometry.extent.expand(1.6) });
   }
 
   async calculateProximityResult(proximityLayer: any) {
@@ -240,6 +235,21 @@ export class ProximityComponent implements OnInit {
       }
     });
   }
+
+  onItemSelect(data: any) {
+    const _gl = this.PariveshGIS.ArcMap.layers.items.filter(function (_d: any) {
+      if (_d.title === data.item_text)
+        return _d;
+    });
+    this.PariveshGIS.ArcView.goTo({ target: _gl[0].graphics.items[0].geometry.extent.expand(1.6) });
+  }
+  onItemDeSelect(data: any) {
+    this.ProxidisplayResultInt = [];
+    this.selectedItems_DecisionLayers.forEach((element: any) => {
+      this.calculateProximityResult(element.item_id);
+    });
+  }
+
   onSelectAll(items: any) {
     this.ProxidisplayResultInt = [];
     items.forEach((element: any) => {
@@ -249,31 +259,37 @@ export class ProximityComponent implements OnInit {
 
   onTargetlayerSelect(items: any) {
     this.ProxidisplayResultInt = [];
-    this.calculateProximityResult(items.item_id);
+    if (this.selectedItems_DecisionLayers.length > 1) {
+      this.selectedItems_DecisionLayers.forEach((element: any) => {
+        this.calculateProximityResult(element.item_id);
+      });
+    }
+    else {
+      this.calculateProximityResult(items.item_id);
+    }
   }
-  headArray = [
-    { 'Head': 'Source', 'FieldName': 'Source' },
-    { 'Head': 'Name', 'FieldName': 'Name' },
-    { 'Head': 'Distance', 'FieldName': 'Distance' },
-    { 'Head': 'Action', 'FieldName': 'ViewButton' }
-  ];
+
+
   proximityIcon(idName: any) {
     this.proximityShow = !this.proximityShow;
     this.dragable.registerDragElement(idName);
   }
+
+
 
   //  bottom sheet
   openBottomSheet() {
     if (this.selectedSourceLayer.length == 0 || this.selectedItems_DecisionLayers.length == 0) {
       alert("Please select KML.");
     }
-
-    this.bottomSheet.open(TableComponent, {
-      data: { tableHeader: this.headArray, rowData: this.ProxidisplayResultInt, pariveshGIS: this.PariveshGIS },
-      hasBackdrop: true,
-      closeOnNavigation: false,
-      disableClose: true,
-    });
+    else {
+      this.bottomSheet.open(TableComponent, {
+        data: { tableHeader: this.headArray, rowData: this.ProxidisplayResultInt, pariveshGIS: this.PariveshGIS },
+        hasBackdrop: true,
+        closeOnNavigation: false,
+        disableClose: true,
+      });
+    }
   }
 
   clearProximityfiltr() {

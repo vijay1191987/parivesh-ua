@@ -42,8 +42,8 @@ export class CafComponent implements OnInit {
   constructor(private parivesh: PariveshServices) { }
 
   async ngOnInit() {
-    this.btnProceed = window.parent.document.getElementById('btn-proceed');
-    this.btnProceed.disabled = true;
+    // this.btnProceed = window.parent.document.getElementById('btn-proceed');
+    // this.btnProceed.disabled = true;
     this.loaderFlag = true;
     _this = this;
     this.ESRIObj_ = this.ESRIObject;

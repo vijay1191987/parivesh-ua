@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   selector: 'app-search',
@@ -6,23 +7,30 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./search.component.css']
 })
 export class SearchComponent implements OnInit {
+  proposalno:any = null;
+  constructor(private activatedRoute: ActivatedRoute) {
+    // subscribe to router event
+    this.activatedRoute.queryParams.subscribe((params: Params) => {
+      this.proposalno = params['proposalno'];
+    });
 
-  constructor() { }
-
-  ngOnInit(): void {
   }
 
-  proposalBox:boolean = false; 
+  ngOnInit(): void {
+
+  }
+
+  proposalBox:boolean = false;
   menuBtn()
   {
     this.proposalBox = !this.proposalBox;
-  } 
+  }
 
-  searchBox:boolean = false; 
+  searchBox:boolean = false;
   searchInput()
   {
-    this.searchBox = !this.searchBox;
-  } 
-  
+    // this.searchBox = !this.searchBox;
+  }
+
 
 }
