@@ -38,12 +38,14 @@ export class LayersComponent implements OnInit {
   constructor(private parivesh: PariveshServices) {
     // subscribe to sender component messages
     this.parivesh.currentLayerTreeData.subscribe(layerData => {
-      const _kj = this.dataSource.data;
-      this.dataSource.data = [];
-      this.dataSource.data = [...layerData, ..._kj];
-      Object.keys(this.dataSource.data).forEach((key: any) => {
-        this.setParent(this.dataSource.data[key]);
-      });
+      if (layerData.length > 0) {
+        const _kj = this.dataSource.data;
+        this.dataSource.data = [];
+        this.dataSource.data = [...layerData, ..._kj];
+        Object.keys(this.dataSource.data).forEach((key: any) => {
+          this.setParent(this.dataSource.data[key]);
+        });
+      }
     });
   }
   ngOnDestroy() { // It's a good practice to unsubscribe to ensure no memory leaks
@@ -145,28 +147,34 @@ export class LayersComponent implements OnInit {
       layerFeature[0].visible = checked;
       this.PariveshGIS.ArcView.goTo({ target: layerFeature });
     }
-    else {
-      const uniqueLayerID = layerConfigs.LayerName.trim() + "_" + layerConfigs.glayerid + "_" + layerConfigs.layerurl.trim().charAt(layerConfigs.layerurl.trim().length - 1);
+    else if (layerConfigs.hasOwnProperty('layerurl')) {
+      let layer_ID = layerConfigs.layerurl.split('/').pop();
+      const uniqueLayerID = layerConfigs.LayerName.trim() + "_" + layerConfigs.glayerid + "_" + layer_ID;
       const _layer = this.PariveshGIS.ArcMap.findLayerById(uniqueLayerID);
       if (checked && _layer === undefined) {
-        const _params = {
+
+        const mapUrl = Number(layer_ID) ? layerConfigs.layerurl.slice(0, layerConfigs.layerurl.lastIndexOf(layer_ID)) : layerConfigs.layerurl.trim();
+        const _params:any = {
           apiKey: Bharatmaps,
-          url: layerConfigs.layerurl.trim().slice(0, -1),
+          url: mapUrl,
           copyright: layerConfigs.layer_description,
           customParameters: { token: Bharatmaps },
           legendEnabled: true,//layerConfigs.legend_enabled,
           opacity: layerConfigs.gglopacity,
           title: layerConfigs.LayerName.trim(),
           id: uniqueLayerID,
-          visible: true, //layerConfigs.glvisiblity,
-          sublayers: [
+          visible: true //layerConfigs.glvisiblity,
+        };
+        if(Number(layer_ID)){
+          _params.sublayers= [
             {
-              id: layerConfigs.layerurl.trim().charAt(layerConfigs.layerurl.trim().length - 1),
+              id: layer_ID,
               visible: true,
               popupEnabled: true
             }
           ]
-        };
+        }
+
         const _ly = await createMapImageLayer(_params);
         this.PariveshGIS.ArcMap.add(_ly);
       }

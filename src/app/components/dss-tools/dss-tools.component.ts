@@ -19,6 +19,7 @@ export class DssToolsComponent {
   PariveshGIS: any = {};
   qsData: any = {};
   dssToolLayers: any;
+  public shouldShow = false;
 
 
   constructor(private parivesh: PariveshServices) { }

@@ -14,7 +14,7 @@ let _this: any = null;
 
 export class PariveshMapComponent implements OnInit {
   qsData: object = {};
-  public shouldShow = false;
+
   mapLayer: boolean = false;
   measurementList: boolean = true;
   MeasurementValue: any;
@@ -100,6 +100,8 @@ export class PariveshMapComponent implements OnInit {
                     field.visible = false;
                   if (field.fieldName.includes('_lgd'))
                     field.visible = false;
+                  if (field.fieldName.includes('code'))
+                    field.visible = false;
                   return field;
                 });
                 _template.fieldInfos = _modified;
@@ -120,7 +122,8 @@ export class PariveshMapComponent implements OnInit {
       view: this.PariveshGIS.ArcView,
       container: document.createElement("div"),
       content: _legend,
-      label: "Map Legends"
+      label: "Map Legends",
+      expandTooltip: "Map Legends"
     });
 
     this.PariveshGIS.ArcView.ui.add(layerListExpand, "bottom-right");

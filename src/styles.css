@@ -10,7 +10,7 @@ body {
 .mat-bottom-sheet-container {
   padding: 0px !important;
   min-width: 100vw !important;
-  max-height: 54vh !important;
+  max-height: 42vh !important;
 }
 
 .mat-bottom-sheet-container .mat-nav-list .mat-list-item {

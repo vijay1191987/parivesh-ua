@@ -1,14 +1,28 @@
 <!--For DSS Tools-->
 <app-search></app-search>
 <app-parivesh-map [MapData]="{ESRIObj_}">
-  <app-swipe></app-swipe>
-  <app-query-builder></app-query-builder>
-  <app-measure></app-measure>
-  <app-buffer [MapData]="{ESRIObj_}"></app-buffer>
-  <app-xy></app-xy>
-  <app-forest></app-forest>
-  <app-spatial-search></app-spatial-search>
-  <app-print></app-print>
-  <app-screen-shot></app-screen-shot>
-  <app-proximity [MapData]="{ESRIObj_}" [dssLayerTool]="{dssToolLayers}"></app-proximity>
 </app-parivesh-map>
+
+<div class="col-md-12 bottom-toolbar-outer">
+  <div class="footer-toogle-icon" [ngClass]="{circle: shouldShow, normal: !shouldShow}">
+    <a href="javascript:void(0);" class="toogle-icon" (click)="shouldShow = !shouldShow">
+      <i class="fas fa-chevron-up" style="z-index: 9;"></i>
+    </a>
+  </div>
+  <ul class="mx-auto bottom-toolbar" [ngClass]="{show: shouldShow, hide: !shouldShow}">
+    <app-swipe></app-swipe>
+    <app-query-builder></app-query-builder>
+    <app-measure></app-measure>
+    <app-buffer [MapData]="{ESRIObj_}" [dssLayerTool]="{dssToolLayers}"></app-buffer>
+    <app-xy></app-xy>
+    <app-forest></app-forest>
+    <app-spatial-search></app-spatial-search>
+    <app-print></app-print>
+    <app-screen-shot></app-screen-shot>
+    <app-proximity [MapData]="{ESRIObj_}" [dssLayerTool]="{dssToolLayers}"></app-proximity>
+  </ul>
+
+</div>
+
+
+

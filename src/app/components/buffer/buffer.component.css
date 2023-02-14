@@ -1,0 +1,18 @@
+.custom-buffer1{
+  position: fixed;
+    z-index: 999;
+
+    width: 550px;
+
+}
+
+.example-full-width{
+  width: 100%;
+}
+
+.block {
+  display: inline-flex;
+  padding: 5px;
+  font-size: large;
+  margin: 0 5px;
+}

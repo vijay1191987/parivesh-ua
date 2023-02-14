@@ -322,6 +322,7 @@ export const createKMLGraphics = async (_kmlData: any, _qsData: any = null, _fea
   const _customeGL = new GraphicsLayer({
     UUID: _qsData.uuid,
     title: _qsData.uploadedname,
+    legendEnable:true,
     id: _featIndex === null ? "EsriUserMap" : "EsriUserMap_" + _qsData.uploadedname.replace(' ', ''),
   });
   const _textGL = new GraphicsLayer();
