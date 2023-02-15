@@ -3,6 +3,8 @@ import { DragableService } from 'src/app/services/dragable.service';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { loadModules } from 'esri-loader';
 import { fetchDataEsriService, createFillSymbol } from "./../gisHelper";
+import { PariveshServices } from 'src/app/services/GISLayerMasters.service';
+
 @Component({
   selector: 'app-buffer',
   templateUrl: './buffer.component.html',
@@ -45,7 +47,6 @@ export class BufferComponent implements OnInit {
     itemsShowLimit: 5,
     allowSearchFilter: false,
     closeDropDownOnSelection: true
-    //allowRemoteDataSearch: true
   };
 
   decisionLayers = [
@@ -64,8 +65,18 @@ export class BufferComponent implements OnInit {
   bufferDistance: any = [];
   selectedBufferUnit: any = [];
 
+  constructor(private dragable: DragableService, private parivesh: PariveshServices) {
+    this.parivesh.currentLayerTreeData.subscribe(layerData => {
+      if (layerData.length > 0) {
+        if (layerData[0].hasOwnProperty('selected')) {
 
-  constructor(private dragable: DragableService) {
+        }
+        else {
+          const decisionLayers = layerData.filter((element: any) => element.decision_layer == true);
+          console.log(decisionLayers);
+        }
+      }
+    });
   }
   async bufferIcon(idName: any) {
     this.bufferShow = !this.bufferShow;
@@ -184,7 +195,7 @@ export class BufferComponent implements OnInit {
     else {
       var input = document.getElementsByName('bufferVal');
       for (let i = 0; i < input.length; i++) {
-        const element = (<HTMLInputElement>document.getElementById('colorPra_' + Number(i+1)));
+        const element = (<HTMLInputElement>document.getElementById('colorPra_' + Number(i + 1)));
         const buffer_geom = geometryEngine.geodesicBuffer(this._sourceLayer.graphics._items[0].geometry, Number((<HTMLInputElement>input[i]).value), this.selectedBufferUnit, true);
         let polylineGraphic = new Graphic({
           geometry: buffer_geom,

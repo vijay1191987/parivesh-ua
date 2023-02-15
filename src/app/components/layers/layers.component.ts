@@ -30,40 +30,33 @@ export class LayersComponent implements OnInit {
 
   public treeControl = new NestedTreeControl<LayerNode>(node => node.children);
   public dataSource = new MatTreeNestedDataSource<LayerNode>();
-
   public searchString = '';
   public showOnlySelected = false;
   public layersShow: boolean = false;
+  public lm_promise: any[] = [];
 
   constructor(private parivesh: PariveshServices) {
     // subscribe to sender component messages
     this.parivesh.currentLayerTreeData.subscribe(layerData => {
       if (layerData.length > 0) {
-        const _kj = this.dataSource.data;
-        this.dataSource.data = [];
-        this.dataSource.data = [...layerData, ..._kj];
-        Object.keys(this.dataSource.data).forEach((key: any) => {
-          this.setParent(this.dataSource.data[key]);
-        });
+        if (layerData[0].hasOwnProperty('selected')) {
+          const _kj = this.dataSource.data;
+          this.dataSource.data = [];
+          this.dataSource.data = [...layerData, ..._kj];
+          Object.keys(this.dataSource.data).forEach((key: any) => {
+            this.setParent(this.dataSource.data[key]);
+          });
+        }
+        else
+          this.constructTreeLayer(layerData);
       }
     });
   }
   ngOnDestroy() { // It's a good practice to unsubscribe to ensure no memory leaks
     //this.subscriptionName.unsubscribe();
   }
-
-  async ngOnInit() {
-    let pOBJ: any = [];
-    let treeData: any[] = [];
-    const t: any = this.MapData;
-    if (t.ESRIObj_.hasOwnProperty("ESRIObj_"))
-      this.PariveshGIS = await t.ESRIObj_.ESRIObj_;
-    else
-      this.PariveshGIS = await t.ESRIObj_;
-
-    const res = await getLayerMasters();
-    let layerMasters = groupByJsonData(res.data, "group_layer");
-
+  public constructTreeLayer(_ld: any) {
+    let layerMasters = groupByJsonData(_ld, "group_layer");
     Object.keys(layerMasters).map(async (_d: any) => {
       const myPromise = new Promise((resolve, reject) => {
         layerMasters[_d].map((obj: any) => {
@@ -91,9 +84,20 @@ export class LayersComponent implements OnInit {
           });
         });
       });
-      pOBJ.push(myPromise);
+      this.lm_promise.push(myPromise);
     });
-    Promise.all(pOBJ).then((values: any) => {
+  }
+
+  async ngOnInit() {
+    this.parivesh.getLayerMasters();
+    let treeData: any[] = [];
+    const t: any = this.MapData;
+    if (t.ESRIObj_.hasOwnProperty("ESRIObj_"))
+      this.PariveshGIS = await t.ESRIObj_.ESRIObj_;
+    else
+      this.PariveshGIS = await t.ESRIObj_;
+
+    Promise.all(this.lm_promise).then((values: any) => {
       values.forEach((_a: any) => {
         const data = { LayerName: _a.node[0].group_layer.trim(), LayerID: _a.node[0].glayerid, children: _a.node };
         treeData.push(data);
@@ -152,9 +156,8 @@ export class LayersComponent implements OnInit {
       const uniqueLayerID = layerConfigs.LayerName.trim() + "_" + layerConfigs.glayerid + "_" + layer_ID;
       const _layer = this.PariveshGIS.ArcMap.findLayerById(uniqueLayerID);
       if (checked && _layer === undefined) {
-
-        const mapUrl = Number(layer_ID) ? layerConfigs.layerurl.slice(0, layerConfigs.layerurl.lastIndexOf(layer_ID)) : layerConfigs.layerurl.trim();
-        const _params:any = {
+        const mapUrl = Number.isInteger(layer_ID) ? layerConfigs.layerurl.slice(0, layerConfigs.layerurl.lastIndexOf(layer_ID)) : layerConfigs.layerurl.trim();
+        const _params: any = {
           apiKey: Bharatmaps,
           url: mapUrl,
           copyright: layerConfigs.layer_description,
@@ -165,8 +168,8 @@ export class LayersComponent implements OnInit {
           id: uniqueLayerID,
           visible: true //layerConfigs.glvisiblity,
         };
-        if(Number(layer_ID)){
-          _params.sublayers= [
+        if (Number.isInteger(layer_ID)) {
+          _params.sublayers = [
             {
               id: layer_ID,
               visible: true,
@@ -174,7 +177,6 @@ export class LayersComponent implements OnInit {
             }
           ]
         }
-
         const _ly = await createMapImageLayer(_params);
         this.PariveshGIS.ArcMap.add(_ly);
       }
