@@ -156,7 +156,7 @@ export class LayersComponent implements OnInit {
       const uniqueLayerID = layerConfigs.LayerName.trim() + "_" + layerConfigs.glayerid + "_" + layer_ID;
       const _layer = this.PariveshGIS.ArcMap.findLayerById(uniqueLayerID);
       if (checked && _layer === undefined) {
-        const mapUrl = Number.isInteger(layer_ID) ? layerConfigs.layerurl.slice(0, layerConfigs.layerurl.lastIndexOf(layer_ID)) : layerConfigs.layerurl.trim();
+        const mapUrl = !isNaN(layer_ID) ? layerConfigs.layerurl.slice(0, layerConfigs.layerurl.lastIndexOf(layer_ID)) : layerConfigs.layerurl.trim();
         const _params: any = {
           apiKey: Bharatmaps,
           url: mapUrl,
@@ -168,7 +168,7 @@ export class LayersComponent implements OnInit {
           id: uniqueLayerID,
           visible: true //layerConfigs.glvisiblity,
         };
-        if (Number.isInteger(layer_ID)) {
+        if (!isNaN(layer_ID)) {
           _params.sublayers = [
             {
               id: layer_ID,

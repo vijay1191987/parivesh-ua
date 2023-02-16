@@ -5,25 +5,25 @@
 </li>
 <!-- icon end -->
 <div id="proximity" class="tool-popup" [hidden]="!proximityShow" style="width: 500px;top: 100px;left: 469px;">
-  <div class="tool-popup-header"> <img class="header-icon invert" src="assets/img/icon/1.svg"> Proximity Tool (Click here to drag)
+  <div class="tool-popup-header"> <img class="header-icon invert" src="assets/img/icon/1.svg"> Proximity Tool (Click
+    here to drag)
     <i class="fas fa-caret-down close-drag-window px-2 p-1" (click)="proximityIcon('swipe')"></i>
   </div>
   <div class="tool-popup-inner">
     <form class="">
       <div class="mb-3">
         <label class="mb-1" for="">Source Layer: </label>
-        <ng-multiselect-dropdown *ngIf="refresh" [placeholder]="'Select KML Layer'" [settings]="dropdownSettings_1"
-          [data]="proposalAllKMLs" [(ngModel)]="selectedSourceLayer" (onSelect)="onItemSelect($event)
+        <ng-multiselect-dropdown *ngIf="proposalAllKMLs.length" [placeholder]="'Select KML Layer'"
+          [settings]="dropdownSettings_1" [data]="proposalAllKMLs" [(ngModel)]="selectedSourceLayer" (onSelect)="onItemSelect($event)
         ">
         </ng-multiselect-dropdown>
       </div>
       <div class="mb-3">
         <label class="mb-1" for="">Target Layer:</label>
-        <ng-multiselect-dropdown [placeholder]="'Select Decision Layers'" [settings]="dropdownSettings"
-          [data]="decisionLayers" [(ngModel)]="selectedItems_DecisionLayers"
+        <ng-multiselect-dropdown *ngIf="decisionLayers.length" [placeholder]="'Select Decision Layers'"
+          [settings]="dropdownSettings" [data]="decisionLayers" [(ngModel)]="selectedItems_DecisionLayers"
           (onSelectAll)="onSelectAll($event)" (onSelect)="onTargetlayerSelect($event)"
-          (onDeSelect)="onItemDeSelect($event)"
-          >
+          (onDeSelect)="onItemDeSelect($event)">
         </ng-multiselect-dropdown>
       </div>
     </form>

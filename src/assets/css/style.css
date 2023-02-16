@@ -1,30 +1,33 @@
-/* rd css start */
-
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
 
 body {
     font-family: 'Poppins', sans-serif !important;
     font-size: 15px;
+    margin: 0;
 }
-.bg-light{
+
+.bg-light {
     background: #EEEEEE !important;
 }
+
 li.nav-item:last-child {
     border: none;
 }
+
 /*map-css-start*/
-.font-15{
+.font-15 {
     font-size: 15px;
 }
 
 .first-item:before {
-   content: '';
-   position: absolute;
-   height: 81%;
-   width: 2px;
-   background: #FFBD00;
-   right: -5px;
-   top: 6px;
+    content: '';
+    position: absolute;
+    height: 81%;
+    width: 2px;
+    background: #FFBD00;
+    right: -5px;
+    top: 6px;
 }
 
 .bottom-toolbar {
@@ -48,17 +51,17 @@ li.nav-item:last-child {
 
 .bottom-toolbar .nav-link .fas {
     font-size: 24px;
-   width: 56px;
-   height: 56px;
-   color: #fff;
-   background: #08950F;
-   text-align: center;
-   display: grid;
-   place-content: center;
-   border-radius: 8px;
-   padding: 5px;
-   margin: 0 auto;
-   transition: 0.25s;
+    width: 56px;
+    height: 56px;
+    color: #fff;
+    background: #08950F;
+    text-align: center;
+    display: grid;
+    place-content: center;
+    border-radius: 8px;
+    padding: 5px;
+    margin: 0 auto;
+    transition: 0.25s;
 }
 
 .bottom-toolbar .nav-link:hover .fas {
@@ -108,6 +111,7 @@ li.nav-item:last-child {
 .tooltip {
     font-size: 10px;
 }
+
 .esri-view .esri-view-surface--inset-outline:focus::after {
     outline: auto 0px Highlight !important;
     outline: auto 0px -webkit-focus-ring-color !important;
@@ -118,6 +122,7 @@ li.nav-item:last-child {
     justify-content: center;
     bottom: 50px;
 }
+
 .offcanvas-start {
     width: 350px !important;
     top: 90px !important;
@@ -155,46 +160,50 @@ li.nav-item:last-child {
 .offcanvas-body::-webkit-scrollbar-thumb {
     background: #ffd080 !important;
 }
-  .esri-ui-top-left {
-   bottom: auto !important;
-   right: 0 !important;
-   top: 0 !important;
-   left: auto !important;
+
+.esri-ui-top-left {
+    bottom: auto !important;
+    right: 0 !important;
+    top: 0 !important;
+    left: auto !important;
 }
 
 .blur-box {
-   background-color: #ffffff !important;
-   /* backdrop-filter: blur(7px);
+    background-color: #ffffff !important;
+    /* backdrop-filter: blur(7px);
    border-radius: 10px; */
-   border: 2px solid #ffffff;
-   box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 18%) !important;
+    border: 2px solid #ffffff;
+    box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 18%) !important;
 }
 
 #change-map-layer {
-       position: absolute;
-   bottom: 50px;
-   left: 20px;
-   right: auto;
-   z-index: 7;
-   border-radius: 10px;
+    position: absolute;
+    bottom: 50px;
+    left: 20px;
+    right: auto;
+    z-index: 7;
+    border-radius: 10px;
 }
 
 #change-map-layer ul li img {
-   width: 64px;
-   height: 64px;
-   object-fit: cover;
-   border-radius: 10px;
-   transition: 0.25s;
-   /* box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important; */
-   border: 2px solid #ffffff69;
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    border-radius: 10px;
+    transition: 0.25s;
+    /* box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important; */
+    border: 2px solid #ffffff69;
 }
+
 #change-map-layer ul li:hover img {
     border: 2px solid #00000069;
     box-shadow: 0 1rem 1rem rgb(0 0 0 / 27%) !important;
- }
+}
+
 .bb2 ul li a {
     transition: 0.25s;
 }
+
 .bb2 ul li:hover a {
     transform: scale(1.03);
 }
@@ -204,19 +213,19 @@ li.nav-item:last-child {
     margin-bottom: 0;
     gap: 9px;
     display: grid;
-    grid-template-columns: repeat(3,1fr);
+    grid-template-columns: repeat(3, 1fr);
 }
 
 #change-map-layer ul li {
-   margin: 0px 0px;
-   text-align: center;
+    margin: 0px 0px;
+    text-align: center;
 }
 
 #change-map-layer ul li a {
     position: relative;
-   text-decoration: none;
-   color: #000;
-   display: block;
+    text-decoration: none;
+    color: #000;
+    display: block;
 }
 
 #change-map-layer ul li a p {
@@ -234,12 +243,12 @@ li.nav-item:last-child {
 }
 
 .blur-box.bb2 {
-   left: 117px !important;
-   transform: translateX(0px);
-   transition: 0.45s;
-   opacity: 1;
-   visibility: visible;
-   display: block;
+    left: 117px !important;
+    transform: translateX(0px);
+    transition: 0.45s;
+    opacity: 1;
+    visibility: visible;
+    display: block;
 }
 
 [hidden] {
@@ -247,41 +256,44 @@ li.nav-item:last-child {
     opacity: 0;
     visibility: hidden;
 }
+
 .blur-box.bb2.show {
-   transform: translateX(0px) !important;
-   transition: 0.45s;
-   opacity: 1 !important;
-   visibility: visible !important;
-   display: block !important;
+    transform: translateX(0px) !important;
+    transition: 0.45s;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
 }
+
 /*map-css-end*/
 
-.esri-attribution{
-   display: none !important;
+.esri-attribution {
+    display: none !important;
 }
 
 
 /* old dss css start  */
 
-.rdsidebar{
+.rdsidebar {
     left: 0;
     width: 300px;
-    border-right: 1px solid rgba(0,0,0,.2);
+    border-right: 1px solid rgba(0, 0, 0, .2);
     transform: translateX(-100%);
     visibility: hidden;
     position: fixed !important;
     top: 115px !important;
     height: 100%;
     transition: 0.25s;
-     }
-     .rdsidebar.sidebar-show {
+}
+
+.rdsidebar.sidebar-show {
     transform: none;
     visibility: visible;
     transition: 0.25s;
 }
 
 
-.btn-result{
+.btn-result {
     background: #fff;
     padding: 10px 20px;
     color: #08950F;
@@ -289,13 +301,14 @@ li.nav-item:last-child {
     border-radius: 100px;
     text-decoration: underline;
 }
-.btn.btn-result:hover{
+
+.btn.btn-result:hover {
     color: #08950F;
     background-color: #fff;
     border-color: #08950F;
 }
 
-.disable .btn-result{
+.disable .btn-result {
     background: #fff;
     padding: 10px 20px;
     color: #C4C4C4;
@@ -308,7 +321,7 @@ li.nav-item:last-child {
     font-size: 12px;
 }
 
-.btn-download{
+.btn-download {
     color: #08950F;
     font-weight: 500;
     border-radius: 100px;
@@ -316,7 +329,8 @@ li.nav-item:last-child {
     background: #fff;
     transition: 0.5s;
 }
-.btn-download:hover{
+
+.btn-download:hover {
     color: #fff !important;
     background: #08950f !important;
 }
@@ -329,22 +343,23 @@ li.nav-item:last-child {
     cursor: pointer;
 }
 
-.tool-popup{
+.tool-popup {
     position: fixed;
-z-index: 9;
-padding: 0;
-text-align: left;
-overflow: auto;
-width: 358px;
-/* height: 400px; */
-background: #FFFFFF;
-border: 1px solid #8D8D8D;
-box-shadow: 0px 0px 20px rgb(25 25 25 / 20%);
-border-radius: 8px;
-top: 135px;
-right: 5%;
-left: auto;
+    z-index: 9;
+    padding: 0;
+    text-align: left;
+    overflow: auto;
+    width: 358px;
+    /* height: 400px; */
+    background: #FFFFFF;
+    border: 1px solid #8D8D8D;
+    box-shadow: 0px 0px 20px rgb(25 25 25 / 20%);
+    border-radius: 8px;
+    top: 135px;
+    right: 5%;
+    left: auto;
 }
+
 .tool-popup .tool-popup-header {
     background-color: #EEEEEE;
     color: #000;
@@ -355,12 +370,14 @@ left: auto;
     cursor: move;
     position: relative;
 }
+
 .tool-popup-inner {
     background: #fff;
     padding: 20px 20px;
     max-height: 340px;
     overflow: auto;
 }
+
 .tool-popup:after {
     content: '';
     position: fixed;
@@ -371,6 +388,7 @@ left: auto;
     background: rgb(0 0 0 / 27%);
     z-index: -1;
 }
+
 .tool-popup-footer {
     padding: 10px 20px;
     background: white;
@@ -378,77 +396,86 @@ left: auto;
     z-index: 1;
     position: relative;
 }
+
 .header-icon {
     width: 18px;
 }
-.invert{
+
+.invert {
     filter: invert(1);
 }
-.btn-tool-popup{
-padding: 10px 20px;
-background: #08950F;
-color: #fff;
-border-radius: 100px;
+
+.btn-tool-popup {
+    padding: 10px 20px;
+    background: #08950F;
+    color: #fff;
+    border-radius: 100px;
 }
-.btn-tool-popup.disabled{
+
+.btn-tool-popup.disabled {
     color: white;
     pointer-events: none;
     background-color: #C4C4C4;
     border-color: #C4C4C4;
     opacity: 1;
 }
-.btn-link{
+
+.btn-link {
     color: #08950F;
     padding: 10px 20px;
     border-radius: 100px;
 }
-.btn.btn-link:hover{
+
+.btn.btn-link:hover {
     color: #08950F;
     background-color: #fff;
     border-color: #08950F;
 }
+
 .btn-tool-popup:hover {
     color: #08950F !important;
     background-color: #fff !important;
     border-color: #08950F !important;
 }
 
-.bg-privesh{
- background: #08950F !important;
+.bg-privesh {
+    background: #08950F !important;
 }
 
-.color-privesh{
+.color-privesh {
     color: #08950F !important;
-   }
+}
+
 /* tool-popup-css end */
 
-.z-index-999{
+.z-index-999 {
     z-index: 999 !important;
 }
 
 
-.fade-text{
+.fade-text {
     color: #BDBDBD;
 }
 
 
 /*media query Start*/
-@media screen and (max-width: 768px){
-   .navbar-nav .nav-link:before {
-       content: '';
-       position: absolute;
-       background: #ffd89d;
-       height: 2px;
-       width: 0%;
-       border-radius: 100px;
-       z-index: -1;
-       transition: 0.25s;
-       bottom: 10px;
-       margin: 0 auto;
-       left: 16px;
-       right: auto;
-   }
+@media screen and (max-width: 768px) {
+    .navbar-nav .nav-link:before {
+        content: '';
+        position: absolute;
+        background: #ffd89d;
+        height: 2px;
+        width: 0%;
+        border-radius: 100px;
+        z-index: -1;
+        transition: 0.25s;
+        bottom: 10px;
+        margin: 0 auto;
+        left: 16px;
+        right: auto;
+    }
 }
+
 /*media query End*/
 
 
@@ -461,6 +488,7 @@ border-radius: 100px;
     border-radius: 50px;
     cursor: pointer;
 }
+
 ::-webkit-scrollbar {
     width: 4px;
     background: rgb(255, 255, 255);
@@ -468,19 +496,22 @@ border-radius: 100px;
     border-radius: 50px;
     cursor: pointer;
 }
+
 ::-webkit-scrollbar-thumb {
     background: #6c6c6c;
     border-radius: 50px;
 }
+
 ::-webkit-scrollbar-thumb {
     background: #c2c2c2;
     border-radius: 50px;
 }
+
 .side-left-inner label.form-check-label {
     word-break: break-all;
 }
 
-.multiselect-dropdown .dropdown-btn{
+.multiselect-dropdown .dropdown-btn {
     padding: 0.375rem 2.25rem 0.375rem 0.75rem !important;
     -moz-padding-start: calc(0.75rem - 3px) !important;
     font-size: 1rem !important;
@@ -489,18 +520,20 @@ border-radius: 100px;
     color: #212529 !important;
     background-color: #fff !important;
     background-repeat: no-repeat !important;
-    background-position: right 0.75rem  !important;
+    background-position: right 0.75rem !important;
     background-size: 36px 12px !important;
     border: 1px solid #ced4da !important;
     border-radius: 0.375rem !important;
-    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out !important;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out !important;
     -webkit-appearance: none !important;
     appearance: none;
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e") !important;
 }
-.dropdown-multiselect__caret{
+
+.dropdown-multiselect__caret {
     display: none !important;
 }
+
 .multiselect-dropdown .dropdown-btn .selected-item {
     margin-right: 4px !important;
     margin-bottom: 2px !important;
@@ -510,3 +543,14 @@ border-radius: 100px;
 }
 
 /* rd css end */
+
+
+.mat-bottom-sheet-container {
+    padding: 0px !important;
+    min-width: 100vw !important;
+    max-height: 42vh !important;    
+}
+
+.mat-bottom-sheet-container .mat-nav-list .mat-list-item {
+    margin-bottom: 10px;
+}

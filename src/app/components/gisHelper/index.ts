@@ -322,7 +322,7 @@ export const createKMLGraphics = async (_kmlData: any, _qsData: any = null, _fea
   const _customeGL = new GraphicsLayer({
     UUID: _qsData.uuid,
     title: _qsData.uploadedname,
-    legendEnable:true,
+    legendEnable: true,
     id: _featIndex === null ? "EsriUserMap" : "EsriUserMap_" + _qsData.uploadedname.replace(' ', ''),
   });
   const _textGL = new GraphicsLayer();
@@ -642,3 +642,14 @@ export const getProposalDetails = async (_d: any) => {
       return error;
     })
 };
+
+export const getUserKMLFromTree = (node: any) => {
+  if (node.children) {
+    return node.children.map((element: any) => {
+      if (element.children)
+        return getUserKMLFromTree(element);
+      else
+        return element.LayerName;
+    });
+  }
+}

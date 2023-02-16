@@ -4,20 +4,13 @@ import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { DragableService } from 'src/app/services/dragable.service';
 import { TableComponent } from '../../commonComponents/table/table.component';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
-import { CreateEsrisymbol } from "./../gisHelper";
+import { getUserKMLFromTree } from "./../gisHelper";
 import { loadModules } from 'esri-loader';
 import { Bharatmaps } from "../gisHelper/localConfigs";
-import Query from "@arcgis/core/rest/support/Query";
+import { PariveshServices } from 'src/app/services/GISLayerMasters.service';
 let _this: any;
 let app: any = {};
 app.userKMLLayers = [];
-let Enviorenmentlayer: any;
-let Forest_0: any;
-let Protectarealayer_0: any;
-let school: any;
-let Environmentclearance: any;
-let forestclearanceformab: any;
-let forestclearanceformc: any;
 
 @Component({
   selector: 'app-proximity',
@@ -30,9 +23,16 @@ export class ProximityComponent implements OnInit {
   @Input() dssLayerTool: any;
 
   proposalAllKMLs: any = [];
-  refresh: boolean = false;
   selectedSourceLayer: any = [];
   selectedItems_DecisionLayers: any = [];
+  decisionLayers: any = [];
+  PariveshGIS: any = {};
+  usersList: any[] = [];
+  proximityShow: boolean = false;
+  proxiData: any = {};
+  proxiTargetlayer: any[] = [];
+  ProxidisplayResultInt: any[] = [];
+
   headArray = [
     { 'Head': 'Source', 'FieldName': 'Source' },
     { 'Head': 'Name', 'FieldName': 'Name' },
@@ -62,114 +62,52 @@ export class ProximityComponent implements OnInit {
     closeDropDownOnSelection: true
   };
 
-  decisionLayers: any = [
-    { item_id: "Enviorenmentlayer", item_text: 'ESZ Layer' },
-    { item_id: "Forest", item_text: 'Forest Layer' },
-    { item_id: "pawll", item_text: 'PA WLL' },
-    { item_id: "school", item_text: 'School' },
-    { item_id: "parivesh1ec", item_text: 'Environment Clearance' },
-    { item_id: "parivesh1fcab", item_text: 'Forest Clearances - Diversion & Renewal of Lease on Forest Land' },
-    { item_id: "parivesh1fcc", item_text: 'Forest Clearances - For seeking prior approval for exploration and Survey' }
-  ]
 
-  PariveshGIS: any = {};
-  usersList: any[] = [];
-  proximityShow: boolean = false;
-  proxiData: any = {};
-  proxiTargetlayer: any[] = [];
-  ProxidisplayResultInt: any[] = [];
-  constructor(private dragable: DragableService, private bottomSheet: MatBottomSheet) { }
+  constructor(private dragable: DragableService, private parivesh: PariveshServices, private bottomSheet: MatBottomSheet) {
+    this.parivesh.currentLayerTreeData.subscribe(layerData => {
+      if (layerData.length > 0) {
+        if (layerData[0].hasOwnProperty('selected')) {
+          const _data = getUserKMLFromTree(layerData[0]);
+          let userkmls = [...new Set([..._data[0], ..._data[1]])];
+          for (let index = 0; index < userkmls.length; index++) {
+            const f = { item_id: index, item_text: userkmls[index] };
+            this.proposalAllKMLs.push(f);
+          }
+        }
+        else {
+          const dl: any[] = layerData.filter((element: any) => element.decision_layer == true);
+          for (let index = 0; index < dl.length; index++) {
+            this.decisionLayers.push({ item_id: dl[index].ggllayerid, item_text: dl[index].layernm, item_url: dl[index].layerurl });
+          }
+        }
+      }
+    });
+  }
 
   async ngOnInit() {
     _this = this;
-    const [FeatureLayer] = await loadModules(["esri/layers/FeatureLayer"]);
     const t: any = this.MapData;
-    if (t.ESRIObj_.hasOwnProperty("ESRIObj_")) {
+    if (t.ESRIObj_.hasOwnProperty("ESRIObj_"))
       this.PariveshGIS = await t.ESRIObj_.ESRIObj_;
-    }
-    else {
+    else
       this.PariveshGIS = await t.ESRIObj_;
-    }
-
-    Enviorenmentlayer = new FeatureLayer({
-      url: "https://gisservrsdiv.nic.in/bharatmaps/rest/services/parivesh2/ESZ/MapServer/0",
-      apiKey: Bharatmaps,
-      id: "Enviorenmentlayer",
-      title: "ESZ",
-      visible: false
-    });
-
-    Forest_0 = new FeatureLayer({
-      url: "https://gisservrsdiv.nic.in/bharatmaps/rest/services/parivesh2/Forest/MapServer/0",
-      apiKey: Bharatmaps,
-      title: "Forest",
-      id: "Forest",
-      visible: false
-    });
-
-
-    Protectarealayer_0 = new FeatureLayer({
-      url: "https://gisservrsdiv.nic.in/bharatmaps/rest/services/parivesh2/Protected_Area/MapServer/0",
-      apiKey: Bharatmaps,
-      id: "pawll",
-      title: "Protected Area",
-      visible: false
-    });
-
-    school = new FeatureLayer({
-      url: "https://gisservrsdiv.nic.in/bharatmaps/rest/services/PanIndia/india_adminpoint/MapServer/4",
-      apiKey: Bharatmaps,
-      title: "School",
-      id: "school",
-      visible: false
-    });
-
-    Environmentclearance = new FeatureLayer({
-      url: "https://gisservrsdiv.nic.in/bharatmaps/rest/services/parivesh2/parivesh1/MapServer/0",
-      apiKey: Bharatmaps,
-      id: "parivesh1ec",
-      title: "EnvironmentClearance",
-      visible: false
-    });
-
-    forestclearanceformab = new FeatureLayer({
-      url: "https://gisservrsdiv.nic.in/bharatmaps/rest/services/parivesh2/parivesh1/MapServer/1",
-      apiKey: Bharatmaps,
-      id: "parivesh1fcab",
-      title: "ForestClearanceAB",
-      visible: false
-    });
-
-    forestclearanceformc = new FeatureLayer({
-      url: "https://gisservrsdiv.nic.in/bharatmaps/rest/services/parivesh2/parivesh1/MapServer/2",
-      apiKey: Bharatmaps,
-      id: "parivesh1fcc",
-      title: "ForestClearanceC",
-      visible: false
-    });
-
-    this.PariveshGIS.ArcMap.addMany([Enviorenmentlayer, Forest_0, Protectarealayer_0, school, Environmentclearance, forestclearanceformab, forestclearanceformc]);
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (this.dssLayerTool.dssToolLayers != undefined) {
-      if (Object.keys(this.dssLayerTool.dssToolLayers).length != 0 || typeof this.dssLayerTool.dssToolLayers != undefined) {
-        for (let index = 0; index < this.dssLayerTool.dssToolLayers.FC_KML.length; index++) {
-          const f = { item_id: index, item_text: this.dssLayerTool.dssToolLayers.FC_KML[index].uploadedname };
-          this.proposalAllKMLs.push(f);
-          this.refresh = true;
-        }
-      }
-    }
-  }
-
-  async calculateProximityResult(proximityLayer: any) {
-    const dLayer = this.PariveshGIS.ArcMap.findLayerById(proximityLayer);
+  async calculateProximityResult(dLayerID: any) {
+    const dt = this.decisionLayers.filter((element: any) => element.item_id === dLayerID);
+    let layer_ID = dt[0].item_url.split('/').pop();
+    const featUrl = !isNaN(layer_ID) ? dt[0].item_url.trim() : dt[0].item_url.trim() + '/' + dLayerID;
+    const [geometryEngine, FeatureLayer] = await loadModules(["esri/geometry/geometryEngine", "esri/layers/FeatureLayer"]);
+    const dLayer = new FeatureLayer({
+      url: featUrl,
+      apiKey: Bharatmaps,
+      visible: false
+    });
     const _sourceLayer = this.PariveshGIS.ArcMap.layers.items.filter(function (_d: any) {
       if (_d.title === _this.selectedSourceLayer[0].item_text)
         return _d;
     });
-    const [geometryEngine] = await loadModules(["esri/geometry/geometryEngine"]);
+
     const queryParams = dLayer.createQuery();
     queryParams.geometry = _sourceLayer[0].graphics._items[0].geometry;
     queryParams.distance = 10;
@@ -220,7 +158,8 @@ export class ProximityComponent implements OnInit {
             Source: dLayer.title,
             Name: _distanceArray[index].Feature,
             Distance: minValue === 0 ? "Area of Interest falls within " + _distanceArray[index].Feature + " Division." : _distanceArray[index].Distance,
-            Geom: _distanceArray[index].Geom
+            Geom: _distanceArray[index].Geom,
+            tabEnable:false
           });
         }
       }
@@ -229,7 +168,8 @@ export class ProximityComponent implements OnInit {
           {
             Source: dLayer.title,
             Name: "NA",
-            Distance: "No nearby feature found within 10 KM from area of interest"
+            Distance: "No nearby feature found within 10 KM from area of interest",
+            tabEnable:false
           }
         );
       }
@@ -268,16 +208,11 @@ export class ProximityComponent implements OnInit {
       this.calculateProximityResult(items.item_id);
     }
   }
-
-
   proximityIcon(idName: any) {
     this.proximityShow = !this.proximityShow;
     this.dragable.registerDragElement(idName);
   }
-
-
-
-  //  bottom sheet
+  //bottom sheet
   openBottomSheet() {
     if (this.selectedSourceLayer.length == 0 || this.selectedItems_DecisionLayers.length == 0) {
       alert("Please select KML.");
@@ -285,7 +220,7 @@ export class ProximityComponent implements OnInit {
     else {
       this.bottomSheet.open(TableComponent, {
         data: { tableHeader: this.headArray, rowData: this.ProxidisplayResultInt, pariveshGIS: this.PariveshGIS },
-        hasBackdrop: true,
+        hasBackdrop: false,
         closeOnNavigation: false,
         disableClose: true,
       });

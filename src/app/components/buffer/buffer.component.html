@@ -22,17 +22,16 @@
       <!--  [class.d-none]="!isSelectfeature"  show hide using change buffer dod  -->
       <div class="mb-3">
         <label class="mb-1" for="">Reference Feature</label>
-        <ng-multiselect-dropdown *ngIf="refresh" [placeholder]="'Select KML Layer'" [settings]="dropdownSettings_1"
-          [data]="proposalAllKMLs" [(ngModel)]="selectedSourceLayer" (onSelect)="onItemSelect($event)
-    ">
+        <ng-multiselect-dropdown *ngIf="proposalAllKMLs.length" [placeholder]="'Select KML Layer'"
+          [settings]="dropdownSettings_1" [data]="proposalAllKMLs" [(ngModel)]="selectedSourceLayer"
+          (onSelect)="onItemSelect($event)">
         </ng-multiselect-dropdown>
       </div>
-      <div class="mb-3">
+      <div class="mb-3" *ngIf="decisionLayers.length">
         <label class="mb-1" for="">Target Layer</label>
         <ng-multiselect-dropdown [placeholder]="'Select Decision Layers'" [settings]="dropdownSettings"
-          [data]="decisionLayers" [(ngModel)]="selectedItems_Decision" (onSelect)="onSelectDecisionLayer($event)"
-          (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onSelectAll($event)"
-          (onDeSelect)="onItemDeSelect($event)">
+          [data]="decisionLayers" [(ngModel)]="selectedItems_Decision" (onSelectAll)="onSelectAll($event)"
+          (onDeSelectAll)="onSelectAll($event)" (onDeSelect)="onItemDeSelect($event)">
         </ng-multiselect-dropdown>
       </div>
       <div class="mb-3">
