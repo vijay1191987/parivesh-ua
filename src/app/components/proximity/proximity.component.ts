@@ -158,8 +158,8 @@ export class ProximityComponent implements OnInit {
             Source: dLayer.title,
             Name: _distanceArray[index].Feature,
             Distance: minValue === 0 ? "Area of Interest falls within " + _distanceArray[index].Feature + " Division." : _distanceArray[index].Distance,
-            Geom: _distanceArray[index].Geom,
-            tabEnable:false
+            geometry: _distanceArray[index].Geom,
+            tabEnable: false
           });
         }
       }
@@ -169,7 +169,7 @@ export class ProximityComponent implements OnInit {
             Source: dLayer.title,
             Name: "NA",
             Distance: "No nearby feature found within 10 KM from area of interest",
-            tabEnable:false
+            tabEnable: false
           }
         );
       }
