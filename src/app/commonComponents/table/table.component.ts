@@ -2,8 +2,8 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 @Component({
   selector: 'app-table',
-  templateUrl: './table.component.html',
-  styleUrls: ['./table.component.css']
+  templateUrl: 'table.component.html',
+  styleUrls: ['table.component.css']
 })
 export class TableComponent implements OnInit {
   HeadArray: any[] = [];
@@ -15,7 +15,7 @@ export class TableComponent implements OnInit {
   ngOnInit(): void {
     this.HeadArray = this.tableData.tableHeader;
     this.GridArray = this.tableData.rowData;
-    this.pariveshGIS = this.tableData.pariveshGIS;  
+    this.pariveshGIS = this.tableData.pariveshGIS;
   }
 
   edit(item: any) {

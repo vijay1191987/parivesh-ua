@@ -345,11 +345,11 @@ li.nav-item:last-child {
 
 .tool-popup {
     position: fixed;
-    z-index: 9;
+    z-index: 1;
     padding: 0;
     text-align: left;
     overflow: auto;
-    width: 358px;
+    width: 400px;
     /* height: 400px; */
     background: #FFFFFF;
     border: 1px solid #8D8D8D;
@@ -548,7 +548,7 @@ li.nav-item:last-child {
 .mat-bottom-sheet-container {
     padding: 0px !important;
     min-width: 100vw !important;
-    max-height: 42vh !important;    
+    max-height: 42vh !important;
 }
 
 .mat-bottom-sheet-container .mat-nav-list .mat-list-item {

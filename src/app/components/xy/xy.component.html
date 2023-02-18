@@ -1,30 +1,38 @@
-<!-- icon start -->  
+<!-- icon start -->
 <li class="nav-item" (click)="xyIcon('xy')">
-    <a class="nav-link bottom-menu-btn" aria-current="page" href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Go to XY"><img src="assets/img/icon/5.svg" alt="Toolbar"/></a>
-</li> 
+  <a class="nav-link bottom-menu-btn" aria-current="page" href="javascript:void(0);" data-bs-toggle="tooltip"
+    data-bs-placement="bottom" title="Go to XY"><img src="assets/img/icon/5.svg" alt="Toolbar" /></a>
+</li>
 <!-- icon end -->
 
 
 <div id="xy" class="tool-popup" [hidden]="!xyShow">
-    <div class="tool-popup-header"> <img class="header-icon invert" src="assets/img/icon/3.svg"> Go to XY
-        <i class="fas fa-caret-down close-drag-window px-2 p-1"  (click)="xyIcon('xy')"></i>
-    </div> 
+  <div class="tool-popup-header"> <img class="header-icon invert" src="assets/img/icon/3.svg"> Go to XY
+    <i class="fas fa-caret-down close-drag-window px-2 p-1" (click)="xyIcon('xy')"></i>
+  </div>
 
-    <div class="tool-popup-inner">
-        <form class="">
-            <div class="mb-3">
-                <label class="mb-1" for="">Select</label>
-                <select class="form-select" id="">
-                  <option>Select</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                </select>
-              </div> 
-            </form>
-</div> 
-<div class="tool-popup-footer text-end">
-  <button type="button" class="btn btn-link me-2">Reset</button>
-  <button type="button" class="btn btn-tool-popup">Execute</button>
-</div>
+  <div class="tool-popup-inner">
+    <mat-form-field class="example-full-width">
+      <mat-label>Latitude</mat-label>
+      <input [(ngModel)]="inputLat" type="number" [errorStateMatcher]="matcher" [formControl]="inputTypeControl" matInput #lat maxlength="10"
+        placeholder="Ex. Latitude till 6 digit...">
+      <mat-hint align="end" *ngIf="lat.value.length<9">Please type 6 digit</mat-hint>
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-label>Longitude</mat-label>
+      <input [(ngModel)]="inputLong" type="number" required="true" [errorStateMatcher]="matcher" [formControl]="inputTypeControl" matInput #long
+        maxlength="10" minlength="6" placeholder="Ex. Longitude till 6 digit...">
+      <mat-hint>Errors appear instantly!</mat-hint>
+      <mat-error *ngIf="inputTypeControl.hasError('minLength') && !inputTypeControl.hasError('required')">
+        Please enter a valid email address
+      </mat-error>
+      <mat-error *ngIf="inputTypeControl.hasError('required')">
+        Latitude, Longitude are <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div class="tool-popup-footer text-end">
+    <button type="button" class="btn btn-link me-2">Reset</button>
+    <button type="button" class="btn btn-tool-popup" (click)="drawXYPoint()">Execute</button>
+  </div>
 </div>

@@ -1,12 +1,4 @@
-.custom-buffer1{
-  position: fixed;
-    z-index: 999;
-
-    width: 550px;
-
-}
-
-.example-full-width{
+.example-full-width {
   width: 100%;
 }
 

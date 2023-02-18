@@ -14,19 +14,19 @@ app.userKMLLayers = [];
 
 @Component({
   selector: 'app-proximity',
-  templateUrl: './proximity.component.html',
-  styleUrls: ['./proximity.component.css']
+  templateUrl: 'proximity.component.html',
+  styleUrls: ['proximity.component.css']
 })
 
 export class ProximityComponent implements OnInit {
   @Input() MapData: any = {};
   @Input() dssLayerTool: any;
+  PariveshGIS: any = {};
 
   proposalAllKMLs: any = [];
   selectedSourceLayer: any = [];
   selectedItems_DecisionLayers: any = [];
-  decisionLayers: any = [];
-  PariveshGIS: any = {};
+  decisionLayers: any = [];  
   usersList: any[] = [];
   proximityShow: boolean = false;
   proxiData: any = {};

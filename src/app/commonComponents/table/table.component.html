@@ -3,39 +3,50 @@
 </button>
 <div class="row">
   <div class="col-sm-12">
-    <mat-tab-group *ngIf="tableData.rowData[0].tabEnable">
+    <mat-tab-group dynamicHeight="true" preserveContent="true" mat-stretch-tabs="true" backgroundColor="primary"
+      *ngIf="tableData.rowData[0].tabEnable">
       <mat-tab label={{data.TargetLayer}} *ngFor="let data of tableData.rowData">
-        <div *ngIf="data.Results.features.length==0">
-          <h4 class="text-danger text-center text-block">No {{data.TargetLayer}} data found within {{data.BufferValue}}
-            Km. Buffer Area.</h4>
-        </div>
-        <table class="table table-striped" *ngIf="data.Results.features.length">
-          <thead>
-            <tr>
-              <th class="text-danger text-center text-wrap text-capitalize">Sr</th>
-              <th class="text-danger text-center text-wrap text-capitalize">Buffer Distance</th>
-              <th class="text-danger text-center text-wrap text-capitalize"
-                *ngFor="let attr of data.Results.features[0].attributes | keyvalue">{{attr.key}}</th>
-              <th class="text-danger text-center text-wrap text-capitalize">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let item of data.Results.features;let sr=index">
-              <td class="text-primary text-center text-wrap text-capitalize">{{sr+1}}</td>
-              <td class="text-primary text-center text-wrap text-capitalize">{{data.BufferValue}}</td>
-              <td class="text-primary text-center text-wrap text-capitalize"
-                *ngFor="let dict of item.attributes | keyvalue">
-                <div *ngIf="dict.key != ''">
-                  {{dict.value}}
-                </div>
-              </td>
-              <td>
-                <button class="btn btn-sm btn-primary" (click)="handleViewClick(item)"
-                  style="line-height: 0.7;">View</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <mat-tab-group dynamicHeight="true" preserveContent="true" mat-stretch-tabs="true" backgroundColor="accent"
+          *ngIf="data.BufferValue.length">
+          <mat-tab aria-label="primary" label={{BufferData}} *ngFor="let BufferData of data.BufferValue">
+            <div *ngIf="data.Results.length">
+              <div *ngFor="let elem of data.Results;">
+                <h5 class="text-danger text-center text-block"
+                  *ngIf="elem.Feat.length==0 && elem.BufferDistance==BufferData">No {{data.TargetLayer}} data
+                  found within
+                  {{BufferData}}
+                  Km. Buffer Area.</h5>
+                <table class="table table-striped" *ngIf="elem.Feat.length && elem.BufferDistance==BufferData">
+                  <thead>
+                    <tr>
+                      <th class="text-danger text-center text-wrap text-capitalize">Sr</th>
+                      <th class="text-danger text-center text-wrap text-capitalize">Buffer(Km.)</th>
+                      <th class="text-danger text-center text-wrap text-capitalize"
+                        *ngFor="let attr of elem.Feat[0].attributes | keyvalue">{{attr.key}}</th>
+                      <th class="text-danger text-center text-wrap text-capitalize">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of elem.Feat;let sr=index">
+                      <td class="text-primary text-center text-wrap text-capitalize">{{sr+1}}</td>
+                      <td class="text-primary text-center text-wrap text-capitalize">{{BufferData}}</td>
+                      <td class="text-primary text-center text-wrap text-capitalize"
+                        *ngFor="let dict of item.attributes | keyvalue">
+                        <div *ngIf="dict.key != ''">
+                          {{dict.value}}
+                        </div>
+                      </td>
+                      <td>
+                        <button class="btn btn-sm btn-primary" (click)="handleViewClick(item)"
+                          style="line-height: 0.7;">View</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
       </mat-tab>
     </mat-tab-group>
 

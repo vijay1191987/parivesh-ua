@@ -1,0 +1,6 @@
+[aria-label=primary] {
+  min-width: 25px !important;
+  padding: 5px;
+  background-color: rgb(209, 24, 48);
+  font-weight: 700;
+}

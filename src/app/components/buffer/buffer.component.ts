@@ -10,8 +10,8 @@ import { TableComponent } from 'src/app/commonComponents/table/table.component';
 
 @Component({
   selector: 'app-buffer',
-  templateUrl: './buffer.component.html',
-  styleUrls: ['./buffer.component.css']
+  templateUrl: 'buffer.component.html',
+  styleUrls: ['buffer.component.css']
 })
 
 export class BufferComponent implements OnInit {
@@ -177,7 +177,7 @@ export class BufferComponent implements OnInit {
 
       bufferparams.distances = _bufferDistance;
       const _gs = await geometryService.buffer("https://utility.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer", bufferparams);
-
+      let esriRes = [];
       for (let i = 0; i < _gs.length; i++) {
         const bufferColor: any = document.getElementById('colorPra_' + Number(i + 1));
         const _bufferGraphics = new Graphic({
@@ -187,6 +187,7 @@ export class BufferComponent implements OnInit {
         this.PariveshGIS.ArcView.graphics.add(_bufferGraphics);
 
         for (let index = 0; index < this.selectedItems_Decision.length; index++) {
+          esriRes = [];
           const dt = this.decisionLayers.filter((element) => element.item_id == this.selectedItems_Decision[index].item_id);
           let layer_ID = dt[0].item_url.split('/').pop();
           const featUrl = !isNaN(layer_ID) ? dt[0].item_url.trim() : dt[0].item_url.trim() + '/' + this.selectedItems_Decision[index].item_id;
@@ -196,12 +197,25 @@ export class BufferComponent implements OnInit {
             visible: false
           });
           const q = new Query();
-          q.returnGeometry = true;
+          q.returnGeometry = false;
           q.outFields = ["*"];
           q.geometry = _gs[i];
           q.spatialRelationship = "intersects";
           const response = await fetchDataEsriService(q, _lyr);
-          const _json = { TargetLayer: this.selectedItems_Decision[index].item_text, BufferValue: _bufferDistance[i], Results: response, tabEnable: true };
+          let matched: any = _bufferResults.filter(elem => elem.TargetLayer == this.selectedItems_Decision[index].item_text);
+          if (matched.length > 0) {
+            matched[0].Results.push({ BufferDistance: _bufferDistance[i], Feat: response.features });
+            esriRes = matched[0].Results;
+          }
+          else
+            esriRes.push({ BufferDistance: _bufferDistance[i], Feat: response.features });
+          const _json = { TargetLayer: this.selectedItems_Decision[index].item_text, BufferValue: _bufferDistance, Results: esriRes, tabEnable: true };
+          if (_bufferResults.length > 0) {
+            if (matched.length > 0) {
+              let _ix = _bufferResults.findIndex(obj => obj.TargetLayer == _json.TargetLayer);
+              _bufferResults.splice(_ix, 1);
+            }
+          }
           _bufferResults.push(_json);
         }
       }
