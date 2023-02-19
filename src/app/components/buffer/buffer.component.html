@@ -21,14 +21,14 @@
       </div>
       <!--  [class.d-none]="!isSelectfeature"  show hide using change buffer dod  -->
       <div class="mb-3">
-        <label class="mb-1" for="">Reference Feature</label>
+        <label class="mb-1" for="">Source Location</label>
         <ng-multiselect-dropdown *ngIf="proposalAllKMLs.length" [placeholder]="'Select KML Layer'"
           [settings]="dropdownSettings_1" [data]="proposalAllKMLs" [(ngModel)]="selectedSourceLayer"
           (onSelect)="onItemSelect($event)">
         </ng-multiselect-dropdown>
       </div>
       <div class="mb-3" *ngIf="decisionLayers.length">
-        <label class="mb-1" for="">Target Layer</label>
+        <label class="mb-1" for="">Decision Layers</label>
         <ng-multiselect-dropdown [placeholder]="'Select Decision Layers'" [settings]="dropdownSettings"
           [data]="decisionLayers" [(ngModel)]="selectedItems_Decision" (onSelectAll)="onSelectAll($event)"
           (onDeSelectAll)="onSelectAll($event)" (onDeSelect)="onItemDeSelect($event)">
@@ -66,7 +66,17 @@
     </form>
   </div>
   <div class="tool-popup-footer text-end">
-    <button type="button" class="btn btn-link me-2">Reset</button>
+    <button type="button" class="btn btn-link me-2" (click)="clearFormFields()">Reset</button>
     <button type="button" class="btn btn-tool-popup" (click)="executeBuffer()">Execute</button>
+    <div class="btn-group dropright">
+      <button type="button" class="btn btn-sm btn-success mx-2 dropdown-toggle" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false">
+        Reports
+      </button>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" href="javascript:void();">Excel</a>
+        <a class="dropdown-item" href="javascript:void();">PDF</a>
+      </div>
+    </div>
   </div>
 </div>

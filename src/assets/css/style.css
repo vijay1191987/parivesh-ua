@@ -373,8 +373,8 @@ li.nav-item:last-child {
 
 .tool-popup-inner {
     background: #fff;
-    padding: 20px 20px;
-    max-height: 340px;
+    padding: 8px;
+    max-height: 350px;
     overflow: auto;
 }
 
@@ -390,7 +390,7 @@ li.nav-item:last-child {
 }
 
 .tool-popup-footer {
-    padding: 10px 20px;
+    padding: 8px;
     background: white;
     /* box-shadow: 0px 0px 18px 0px #00000018; */
     z-index: 1;

@@ -37,7 +37,16 @@
       <button class="btn btn-sm btn-danger mx-2" id="clearFilter" type="submit" (click)="clearProximityfiltr()">
         Clear
       </button>
-      <!-- <button class="btn btn-sm btn-success " title="Download Report">Report</button> -->
+      <div class="btn-group dropright">
+        <button type="button" class="btn btn-sm btn-success mx-2 dropdown-toggle" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          Reports
+        </button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="javascript:void();">Excel</a>
+          <a class="dropdown-item" href="javascript:void();">PDF</a>
+        </div>
+      </div>
     </div>
   </div>
 </div>

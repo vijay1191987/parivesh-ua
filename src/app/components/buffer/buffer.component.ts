@@ -97,7 +97,14 @@ export class BufferComponent implements OnInit {
         return _d;
     });
     this._sourceLayer = _gl[0];
-    this.PariveshGIS.ArcView.goTo({ target: _gl[0].graphics.items[0].geometry.extent.expand(1.6) });
+    this.PariveshGIS.ArcView.goTo({
+      target: _gl[0].graphics.items[0].geometry,
+      zoom: 8
+    });
+    this.PariveshGIS.ArcView.popup.open({
+      features: _gl[0].graphics.items,
+      location: _gl[0].graphics.items[0].geometry.type === "polygon" ? _gl[0].graphics.items[0].geometry.centroid : _gl[0].graphics.items[0].geometry.extent.center
+    });
   }
 
   onSelectAll(items: any) {
@@ -150,6 +157,17 @@ export class BufferComponent implements OnInit {
     let xt: any = document.getElementById("showInputField");
     xt.appendChild(node);
     this.i++;
+  }
+
+  clearFormFields() {
+    this.selectBufferType = null;
+    this.selectedSourceLayer = null;
+    this.selectedItems_Decision = null;
+    this.selectedBufferUnit = null;
+    var input: any = document.getElementsByName('bufferVal');
+    for (let i = 0; i < input.length; i++) {
+      input[i].value = null;
+    }
   }
 
   async executeBuffer() {

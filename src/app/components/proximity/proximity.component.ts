@@ -181,7 +181,14 @@ export class ProximityComponent implements OnInit {
       if (_d.title === data.item_text)
         return _d;
     });
-    this.PariveshGIS.ArcView.goTo({ target: _gl[0].graphics.items[0].geometry.extent.expand(1.6) });
+    this.PariveshGIS.ArcView.goTo({
+      target: _gl[0].graphics.items[0].geometry,
+      zoom: 8
+    });
+    this.PariveshGIS.ArcView.popup.open({
+      features: _gl[0].graphics.items,
+      location: _gl[0].graphics.items[0].geometry.type === "polygon" ? _gl[0].graphics.items[0].geometry.centroid : _gl[0].graphics.items[0].geometry.extent.center
+    });    
   }
   onItemDeSelect(data: any) {
     this.ProxidisplayResultInt = [];
