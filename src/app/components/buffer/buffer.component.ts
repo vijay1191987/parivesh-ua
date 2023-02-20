@@ -215,7 +215,7 @@ export class BufferComponent implements OnInit {
             visible: false
           });
           const q = new Query();
-          q.returnGeometry = false;
+          q.returnGeometry = true;
           q.outFields = ["*"];
           q.geometry = _gs[i];
           q.spatialRelationship = "intersects";
