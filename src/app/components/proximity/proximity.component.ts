@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { DragableService } from 'src/app/services/dragable.service';
@@ -8,7 +7,7 @@ import { getUserKMLFromTree } from "./../gisHelper";
 import { loadModules } from 'esri-loader';
 import { Bharatmaps } from "../gisHelper/localConfigs";
 import { PariveshServices } from 'src/app/services/GISLayerMasters.service';
-let _this: any;
+let that: any;
 let app: any = {};
 app.userKMLLayers = [];
 
@@ -85,7 +84,7 @@ export class ProximityComponent implements OnInit {
   }
 
   async ngOnInit() {
-    _this = this;
+    that = this;
     const t: any = this.MapData;
     if (t.ESRIObj_.hasOwnProperty("ESRIObj_"))
       this.PariveshGIS = await t.ESRIObj_.ESRIObj_;
@@ -104,7 +103,7 @@ export class ProximityComponent implements OnInit {
       visible: false
     });
     const _sourceLayer = this.PariveshGIS.ArcMap.layers.items.filter(function (_d: any) {
-      if (_d.title === _this.selectedSourceLayer[0].item_text)
+      if (_d.title === that.selectedSourceLayer[0].item_text)
         return _d;
     });
 
@@ -154,7 +153,7 @@ export class ProximityComponent implements OnInit {
           if (typeof (_distanceArray[index].Distance) === "number") {
             _distanceArray[index].Distance = (_distanceArray[index].Distance / 1000).toFixed(4) + " KM";
           }
-          _this.ProxidisplayResultInt.push({
+          that.ProxidisplayResultInt.push({
             Source: dLayer.title,
             Name: _distanceArray[index].Feature,
             Distance: minValue === 0 ? "Area of Interest falls within " + _distanceArray[index].Feature + " Division." : _distanceArray[index].Distance,
@@ -164,7 +163,7 @@ export class ProximityComponent implements OnInit {
         }
       }
       else {
-        _this.ProxidisplayResultInt.push(
+        that.ProxidisplayResultInt.push(
           {
             Source: dLayer.title,
             Name: "NA",

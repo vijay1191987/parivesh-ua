@@ -133,10 +133,10 @@ export class CafComponent implements OnInit {
           let f = await createKMLGraphics(app.KMLData, this.qsData, null);
           this._customeGL = f.GL;
           this.parivesh.updateLayer(f.TD);
-          this.PariveshGIS.ArcMap.layers.addMany([this.adminBoundary, f.GL, f.TL]);
+          this.PariveshGIS.ArcMap.layers.addMany([f.GL, f.TL]);
           this.PariveshGIS.ArcView.goTo({
             target: f.GL.graphics.items,
-            zoom: 16
+            extent: f.GL.graphics.items[0].geometry.extent.clone().expand(1.8)
           });
           this.kmlIntersection();
           return;
@@ -147,10 +147,10 @@ export class CafComponent implements OnInit {
           let f = await createKMLGraphics(app.KMLData, this.qsData, null);
           this._customeGL = f.GL;
           this.parivesh.updateLayer(f.TD);
-          this.PariveshGIS.ArcMap.layers.addMany([this.adminBoundary, f.GL, f.TL]);
+          this.PariveshGIS.ArcMap.layers.addMany([f.GL, f.TL]);
           this.PariveshGIS.ArcView.goTo({
             target: f.GL.graphics.items,
-            zoom: 16
+            extent: f.GL.graphics.items[0].geometry.extent.clone().expand(1.8)
           });
           this.btnProceed.disabled = true;
         }
@@ -328,7 +328,7 @@ export class CafComponent implements OnInit {
       this.finalIntResult = [...this.finalIntResult, ...geoDataArr];
     if (this.counter == this._customeGL.graphics.items.length) {
       const res = await saveInterSectionResults(this.finalIntResult);
-      console.log("data successfully inserted....");
+      console.log("data successfully inserted....", res);
       this.loaderFlag = false;
       this.btnProceed.disabled = false;
     }

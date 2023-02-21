@@ -7,6 +7,7 @@ import { PariveshServices } from 'src/app/services/GISLayerMasters.service';
 import { Bharatmaps } from "../gisHelper/localConfigs";
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { TableComponent } from 'src/app/commonComponents/table/table.component';
+
 let that: any;
 
 @Component({
@@ -31,12 +32,12 @@ export class BufferComponent {
   selectedItems_Decision: any = [];
   //selectedItems_Decision: any = [];
   isSelectfeature: boolean = true;
-  isSelectDraw:boolean = true;
+  isSelectDraw: boolean = true;
   decisionLayers: any[] = [];
   bufferType = [{ item_id: 1, item_text: "Select by Feature" }, { item_id: 2, item_text: "Draw by Feature" }];
   bufferUnits = [{ unit: "kilometers", val: "KILOMETER" }];
   relType = [{ item_id: "intersects", item_text: "intersects" }, { item_id: "contains", item_text: "contains" }];
-  splRelType: any[] = [];
+  splRelType: any = null;
   _bufferResults: any[] = [];
   _sourceLayer: any = {};
   selectedBufferUnit: any = [];
@@ -111,7 +112,7 @@ export class BufferComponent {
     this._sourceLayer = _gl[0];
     this.PariveshGIS.ArcView.goTo({
       target: _gl[0].graphics.items[0].geometry,
-      zoom: 8
+      extent: _gl[0].graphics.items[0].geometry.extent.clone().expand(1.8)
     });
     this.PariveshGIS.ArcView.popup.open({
       features: _gl[0].graphics.items,
@@ -138,21 +139,20 @@ export class BufferComponent {
   }
 
   async eventbufferfeature(data: any) {
-    if (data.item_id == 1){
+    if (data.item_id == 1) {
       this.isSelectfeature = false;
       this.isSelectDraw = true;
     }
     else {
-      if( this.selectedItems_Decision.length > 0){
+      if (this.selectedItems_Decision.length > 0)
         this.selectedItems_Decision = null;
-      }
+
       var input: any = document.getElementById('showInputField');
       input.innerHTML = '';
       this.isSelectDraw = false;
       this.isSelectfeature = true;
 
-      const [GraphicsLayer, SketchViewModel, Slider, FeatureFilter, geometryEngine, Graphic] = await loadModules(["esri/layers/GraphicsLayer", "esri/widgets/Sketch/SketchViewModel", "esri/widgets/Slider",
-        "esri/layers/support/FeatureFilter", "esri/geometry/geometryEngine", "esri/Graphic"]);
+      const [GraphicsLayer, SketchViewModel, Slider] = await loadModules(["esri/layers/GraphicsLayer", "esri/widgets/Sketch/SketchViewModel", "esri/widgets/Slider"]);
       this.sketchLayer = new GraphicsLayer();
       this.bufferLayer = new GraphicsLayer();
       //this.PariveshGIS.ArcMap.addMany([this.sketchLayer, this.bufferLayer]);
@@ -173,8 +173,6 @@ export class BufferComponent {
         values: [0]
       });
 
-
-
       this.sketchViewModel = new SketchViewModel({
         layer: this.sketchLayer,
         view: this.PariveshGIS.ArcView,
@@ -193,10 +191,10 @@ export class BufferComponent {
           color: "cyan",
           width: 3
         },
-         polygonSymbol: {
+        polygonSymbol: {
           type: "simple-fill", // autocasts as new SimpleFillSymbol()
           color: "#F2BC94",
-          style:'none',
+          style: 'none',
           outline: {
             // autocasts as new SimpleLineSymbol()
             color: "cyan",
@@ -258,6 +256,10 @@ export class BufferComponent {
   }
 
   clearFormFields() {
+    for (let index = 0; index < this.selectedItems_Decision.length; index++) {
+      let _lyr = this.PariveshGIS.ArcMap.findLayerById(this.selectedItems_Decision[index].item_text);
+      this.PariveshGIS.ArcMap.layers.remove(_lyr);
+    }
     this._bufferExecution = "Execute";
     this._bufferResults = [];
     this.selectBufferType = null;
@@ -269,7 +271,6 @@ export class BufferComponent {
       input[i].value = null;
     }
     this.PariveshGIS.ArcView.graphics.removeAll();
-    this.PariveshGIS.ArcMap.layers.removeAll();
     this.clearBufferFilter();
   }
 
@@ -313,6 +314,7 @@ export class BufferComponent {
           let layer_ID = dt[0].item_url.split('/').pop();
           const featUrl = !isNaN(layer_ID) ? dt[0].item_url.trim() : dt[0].item_url.trim() + '/' + this.selectedItems_Decision[index].item_id;
           const _lyr = new FeatureLayer({
+            id: this.selectedItems_Decision[index].item_text,
             url: featUrl,
             apiKey: Bharatmaps,
             visible: false
@@ -343,6 +345,7 @@ export class BufferComponent {
       this.showResultBottomSheet();
     }
   }
+
   _bufferExecution: string = "Execute";
   showResultBottomSheet() {
     if (this._bufferResults.length > 0) {
@@ -360,10 +363,12 @@ export class BufferComponent {
       this.executeBuffer();
     }
   }
+
   bufferVariablesChanged(event: any) {
     that.bufferSize = event.value;
     that.updateFilterGeometry();
   }
+
   clearBufferFilter() {
     this.sketchGeometry = null;
     this.filterGeometry = null;
@@ -377,56 +382,56 @@ export class BufferComponent {
 
   geometryButtonsClickHandler(evt: any, data: string) {
     // this.clearBufferFilter();
-    evt.currentTarget.classList.toggle('geometryButtonsClickHandler');
-    if(this.splRelType.length > 0){
-
+    let g: any = document.getElementsByClassName("spatialButton");
+    for (let f = 0; f < g.length; f++) {
+      const element = g[f];
+      element.classList.remove("spatialButton");
+    }
+    evt.currentTarget.children[0].classList.toggle("spatialButton");
+    if (this.splRelType.length > 0)
       this.sketchViewModel.create(data);
-    }
-    else{
+    else
       alert('Please select spatial relationship type');
-    }
-
   }
-
 
   updateFilter() {
     this.updateFilterGeometry();
   }
 
-
   async updateFilterGeometry() {
-    const [geometryEngine, Graphic, FeatureLayer] = await loadModules(["esri/geometry/geometryEngine", "esri/Graphic","esri/layers/FeatureLayer"]);
-      // check decision layer
-      for (let index = 0; index < this.selectedItems_Decision.length; index++) {
-        const dt = this.decisionLayers.filter((element) => element.item_id == this.selectedItems_Decision[index].item_id);
-        let layer_ID = dt[0].item_url.split('/').pop();
-        const featUrl = !isNaN(layer_ID) ? dt[0].item_url.trim() : dt[0].item_url.trim() + '/' + this.selectedItems_Decision[index].item_id;
-        let layerView = null;
-        let _lyr = this.PariveshGIS.ArcMap.findLayerById(this.selectedItems_Decision[index].item_text);
-        if (_lyr == undefined) {
-          _lyr = new FeatureLayer({
-            id: this.selectedItems_Decision[index].item_text,
-            url: featUrl,
-            apiKey: Bharatmaps,
-            visible: true
-          });
-          this.PariveshGIS.ArcMap.layers.add(_lyr);
-          layerView = await this.PariveshGIS.ArcView.whenLayerView(_lyr);
-        }
-        else
-          layerView = await this.PariveshGIS.ArcView.whenLayerView(_lyr);
-
-        const featureFilter = {
-          geometry: this.sketchGeometry,
-          spatialRelationship: this.splRelType[0].item_id,
-          distance: this.bufferSize,
-          units: "kilometers"
-        };
-        if (layerView != null) {
-          layerView.filter = featureFilter;
-        }
+    const [geometryEngine, Graphic, FeatureLayer] = await loadModules(["esri/geometry/geometryEngine", "esri/Graphic", "esri/layers/FeatureLayer"]);
+    // check decision layer
+    for (let index = 0; index < this.selectedItems_Decision.length; index++) {
+      const dt = this.decisionLayers.filter((element) => element.item_id == this.selectedItems_Decision[index].item_id);
+      let layer_ID = dt[0].item_url.split('/').pop();
+      const featUrl = !isNaN(layer_ID) ? dt[0].item_url.trim() : dt[0].item_url.trim() + '/' + this.selectedItems_Decision[index].item_id;
+      let layerView = null;
+      let _lyr = this.PariveshGIS.ArcMap.findLayerById(this.selectedItems_Decision[index].item_text);
+      if (_lyr == undefined) {
+        _lyr = new FeatureLayer({
+          id: this.selectedItems_Decision[index].item_text,
+          url: featUrl,
+          apiKey: Bharatmaps,
+          visible: true
+        });
+        this.PariveshGIS.ArcMap.layers.add(_lyr);
       }
-       // add a polygon graphic for the bufferSize
+
+      layerView = await this.PariveshGIS.ArcView.whenLayerView(_lyr);
+      const featureFilter = {
+        geometry: this.sketchGeometry,
+        spatialRelationship: this.splRelType[0].item_id,
+        distance: this.bufferSize,
+        units: "kilometers"
+      };
+      if (layerView != null) {
+        layerView.filter = featureFilter;
+        layerView.includedEffect = "drop-shadow(3px, 3px, 3px, black)";
+        layerView.effect = "brightness(5) hue-rotate(270deg) contrast(200%)";
+      }
+    }
+    // add a polygon graphic for the bufferSize
+    this.PariveshGIS.ArcMap.addMany([this.sketchLayer, this.bufferLayer]);
     if (this.sketchGeometry) {
       if (this.bufferSize > 0) {
         const bufferGeometry = geometryEngine.geodesicBuffer(
@@ -451,8 +456,6 @@ export class BufferComponent {
         this.bufferLayer.removeAll();
         this.filterGeometry = this.sketchGeometry;
       }
-      this.PariveshGIS.ArcMap.addMany([this.sketchLayer, this.bufferLayer]);
-
     }
   }
 }

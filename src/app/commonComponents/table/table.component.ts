@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
+
 @Component({
   selector: 'app-table',
   templateUrl: 'table.component.html',
@@ -29,6 +30,18 @@ export class TableComponent implements OnInit {
     event.preventDefault();
   }
   handleViewClick(data: any) {
-    this.pariveshGIS.ArcView.goTo({ target: data.geometry })
+    let loc = null;
+    if (data.geometry.type == "point")
+      loc = data.geometry.center;
+    else if (data.geometry.type == "point")
+      loc = data.geometry.centroid;
+    else
+      loc = data.geometry.extent.center;
+
+    this.pariveshGIS.ArcView.goTo({ target: data.geometry, extent: data.geometry.extent.clone().expand(1.8) });
+    this.pariveshGIS.ArcView.popup.open({
+      features: [data],
+      location: loc
+    });
   }
 }

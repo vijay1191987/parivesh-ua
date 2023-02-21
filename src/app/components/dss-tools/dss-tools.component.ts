@@ -71,7 +71,11 @@ export class DssToolsComponent {
       let f = await createKMLGraphics(app.KMLData, pData.data[i], i);
       this.PariveshGIS.ArcMap.layers.addMany([f.GL, f.TL]);
       if (pData.data[i].docname.toUpperCase() == "MAIN_KML") {
-        this.PariveshGIS.ArcView.goTo({ target: f.GL.graphics.items, zoom: 16 });
+        this.PariveshGIS.ArcView.goTo({ target: f.GL.graphics.items, extent: f.GL.graphics.items[0].geometry.extent.clone().expand(1.8) });
+        this.PariveshGIS.ArcView.popup.open({
+          features: f.GL.graphics.items,
+          location: f.GL.graphics.items[0].geometry.type === "polygon" ? f.GL.graphics.items[0].geometry.centroid : f.GL.graphics.items[0].geometry.extent.center
+        });
       }
     }
     const TREE_DATA: LayerNode[] = [tdata];

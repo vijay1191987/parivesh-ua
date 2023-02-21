@@ -373,13 +373,13 @@ li.nav-item:last-child {
 
 .tool-popup-inner {
     background: #fff;
-    padding: 8px;
+    padding: 10px;
     max-height: 350px;
     overflow: auto;
 }
 
 .tool-popup:after {
-   content: '';
+    content: '';
     /*  position: fixed;
     top: 0;
     left: 0;

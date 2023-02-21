@@ -2,8 +2,6 @@ import { isLoaded, loadModules } from 'esri-loader';
 import axios from 'axios';
 import Polygon from "@arcgis/core/geometry/Polygon";
 import Polyline from "@arcgis/core/geometry/Polyline";
-import * as promiseUtils from "@arcgis/core/core/promiseUtils";
-import { async } from 'rxjs';
 import { LayerNode } from './../layers/layers.component'
 
 /*****************************************************************
@@ -92,7 +90,7 @@ export const showQueryResultonMap = async (featureSET: any, mapView: any) => {
       graphics: featureSET.features
     });
     mapView.map.addMany([glayer]);
-    mapView.goTo({ target: glayer, zoom: 8 }); //extent: glayer.fullExtent
+    mapView.goTo({ target: glayer, zoom: 9 }); //extent: glayer.fullExtent
   }
 };
 
@@ -323,6 +321,21 @@ export const createKMLGraphics = async (_kmlData: any, _qsData: any = null, _fea
     UUID: _qsData.uuid,
     title: _qsData.uploadedname,
     legendEnable: true,
+    listMode: "hide",
+    effect: [
+      {
+        scale: 178595,
+        value: "drop-shadow(3px, 3px, 4px)"
+      },
+      {
+        scale: 89297,
+        value: "drop-shadow(2px, 2px, 3px)"
+      },
+      {
+        scale: 12324,
+        value: "drop-shadow(1px, 1px, 2px)"
+      }
+    ],
     id: _featIndex === null ? "EsriUserMap" : "EsriUserMap_" + _qsData.uploadedname.replace(' ', ''),
   });
   const _textGL = new GraphicsLayer();

@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Injectable } from '@angular/core';
 import { NestedTreeControl } from "@angular/cdk/tree";
 import { MatTreeNestedDataSource } from "@angular/material/tree";
-import { groupByJsonData, renameJSONKey, createMapImageLayer, getLayerMasters } from "./../gisHelper";
+import { groupByJsonData, renameJSONKey, createMapImageLayer } from "./../gisHelper";
 import { Bharatmaps } from "./../gisHelper/localConfigs";
 import axios from 'axios';
 import { PariveshServices } from 'src/app/services/GISLayerMasters.service';
@@ -149,7 +149,13 @@ export class LayersComponent implements OnInit {
         layerFeature = [this.PariveshGIS.ArcMap.findLayerById("EsriUserMap_" + node.LayerName.replace(' ', ''))];
       }
       layerFeature[0].visible = checked;
-      this.PariveshGIS.ArcView.goTo({ target: layerFeature });
+      if (checked) {
+        this.PariveshGIS.ArcView.goTo({ target: layerFeature, extent: layerFeature[0].graphics.items[0].geometry.extent.clone().expand(1.8) });
+        this.PariveshGIS.ArcView.popup.open({
+          features: layerFeature[0].graphics.items,
+          location: layerFeature[0].graphics.items[0].geometry.type === "polygon" ? layerFeature[0].graphics.items[0].geometry.centroid : layerFeature[0].graphics.items[0].geometry.extent.center
+        });
+      }
     }
     else if (layerConfigs.hasOwnProperty('layerurl')) {
       let layer_ID = layerConfigs.layerurl.split('/').pop();

@@ -19,7 +19,6 @@
           [data]="bufferType" [(ngModel)]="selectBufferType" (onSelect)="eventbufferfeature($event)">
         </ng-multiselect-dropdown>
       </div>
-      <!--  [class.d-none]="!isSelectfeature"  show hide using change buffer dod  -->
       <div class="mb-3" [hidden]="isSelectfeature">
         <label class="mb-1" for="">Source Location</label>
         <ng-multiselect-dropdown *ngIf="proposalAllKMLs.length" [placeholder]="'Select KML Layer'"
@@ -45,7 +44,7 @@
         </mat-form-field>
       </div>
 
-      <div class="mb-3" [hidden] ="isSelectfeature">
+      <div class="mb-3" [hidden]="isSelectfeature">
         <span [formGroupName]="i">
           <label class="mb-1 d-flex align-items-center" for=""><span>Buffer Value</span>
             <p class="ms-2 mb-0 p-0 rounded" id="colorPra_1" style="width: 20px;height: 20px; background-color: blue;">
@@ -61,7 +60,12 @@
           class="text-success fw-semibold d-flex align-items-center justify-content-end text-decoration-none">
           <i class="bi bi-plus-circle-fill h4 mb-0 me-1"></i> <span> Add Buffer </span></a>
       </div>
-
+      <div class="mb-3" [hidden]="isSelectDraw">
+        <label class="mb-1" for="">Spatial relationship:</label>
+        <ng-multiselect-dropdown [placeholder]="'Spatial relationship'" [settings]="dropdownSettings_1" [data]="relType"
+          [(ngModel)]="splRelType">
+        </ng-multiselect-dropdown>
+      </div>
       <div class="mb-3" [hidden]="isSelectDraw">
         <label class="mb-1" for="">Draw a geometry to filter by:</label>
         <div>
@@ -72,12 +76,6 @@
           <a href="javascript:void(0);" class="me-2" (click)="geometryButtonsClickHandler($event,'polygon')"
             id="polygon-geometry-button"> <img src="assets/img/icon/buffer-feature-icon3.svg"></a>
         </div>
-      </div>
-      <div class="mb-3" [hidden]="isSelectDraw">
-        <label class="mb-1" for="">Spatial relationship:</label>
-        <ng-multiselect-dropdown [placeholder]="'Spatial relationship'"  [settings]="dropdownSettings_1"
-          [data]="relType" [(ngModel)]="splRelType">
-        </ng-multiselect-dropdown>
       </div>
       <div class="mb-3" [hidden]="isSelectDraw">
         <label for="bufferNum">Set a geometry buffer size:</label>

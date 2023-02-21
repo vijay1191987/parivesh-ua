@@ -152,9 +152,9 @@ export class PariveshMapComponent implements OnInit {
       const a = document.getElementById("measureTool");
       this.PariveshGIS.ArcView.ui.add(a, "top-right");
     }
-    else if (_tool === "Extent"){
+    else if (_tool === "Extent") {
       const kmlLayer = this.PariveshGIS.ArcMap.findLayerById('EsriUserMap');
-      this.PariveshGIS.ArcView.goTo({ target: kmlLayer.graphics.items});
+      this.PariveshGIS.ArcView.goTo({ target: kmlLayer.graphics.items });
     }
 
     else if (_tool === "Previous Extent")
@@ -184,11 +184,8 @@ export class PariveshMapComponent implements OnInit {
   }
   //measurement tool start-------
   KmlMeasurement(event: any, data: any) {
-
     if (data == 'distance') {
-
       this.setActiveWidget(null);
-
       if (!event.target.className.includes('active')) {
         this.setActiveWidget("distance");
       } else {
