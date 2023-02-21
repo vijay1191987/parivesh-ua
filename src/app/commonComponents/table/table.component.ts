@@ -25,8 +25,8 @@ export class TableComponent implements OnInit {
     console.log(item);
   }
   closeBotton(event: MouseEvent): void {
-    event.preventDefault();
     this.bottomSheetRef.dismiss();
+    event.preventDefault();
   }
   handleViewClick(data: any) {
     this.pariveshGIS.ArcView.goTo({ target: data.geometry })

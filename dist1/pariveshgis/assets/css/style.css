@@ -379,14 +379,14 @@ li.nav-item:last-child {
 }
 
 .tool-popup:after {
-    content: '';
-    position: fixed;
+   content: '';
+    /*  position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     background: rgb(0 0 0 / 27%);
-    z-index: -1;
+    z-index: -1; */
 }
 
 .tool-popup-footer {

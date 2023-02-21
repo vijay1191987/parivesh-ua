@@ -20,7 +20,7 @@
         </ng-multiselect-dropdown>
       </div>
       <!--  [class.d-none]="!isSelectfeature"  show hide using change buffer dod  -->
-      <div class="mb-3">
+      <div class="mb-3" [hidden]="isSelectfeature">
         <label class="mb-1" for="">Source Location</label>
         <ng-multiselect-dropdown *ngIf="proposalAllKMLs.length" [placeholder]="'Select KML Layer'"
           [settings]="dropdownSettings_1" [data]="proposalAllKMLs" [(ngModel)]="selectedSourceLayer"
@@ -34,7 +34,7 @@
           (onDeSelectAll)="onSelectAll($event)" (onDeSelect)="onItemDeSelect($event)">
         </ng-multiselect-dropdown>
       </div>
-      <div class="mb-3">
+      <div class="mb-3" [hidden]="isSelectfeature">
         <label class="mb-1" for="">Units:</label>
         <mat-form-field class="example-full-width" appearance="fill">
           <mat-select name="units" id="bufferUnits" [(ngModel)]="selectedBufferUnit ">
@@ -45,38 +45,61 @@
         </mat-form-field>
       </div>
 
-      <div class="mb-3">
+      <div class="mb-3" [hidden] ="isSelectfeature">
         <span [formGroupName]="i">
           <label class="mb-1 d-flex align-items-center" for=""><span>Buffer Value</span>
             <p class="ms-2 mb-0 p-0 rounded" id="colorPra_1" style="width: 20px;height: 20px; background-color: blue;">
             </p>
           </label>
           <input type="number" class="form-control" name="bufferVal" formControlName="name" placeholder="00">
-
         </span>
       </div>
       <div id="showInputField"></div>
 
-
-      <div class="mb-3 text-end">
+      <div class="mb-3 text-end" [hidden]="isSelectfeature">
         <a href="javascript:void(0);" (click)="addBufferRow()"
           class="text-success fw-semibold d-flex align-items-center justify-content-end text-decoration-none">
           <i class="bi bi-plus-circle-fill h4 mb-0 me-1"></i> <span> Add Buffer </span></a>
       </div>
+
+      <div class="mb-3" [hidden]="isSelectDraw">
+        <label class="mb-1" for="">Draw a geometry to filter by:</label>
+        <div>
+          <a href="javascript:void(0);" class="me-2" (click)="geometryButtonsClickHandler($event,'point')"
+            id="point-geometry-button"> <img src="assets/img/icon/buffer-feature-icon1.svg"></a>
+          <a href="javascript:void(0);" class="me-2" (click)="geometryButtonsClickHandler($event,'polyline')"
+            id="line-geometry-button"> <img src="assets/img/icon/buffer-feature-icon2.svg"></a>
+          <a href="javascript:void(0);" class="me-2" (click)="geometryButtonsClickHandler($event,'polygon')"
+            id="polygon-geometry-button"> <img src="assets/img/icon/buffer-feature-icon3.svg"></a>
+        </div>
+      </div>
+      <div class="mb-3" [hidden]="isSelectDraw">
+        <label class="mb-1" for="">Spatial relationship:</label>
+        <ng-multiselect-dropdown [placeholder]="'Spatial relationship'"  [settings]="dropdownSettings_1"
+          [data]="relType" [(ngModel)]="splRelType">
+        </ng-multiselect-dropdown>
+      </div>
+      <div class="mb-3" [hidden]="isSelectDraw">
+        <label for="bufferNum">Set a geometry buffer size:</label>
+        <div style="margin-top: 35px" id="bufferNum"></div>
+        <br /><br />
+      </div>
     </form>
   </div>
-  <div class="tool-popup-footer text-end">
+  <div class="tool-popup-footer d-flex justify-content-end text-end">
     <button type="button" class="btn btn-link me-2" (click)="clearFormFields()">Reset</button>
-    <button type="button" class="btn btn-tool-popup" (click)="executeBuffer()">Execute</button>
-    <div class="btn-group dropright">
-      <button type="button" class="btn btn-sm btn-success mx-2 dropdown-toggle" data-toggle="dropdown"
-        aria-haspopup="true" aria-expanded="false">
+    <button type="button" class="btn btn-tool-popup" (click)="showResultBottomSheet()">{{_bufferExecution}}</button>
+
+    <div class="dropdown ms-2">
+      <button class="btn btn-tool-popup bg-success dropdown-toggle" type="button" id="dropdownMenuButton1"
+        data-bs-toggle="dropdown" aria-expanded="false">
         Reports
       </button>
-      <div class="dropdown-menu">
-        <a class="dropdown-item" href="javascript:void();">Excel</a>
-        <a class="dropdown-item" href="javascript:void();">PDF</a>
-      </div>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+        <li><a class="dropdown-item" href="javascript:void();">Excel</a></li>
+        <li><a class="dropdown-item" href="javascript:void();">PDF</a></li>
+      </ul>
     </div>
+
   </div>
 </div>

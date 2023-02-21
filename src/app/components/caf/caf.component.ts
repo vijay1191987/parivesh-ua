@@ -311,7 +311,7 @@ export class CafComponent implements OnInit {
         geoData.uploadedName = this.qsData.uploaded_name;
         geoData.refType = this.qsData.ref_type;
         geoData.vilcode11 = (_gisData.features[i].attributes.hasOwnProperty('vilcode11') || _gisData.features[i].attributes.hasOwnProperty('vil_lgd')) ? (_gisData.features[i].attributes.vil_lgd == undefined) ? _gisData.features[i].attributes.vilcode11.toString() : _gisData.features[i].attributes.vil_lgd.toString() : '';
-        geoData.vilnamSoi = villnamesoi == null ? _villageName : (villnamesoi == undefined) ? "0" : villnamesoi;
+        geoData.vilnamSoi = villnamesoi == null ? _villageName : (villnamesoi == undefined) ? "NA" : villnamesoi;
         geoData.mapNo = mapNo.toString();
         geoData.stCode11 = _gisData.features[i].attributes.state_lgd === undefined ? _gisData.features[i].attributes.st_lgd.toString() : _gisData.features[i].attributes.state_lgd.toString();
         geoData.stName = stName;
@@ -319,7 +319,7 @@ export class CafComponent implements OnInit {
         geoData.dtName = dtName;
         geoData.sdtCode11 = _gisData.features[i].attributes.subdt_lgd === undefined ? _gisData.features[i].attributes.sdt_lgd.toString() : _gisData.features[i].attributes.subdt_lgd.toString();
         geoData.sdtName = _gisData.features[i].attributes.sdtname;
-        geoData.vilName11 = villnamesoi == null ? _villageName : (villnamesoi == undefined) ? "0" : villnamesoi;
+        geoData.vilName11 = villnamesoi == null ? _villageName : (villnamesoi == undefined) ? "NA" : villnamesoi;
         geoData.version = this.qsData.version;
         geoDataArr.push(geoData);
       }
