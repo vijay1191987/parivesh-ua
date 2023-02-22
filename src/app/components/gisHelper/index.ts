@@ -319,7 +319,8 @@ export const createKMLGraphics = async (_kmlData: any, _qsData: any = null, _fea
   const _outData: any = {};
   const _customeGL = new GraphicsLayer({
     UUID: _qsData.uuid,
-    title: _qsData.uploadedname,
+    id: _featIndex === null ? "EsriUserMap" : "EsriUserMap_" + _qsData.uploadedname.replace(' ', ''),
+    title: _qsData.docname.toUpperCase(),
     legendEnable: true,
     listMode: "hide",
     effect: [
@@ -335,8 +336,7 @@ export const createKMLGraphics = async (_kmlData: any, _qsData: any = null, _fea
         scale: 12324,
         value: "drop-shadow(1px, 1px, 2px)"
       }
-    ],
-    id: _featIndex === null ? "EsriUserMap" : "EsriUserMap_" + _qsData.uploadedname.replace(' ', ''),
+    ]
   });
   const _textGL = new GraphicsLayer();
   let childrenData = [];

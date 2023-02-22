@@ -1,8 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { DrawMapZoomIn, DrawMapZoomOut, changeBaseMap } from '../../ESRIMAP'
 import { loadModules } from 'esri-loader';
-
-
+import { checkEnableLayer } from '../gisHelper';
 
 let _this: any = null;
 
@@ -129,8 +128,6 @@ export class PariveshMapComponent implements OnInit {
     this.PariveshGIS.ArcView.ui.add(layerListExpand, "bottom-right");
   }
 
-
-
   baseLayer() {
     this.mapLayer = !this.mapLayer;
   }
@@ -153,8 +150,16 @@ export class PariveshMapComponent implements OnInit {
       this.PariveshGIS.ArcView.ui.add(a, "top-right");
     }
     else if (_tool === "Extent") {
-      const kmlLayer = this.PariveshGIS.ArcMap.findLayerById('EsriUserMap');
+      const kmlLayer = checkEnableLayer("MAIN_KML", this.PariveshGIS.ArcMap.allLayers);
       this.PariveshGIS.ArcView.goTo({ target: kmlLayer.graphics.items });
+      this.PariveshGIS.ArcView.goTo({
+        target: kmlLayer.graphics.items,
+        extent: kmlLayer.graphics.items[0].geometry.extent.clone().expand(1.8)
+      });
+      this.PariveshGIS.ArcView.popup.open({
+        features: kmlLayer.graphics.items,
+        location: kmlLayer.graphics.items[0].geometry.type === "polygon" ? kmlLayer.graphics.items[0].geometry.centroid : kmlLayer.graphics.items[0].geometry.extent.center
+      });
     }
 
     else if (_tool === "Previous Extent")

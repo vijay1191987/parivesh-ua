@@ -10,7 +10,7 @@
     </a>
   </div>
   <ul class="mx-auto bottom-toolbar" [ngClass]="{show: shouldShow, hide: !shouldShow}">
-    <app-swipe></app-swipe>
+    <app-swipe [MapData]="{ESRIObj_}"></app-swipe>
     <app-query-builder></app-query-builder>
     <app-measure></app-measure>
     <app-buffer [MapData]="{ESRIObj_}"></app-buffer>
