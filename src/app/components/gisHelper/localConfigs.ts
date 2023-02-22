@@ -18,7 +18,7 @@ else if (_hostNM.toLowerCase() === "stg.parivesh.nic.in") {
 
 }
 else if (_hostNM.toLowerCase() === "stgdev.parivesh.nic.in") {
-  Bharatmaps = 'a2pKXKj-kxKKSYPnkTju_EEKoKgAEhuFuaL30L-61ux5Vs8-PoQAWC6pAvZ204YeqeZXJJaa6EUz0AY8eS0fMQ..';
+  Bharatmaps = 'NxG0cCEmYvqxHJZjxLORxMSC5axLaf2Mgxl_hqYuyKL9BjtwZLEWARiROiAP9FBFvlAEN7_c9t9iXBM-IF1GFQ..';
   OkmUrl = 'https://stgdev.parivesh.nic.in/okm-dev/okm/downloadDocument?';
   NICTerrain = "mzdflNkRm_9kGjMMMH3N33h4QZ6RXjsPsdWMEuqTcKuYk-gGz_qgPc1dscYVPNDwUtmEpiZohWtDUq8HfIaizw..";
   NICStreetmap = '8nTEokHIiOP_AXnFAMHUepBxidEABCSa2MhxgaVcupLu2ZdHQKsYpIQuFgvuZWga_uiIhUQ5hM39UwNMIpsXAw..';
