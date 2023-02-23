@@ -320,7 +320,7 @@ export const createKMLGraphics = async (_kmlData: any, _qsData: any = null, _fea
   const _customeGL = new GraphicsLayer({
     UUID: _qsData.uuid,
     id: _featIndex === null ? "EsriUserMap" : "EsriUserMap_" + _qsData.uploadedname.replace(' ', ''),
-    title: _qsData.hasOwnProperty("docname") ? _qsData.docname.toUpperCase() : _qsData.refType.toUpperCase(),
+    title: _qsData.hasOwnProperty("docname") ? _qsData.docname.toUpperCase() : _qsData.uuid.toUpperCase(),
     legendEnable: true,
     listMode: "hide",
     effect: [
