@@ -150,10 +150,10 @@ export class LayersComponent implements OnInit {
       }
       layerFeature[0].visible = checked;
       if (checked) {
-        this.PariveshGIS.ArcView.goTo({ target: layerFeature, extent: layerFeature[0].graphics.items[0].geometry.extent.clone().expand(1.8) });
+        this.PariveshGIS.ArcView.goTo({ target: layerFeature, extent: layerFeature[0].geometry.extent.clone().expand(1.8) });
         this.PariveshGIS.ArcView.popup.open({
-          features: layerFeature[0].graphics.items,
-          location: layerFeature[0].graphics.items[0].geometry.type === "polygon" ? layerFeature[0].graphics.items[0].geometry.centroid : layerFeature[0].graphics.items[0].geometry.extent.center
+          features: layerFeature,
+          location: layerFeature[0].geometry.type === "polygon" ? layerFeature[0].geometry.centroid : layerFeature[0].geometry.extent.center
         });
       }
     }

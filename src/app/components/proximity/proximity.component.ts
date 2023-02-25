@@ -3,7 +3,7 @@ import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { DragableService } from 'src/app/services/dragable.service';
 import { TableComponent } from '../../commonComponents/table/table.component';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
-import { getUserKMLFromTree } from "./../gisHelper";
+import { checkEnableLayer, getUserKMLFromTree } from "./../gisHelper";
 import { loadModules } from 'esri-loader';
 import { Bharatmaps } from "../gisHelper/localConfigs";
 import { PariveshServices } from 'src/app/services/GISLayerMasters.service';
@@ -25,7 +25,7 @@ export class ProximityComponent implements OnInit {
   proposalAllKMLs: any = [];
   selectedSourceLayer: any = [];
   selectedItems_DecisionLayers: any = [];
-  decisionLayers: any = [];  
+  decisionLayers: any = [];
   usersList: any[] = [];
   proximityShow: boolean = false;
   proxiData: any = {};
@@ -102,13 +102,10 @@ export class ProximityComponent implements OnInit {
       apiKey: Bharatmaps,
       visible: false
     });
-    const _sourceLayer = this.PariveshGIS.ArcMap.layers.items.filter(function (_d: any) {
-      if (_d.title === that.selectedSourceLayer[0].item_text)
-        return _d;
-    });
 
+    const _sourceLayer = checkEnableLayer(that.selectedSourceLayer[0].item_text.replace(' ', ''), this.PariveshGIS.ArcMap.allLayers);
     const queryParams = dLayer.createQuery();
-    queryParams.geometry = _sourceLayer[0].graphics._items[0].geometry;
+    queryParams.geometry = _sourceLayer.graphics._items[0].geometry;
     queryParams.distance = 10;
     queryParams.outSpatialReference = { wkid: 4326 };
     queryParams.units = "esriSRUnit_Kilometer";
@@ -120,7 +117,7 @@ export class ProximityComponent implements OnInit {
         let _distanceArray: any = [];
         let _tempArray: any = [];
         results.features.forEach(function (a: any, b: any) {
-          const totalDistance = geometryEngine.distance(_sourceLayer[0].graphics._items[0].geometry, a.geometry);
+          const totalDistance = geometryEngine.distance(_sourceLayer.graphics._items[0].geometry, a.geometry);
           if (dLayer.title == "Forest") {
             _distanceArray.push({ Source: dLayer.title, Feature: a.attributes.division, Distance: (totalDistance), Geom: a.geometry });
             _tempArray.push(totalDistance);
@@ -155,7 +152,7 @@ export class ProximityComponent implements OnInit {
           }
           that.ProxidisplayResultInt.push({
             Source: dLayer.title,
-            Name: _distanceArray[index].Feature,
+            Name: _distanceArray[index].Feature === undefined ? "NA" : _distanceArray[index].Feature,
             Distance: minValue === 0 ? "Area of Interest falls within " + _distanceArray[index].Feature + " Division." : _distanceArray[index].Distance,
             geometry: _distanceArray[index].Geom,
             tabEnable: false
@@ -174,20 +171,16 @@ export class ProximityComponent implements OnInit {
       }
     });
   }
-
   onItemSelect(data: any) {
-    const _gl = this.PariveshGIS.ArcMap.layers.items.filter(function (_d: any) {
-      if (_d.title === data.item_text)
-        return _d;
-    });
+    const _gl = checkEnableLayer(data.item_text.replace(' ', ''), this.PariveshGIS.ArcMap.allLayers);
     this.PariveshGIS.ArcView.goTo({
-      target: _gl[0].graphics.items[0].geometry,
-      zoom: 8
+      target: _gl.graphics.items[0].geometry,
+      extent: _gl.graphics.items[0].geometry.extent.clone().expand(1.8)
     });
     this.PariveshGIS.ArcView.popup.open({
-      features: _gl[0].graphics.items,
-      location: _gl[0].graphics.items[0].geometry.type === "polygon" ? _gl[0].graphics.items[0].geometry.centroid : _gl[0].graphics.items[0].geometry.extent.center
-    });    
+      features: _gl.graphics.items,
+      location: _gl.graphics.items[0].geometry.type === "polygon" ? _gl.graphics.items[0].geometry.centroid : _gl.graphics.items[0].geometry.extent.center
+    });
   }
   onItemDeSelect(data: any) {
     this.ProxidisplayResultInt = [];

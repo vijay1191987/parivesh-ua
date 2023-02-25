@@ -2,7 +2,7 @@ import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { DragableService } from 'src/app/services/dragable.service';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { loadModules } from 'esri-loader';
-import { fetchDataEsriService, createFillSymbol, getUserKMLFromTree, CreateEsrisymbol } from "./../gisHelper";
+import { fetchDataEsriService, createFillSymbol, getUserKMLFromTree, CreateEsrisymbol, checkEnableLayer } from "./../gisHelper";
 import { PariveshServices } from 'src/app/services/GISLayerMasters.service';
 import { Bharatmaps } from "../gisHelper/localConfigs";
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
@@ -105,18 +105,14 @@ export class BufferComponent {
   }
 
   onItemSelect(data: any) {
-    const _gl = this.PariveshGIS.ArcMap.layers.items.filter(function (_d: any) {
-      if (_d.title === data.item_text)
-        return _d;
-    });
-    this._sourceLayer = _gl[0];
+    this._sourceLayer = checkEnableLayer(data.item_text.replace(' ', ''), this.PariveshGIS.ArcMap.allLayers);
     this.PariveshGIS.ArcView.goTo({
-      target: _gl[0].graphics.items[0].geometry,
-      extent: _gl[0].graphics.items[0].geometry.extent.clone().expand(1.8)
+      target: this._sourceLayer.graphics.items[0].geometry,
+      extent: this._sourceLayer.graphics.items[0].geometry.extent.clone().expand(1.8)
     });
     this.PariveshGIS.ArcView.popup.open({
-      features: _gl[0].graphics.items,
-      location: _gl[0].graphics.items[0].geometry.type === "polygon" ? _gl[0].graphics.items[0].geometry.centroid : _gl[0].graphics.items[0].geometry.extent.center
+      features: this._sourceLayer.graphics.items,
+      location: this._sourceLayer.graphics.items[0].geometry.type === "polygon" ? this._sourceLayer.graphics.items[0].geometry.centroid : this._sourceLayer.graphics.items[0].geometry.extent.center
     });
   }
 

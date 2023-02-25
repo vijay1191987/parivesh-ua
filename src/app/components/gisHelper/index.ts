@@ -41,8 +41,10 @@ export const createFillSymbol = (color: any, style: any, width: any, outlineColo
 
 export const checkEnableLayer = (layerTile: any, mapLayers: any) => {
   return mapLayers.find(function (layer: any) {
-    if (layer.title === layerTile)
-      return layer;
+    if (layer.title != null) {
+      if (layer.title.toUpperCase().includes(layerTile.toUpperCase()))
+        return layer;
+    }
   });
 };
 export const encodeJSONFormData = (data: any) => {
@@ -319,8 +321,8 @@ export const createKMLGraphics = async (_kmlData: any, _qsData: any = null, _fea
   const _outData: any = {};
   const _customeGL = new GraphicsLayer({
     UUID: _qsData.uuid,
-    id: _featIndex === null ? "EsriUserMap" : "EsriUserMap_" + _qsData.uploadedname.replace(' ', ''),
-    title: _qsData.hasOwnProperty("docname") ? _qsData.docname.toUpperCase() : _qsData.uuid.toUpperCase(),
+    id: _featIndex === null ? "EsriUserKML" : "EsriUserKML_" + _qsData.uploadedname.replace(' ', ''),
+    title: _featIndex === null ? "EsriUserKML_Main_KML" : "EsriUserKML_" + _qsData.docname + "_" + _qsData.uploadedname.replace(' ', ''),
     legendEnable: true,
     listMode: "hide",
     effect: [

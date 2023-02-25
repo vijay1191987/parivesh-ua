@@ -151,7 +151,6 @@ export class PariveshMapComponent implements OnInit {
     }
     else if (_tool === "Extent") {
       const kmlLayer = checkEnableLayer("MAIN_KML", this.PariveshGIS.ArcMap.allLayers);
-      this.PariveshGIS.ArcView.goTo({ target: kmlLayer.graphics.items });
       this.PariveshGIS.ArcView.goTo({
         target: kmlLayer.graphics.items,
         extent: kmlLayer.graphics.items[0].geometry.extent.clone().expand(1.8)
