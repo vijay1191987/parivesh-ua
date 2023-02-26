@@ -623,7 +623,7 @@ export const createKMLGraphics = async (_kmlData: any, _qsData: any = null, _fea
       }
       _customeGL.add(_userGraphic);
       let tp: LayerNode = {} as LayerNode;
-      tp.LayerName = _kmlData.features[z].geometry.type.toUpperCase() + "-" + (Number(z) + Number(1));
+      tp.LayerName = "PATCH -" + (Number(z) + Number(1)); //_kmlData.features[z].geometry.type.toUpperCase() + 
       tp.LayerID = (Number(z) + Number(1));
       tp.selected = true;
       tp.LegendPath = createCanvasImage(_kmlData.features[z].geometry.type.toLowerCase() == "polygon" ? "Rect" : "Line", "red");

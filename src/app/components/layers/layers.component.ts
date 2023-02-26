@@ -142,17 +142,18 @@ export class LayersComponent implements OnInit {
     if (node.hasOwnProperty("reqType")) {
       let layerFeature = null;
       if (node.reqType === "CAF") {
-        const _lyr: any = this.PariveshGIS.ArcMap.findLayerById("EsriUserMap");
+        const _lyr: any = this.PariveshGIS.ArcMap.findLayerById("EsriUserKML");
         layerFeature = _lyr.graphics.items.filter((f: any) => f.id === node.LayerID);
       }
       else if (node.reqType === "DSS") {
-        layerFeature = [this.PariveshGIS.ArcMap.findLayerById("EsriUserMap_" + node.LayerName.replace(' ', ''))];
+        layerFeature = [this.PariveshGIS.ArcMap.findLayerById("EsriUserKML_" + node.LayerName.replace(' ', ''))];
+        layerFeature[0].geometry = layerFeature[0].graphics.items[0].geometry;
       }
       layerFeature[0].visible = checked;
       if (checked) {
         this.PariveshGIS.ArcView.goTo({ target: layerFeature, extent: layerFeature[0].geometry.extent.clone().expand(1.8) });
         this.PariveshGIS.ArcView.popup.open({
-          features: layerFeature,
+          features: node.reqType === "CAF" ? layerFeature : layerFeature[0].graphics.items,
           location: layerFeature[0].geometry.type === "polygon" ? layerFeature[0].geometry.centroid : layerFeature[0].geometry.extent.center
         });
       }
