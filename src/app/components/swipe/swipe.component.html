@@ -20,7 +20,7 @@
       </div>
       <div class="mb-3">
         <label class="mb-1" for="">Trailing Layer :</label>
-        <ng-multiselect-dropdown [placeholder]="'Select Leading Layers'" [settings]="dropdownSettings"
+        <ng-multiselect-dropdown [placeholder]="'Select Trailing Layers'" [settings]="dropdownSettings"
           [data]="trailingdata" [(ngModel)]="selectedTrailing_Layer" (onSelect)="onTrailingLayerSelect($event)">
         </ng-multiselect-dropdown>
       </div>
@@ -37,14 +37,10 @@
               Swipe</button>
           </div>
           <div class="col-md-12 mt-3">
-            <button type="button" class="btn btn-danger w-100" id="resetbtnswipe">Reset</button>
+            <button type="button" class="btn btn-danger w-100" id="resetbtnswipe" (click)="resetSwipe()">Reset</button>
           </div>
         </div>
       </div>
     </form>
-  </div>
-  <div class="tool-popup-footer text-end">
-    <button type="button" class="btn btn-link me-2">Reset</button>
-    <button type="button" class="btn btn-tool-popup">Execute</button>
   </div>
 </div>
