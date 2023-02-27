@@ -2,22 +2,26 @@
 
     <div class="container-fluid d-flex justify-content-end align-items-center">
 
-        <span class="p-0 me-3 pe-3 mb-0 border-end" style="text-align: justify;font-size: 10px;line-height: 1;">
+        <span class="p-0 me-3 pe-3 mb-0 border-end d-md-block d-none" style="text-align: justify;font-size: 10px;line-height: 1;">
           <b>Disclaimer : </b> MoEFCC/NIC is not responsible for the positional inaccuracies, completeness or quality of the maps provided. Map data/Indicative list of clearances provided here is for guidance purpose only. It does not constitute a legal opinion or advice.
         </span>
 
-        <ul class="list-unstyled p-0 d-flex pe-3 mb-0 border-end align-items-center">
+        <ul class="list-unstyled p-0 d-md-flex pe-3 mb-0 align-items-center text-center">
             <li class="me-3">Scale</li>
+            <li>
+            <ul class="list-unstyled p-0 d-flex pe-3 mb-0 align-items-center text-center">
             <li><a href="javascript:void(0);" (click)="zoomInOut('OUT')" class="h5" style="color: #8D8D8D;"><i
                         class="fas fa-minus-circle"></i></a></li>
             <li class="mx-1 px-1 py-1" style="background: #3C3C3C;border-radius: 4px; min-width: 110px;text-align: center;"><span>1:{{this.mapScale}}</span>
             </li>
             <li><a href="javascript:void(0);" (click)="zoomInOut('IN')" class="h5" style="color: #8D8D8D;"><i
                         class="fas fa-plus-circle"></i></a></li>
+                        </ul>
+                      </li>
         </ul>
 
-        <ul class="list-unstyled p-0 d-flex ps-3 mb-0 border-start align-items-center">
-            <li class="me-3">Cordinates</li>
+        <ul class="list-unstyled p-0 d-md-flex ps-3 mb-0 text-center border-start align-items-center">
+            <li class="me-md-3">Cordinates</li>
             <li class="px-1 py-1" style="background: #3C3C3C;border-radius: 4px;min-width: 140px;text-align: center;"><span>{{this.mapPointer}}</span></li>
         </ul>
     </div>

@@ -50,3 +50,9 @@
   bottom: inherit;
   transition: 0.5s;
 }
+@media screen and (max-width: 768px) {
+
+.footer-toogle-icon {
+  bottom: 50px;
+}
+}

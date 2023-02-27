@@ -84,7 +84,7 @@ li.nav-item:last-child {
     width: 40px;
     height: 40px;
     color: #fff;
-    background: #08950F;
+    background: #7a300d;
     text-align: center;
     display: grid;
     place-content: center;
@@ -95,7 +95,7 @@ li.nav-item:last-child {
 }
 
 .bottom-toolbar .nav-link:hover img {
-    background: #05670A;
+    background: #4e1f08;
     color: #fff;
     box-shadow: 0px 9px 15px -5px #00000057;
     transform: translateY(-5px);
@@ -361,8 +361,8 @@ li.nav-item:last-child {
 }
 
 .tool-popup .tool-popup-header {
-    background-color: #EEEEEE;
-    color: #000;
+    background-color: #08950f;
+    color: #fff;
     font-weight: 600;
     border-bottom: 1px solid #8D8D8D;
     margin: 0;
@@ -402,7 +402,7 @@ li.nav-item:last-child {
 }
 
 .invert {
-    filter: invert(1);
+    /* filter: invert(1); */
 }
 
 .btn-tool-popup {
@@ -474,6 +474,11 @@ li.nav-item:last-child {
         left: 16px;
         right: auto;
     }
+
+#change-map-layer {
+  bottom: 60px;
+  left: 10px;
+}
 }
 
 /*media query End*/

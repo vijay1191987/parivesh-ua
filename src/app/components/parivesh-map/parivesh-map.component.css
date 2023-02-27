@@ -1,5 +1,7 @@
 #pariveshMAPdiv {
-    height: calc(100% - 120px);
+    /* height: calc(100% - 120px); */
+    height: 82vh;
+    top: 75px;
 }
 
 .map-area {
@@ -22,20 +24,21 @@
 }
 
 .tool-drawer {
-    position: fixed;
-    top: 15vh;
-    bottom: 0px;
-    height: 65vh;
-    display: grid;
-    place-content: center;
-    right: 0px;
-    z-index: 9;
+      position: fixed;
+      top: 50%;
+      bottom: 0;
+      height: 65vh;
+      display: grid;
+      place-content: center;
+      right: 0;
+      z-index: 9;
+      transform: translateY(-50%);
     /* padding-right: 9px; */
 }
 
 .btn-tool-drawer {
-    background: #08950f;
-    border: 1px solid #08950f;
+    background: #7a300d;
+    border: 1px solid #7a300d;
     color: #fff !important;
     transform: rotate(-90deg) translateY(0px);
     margin-right: -53px !important;
@@ -73,8 +76,12 @@
 }
 
 .tool-drawer-icons li a:hover {
-    background: #d5ffd6;
-    border: 2px solid #08950f;
+    background: #08950f;
+    border: 2px solid #005004;
+}
+
+.tool-drawer-icons li a:hover img {
+  filter: invert(1);
 }
 
 .tool-drawer-icons {

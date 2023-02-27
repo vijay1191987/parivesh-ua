@@ -184,7 +184,7 @@ export const checkKMLGEOJSON = (_jsonData: any) => {
         }
         else if (_jsonData.features[i].geometry.geometries[j].type.toLowerCase() == "linestring") {
           const _line = new Polyline({
-            paths: _jsonData.features[i].geometry.coordinates,
+            paths:_jsonData.features[i].geometry.geometries[j].coordinates,
             hasZ: false,
             hasM: false,
             spatialReference: { wkid: 4326 }
@@ -193,7 +193,7 @@ export const checkKMLGEOJSON = (_jsonData: any) => {
         }
         else if (_jsonData.features[i].geometry.geometries[j].type.toLowerCase() == "polygon" && _jsonData.features[i].geometry.geometries[j].coordinates.length > 0) {
           const _poly = new Polygon({
-            rings: _jsonData.features[i].geometry.coordinates,
+            rings: _jsonData.features[i].geometry.geometries[j].coordinates,
             hasZ: false,
             hasM: false,
             spatialReference: { wkid: 4326 }
@@ -623,7 +623,7 @@ export const createKMLGraphics = async (_kmlData: any, _qsData: any = null, _fea
       }
       _customeGL.add(_userGraphic);
       let tp: LayerNode = {} as LayerNode;
-      tp.LayerName = "PATCH -" + (Number(z) + Number(1)); //_kmlData.features[z].geometry.type.toUpperCase() + 
+      tp.LayerName = "PATCH -" + (Number(z) + Number(1)); //_kmlData.features[z].geometry.type.toUpperCase() +
       tp.LayerID = (Number(z) + Number(1));
       tp.selected = true;
       tp.LegendPath = createCanvasImage(_kmlData.features[z].geometry.type.toLowerCase() == "polygon" ? "Rect" : "Line", "red");
