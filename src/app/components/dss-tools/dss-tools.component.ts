@@ -24,7 +24,7 @@ export class DssToolsComponent {
 
   constructor(private parivesh: PariveshServices) { }
 
-  public _createTreeChildren(_data: any) {
+  private _createTreeChildren(_data: any) {
     return _data.map((e: any, i: any) => {
       let v = {};
       v = { LayerName: e.uploadedname, selected: true, reqType: "DSS", LayerID: i, LegendPath: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAS0lEQVQ4jWMpyi/czsTE6MBABfDv3/8DLExMjA4dXj4c1DCwYtsWBxZqGIQMRg0cNXDUwFEDRw2EGvjv3/8DFdu2OFDDsH///h8AAJBpE3+6+WDuAAAAAElFTkSuQmCC" };
@@ -32,11 +32,8 @@ export class DssToolsComponent {
     });
   }
 
-  async ngOnInit() {
-    this.ESRIObj_ = this.ESRIObject;
-    this.PariveshGIS = await this.ESRIObject;
-
-    const pData = await getProposalDetails(this.qsData);
+  public async searchProposalData(_pNo: any) {
+    const pData = await getProposalDetails(_pNo);
     let layerMasters = groupByJsonData(pData.data, "docname");
     this.dssToolLayers = layerMasters;
     let treeData: any = [];
@@ -50,7 +47,7 @@ export class DssToolsComponent {
       treeData.push(data);
     });
     const tdata = {
-      LayerName: this.qsData.proposalno, selected: true, LayerID: 655, children: treeData
+      LayerName: _pNo.proposalno, selected: true, LayerID: 655, children: treeData
     };
 
     for (let i = 0; i < pData.data.length; i++) {
@@ -80,5 +77,11 @@ export class DssToolsComponent {
     }
     const TREE_DATA: LayerNode[] = [tdata];
     this.parivesh.updateLayer(TREE_DATA);
+  }
+
+  async ngOnInit() {
+    this.ESRIObj_ = this.ESRIObject;
+    this.PariveshGIS = await this.ESRIObject;
+    this.searchProposalData(this.qsData);
   }
 }

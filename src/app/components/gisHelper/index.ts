@@ -69,6 +69,10 @@ export const capitalizeAll = (s: string) => {
   return str.join(' ');
 };
 
+export const getMonthDays = (year: number, month: number) => {
+  return new Date(year, month, 0).getDate();
+};
+
 export const abbreviate = (s: string) => {
   return s.slice(0, 1) + s.slice(1).replace(/[aeiou]/gi, '');
 };
@@ -184,7 +188,7 @@ export const checkKMLGEOJSON = (_jsonData: any) => {
         }
         else if (_jsonData.features[i].geometry.geometries[j].type.toLowerCase() == "linestring") {
           const _line = new Polyline({
-            paths:_jsonData.features[i].geometry.geometries[j].coordinates,
+            paths: _jsonData.features[i].geometry.geometries[j].coordinates,
             hasZ: false,
             hasM: false,
             spatialReference: { wkid: 4326 }

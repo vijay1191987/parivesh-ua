@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { DssToolsComponent } from '../dss-tools/dss-tools.component';
 
 @Component({
   selector: 'app-search',
@@ -7,30 +7,26 @@ import { ActivatedRoute, Params } from '@angular/router';
   styleUrls: ['./search.component.css']
 })
 export class SearchComponent implements OnInit {
-  proposalno:any = null;
-  constructor(private activatedRoute: ActivatedRoute) {
-    // subscribe to router event
-    this.activatedRoute.queryParams.subscribe((params: Params) => {
-      this.proposalno = params['proposalno'];
-    });
+  searchBox: boolean = false;
+  proposalBox: boolean = false;
+  proposalno: string = '';
 
-  }
+  constructor(private dssRef: DssToolsComponent) { }
 
   ngOnInit(): void {
-
   }
 
-  proposalBox:boolean = false;
-  menuBtn()
-  {
+  menuBtn() {
     this.proposalBox = !this.proposalBox;
   }
-
-  searchBox:boolean = false;
-  searchInput()
-  {
-    // this.searchBox = !this.searchBox;
+  searchEvent() {
+    const sbox: any = document.getElementById("txtSearchbox");
+    this.proposalno = sbox.value;
+    if (this.proposalno != '' || this.proposalno != null) {
+      const _payload = { proposalno: this.proposalno };
+      this.dssRef.searchProposalData(_payload);
+    }
+    else
+      alert("Please provide a proposal No!!");
   }
-
-
 }
