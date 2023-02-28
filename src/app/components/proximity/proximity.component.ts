@@ -32,12 +32,7 @@ export class ProximityComponent implements OnInit {
   proxiTargetlayer: any[] = [];
   ProxidisplayResultInt: any[] = [];
 
-  headArray = [
-    { 'Head': 'Source', 'FieldName': 'Source' },
-    { 'Head': 'Name', 'FieldName': 'Name' },
-    { 'Head': 'Distance', 'FieldName': 'Distance' },
-    { 'Head': 'Action', 'FieldName': 'ViewButton' }
-  ];
+  headArray = ['Source','Name','Distance','Action'];
   dropdownSettings_1: IDropdownSettings = {
     singleSelection: true,
     idField: 'item_id',

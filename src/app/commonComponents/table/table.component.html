@@ -84,17 +84,17 @@
       <thead>
         <tr>
           <th>Sr</th>
-          <th *ngFor="let head of HeadArray">{{head.Head}} </th>
+          <th *ngFor="let head of HeadArray">{{head}} </th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let item of GridArray;let sr=index">
           <td>{{sr+1}}</td>
           <td *ngFor="let head of HeadArray">
-            <div *ngIf="head.FieldName != ''">
-              {{item[head.FieldName]}}
+            <div *ngIf="head != ''">
+              {{item[head]}}
             </div>
-            <div *ngIf="(head.FieldName == 'ViewButton' && item.Name !== 'NA' )">
+            <div *ngIf="(head == 'ViewButton' && item.Name !== 'NA' )">
               <button class="btn btn-sm btn-primary" (click)="handleViewClick(item)"
                 style="line-height: 0.7;">View</button>
             </div>

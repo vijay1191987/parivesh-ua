@@ -3,6 +3,7 @@ import axios from 'axios';
 import Polygon from "@arcgis/core/geometry/Polygon";
 import Polyline from "@arcgis/core/geometry/Polyline";
 import { LayerNode } from './../layers/layers.component'
+import { CAFInsertAPI, proposalAPI } from './localConfigs';
 
 /*****************************************************************
  <<<<< COMMON FUNCTION TO RE-USE IN ENTIRE APPLICATION >>>>>
@@ -17,6 +18,13 @@ export const getUser = () => {
 export const getToken = () => {
   return localStorage.getItem('token') || null;
 }
+
+export const convertDate = (inputFormat: any) => {
+  function pad(s: any) { return (s < 10) ? '0' + s : s; }
+  var d = new Date(inputFormat)
+  return [pad(d.getDate()), pad(d.getMonth() + 1), d.getFullYear()].join('/')
+}
+
 export const removeUserSession = () => {
   localStorage.removeItem('token');
   localStorage.removeItem('user');
@@ -148,7 +156,7 @@ export const getLayerMasters = async () => {
 
 export const saveInterSectionResults = async (_d: any) => {
   return axios({
-    url: "https://stgdev.parivesh.nic.in/gis-dev/api/InsertOutData",
+    url: CAFInsertAPI,
     method: 'post',
     data: _d,
     headers: {
@@ -648,7 +656,7 @@ export const createKMLGraphics = async (_kmlData: any, _qsData: any = null, _fea
 
 export const getProposalDetails = async (_d: any) => {
   return axios({
-    url: "https://stgdev.parivesh.nic.in/ua-dev/parivesh/GetProposalData",
+    url: proposalAPI,
     method: 'get',
     params: _d,
     headers: {

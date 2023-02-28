@@ -111,11 +111,8 @@ export class SpatialSearchComponent implements OnInit {
 
 
   async spatialSearchExecution() {
-    const [geometryEngine, Graphic, FeatureLayer,Query] = await loadModules(["esri/geometry/geometryEngine", "esri/Graphic", "esri/layers/FeatureLayer","esri/rest/support/Query"]);
-
+    const [FeatureLayer,Query] = await loadModules(["esri/layers/FeatureLayer","esri/rest/support/Query"]);
     // check decision layer
-    let esriRes = [];
-
     for (let index = 0; index < this.selectedItems_Decision.length; index++) {
       const dt = this.decisionLayers.filter((element) => element.item_id == this.selectedItems_Decision[index].item_id);
       let layer_ID = dt[0].item_url.split('/').pop();
@@ -133,15 +130,10 @@ export class SpatialSearchComponent implements OnInit {
         apiKey: Bharatmaps,
         visible: false
       });
-
       const response = await fetchDataEsriService(q, _lyr);
-      esriRes.push({Feat: response.features });
-
-      const _json = { TargetLayer: this.selectedItems_Decision[index].item_text, Results: esriRes, tabEnable: true };
+      const _json = { TargetLayer: this.selectedItems_Decision[index].item_text, Results: response.features, tabEnable: true };
       this._spatialSearchResults.push(_json);
     }
-
-
     if (this._spatialSearchResults.length > 0) {
       this.bottomSheet.dismiss();
       this.bottomSheet.open(TableComponent, {

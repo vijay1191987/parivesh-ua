@@ -1,0 +1,43 @@
+<!-- icon start -->
+<li class="nav-item" (click)="cpcbIcon('CPCB')">
+  <a class="nav-link bottom-menu-btn" aria-current="page" href="javascript:void(0);" data-bs-toggle="tooltip"
+    data-bs-placement="bottom" title="CPCB"><img src="assets/img/icon/9.svg" alt="Toolbar" /></a>
+</li>
+<!-- icon end -->
+
+
+<div id="CPCB" class="tool-popup" [hidden]="!cpcbShow">
+  <div class="tool-popup-header"> <img class="header-icon invert" src="assets/img/icon/9.svg"> CPCB Analysis
+    <i class="fas fa-caret-down close-drag-window px-2 p-1" (click)="cpcbIcon('CPCB')"></i>
+  </div>
+
+  <div class="tool-popup-inner">
+    <form class="">
+      <div class="mb-3">
+        <label class="mb-1" for="">Source Layer</label>
+        <ng-multiselect-dropdown *ngIf="proposalAllKMLs.length" [placeholder]="'Select KML Layer'"
+        [settings]="dropdownSettings_1" [data]="proposalAllKMLs" [(ngModel)]="selectedSourceLayer"
+        (onSelect)="onItemSelect($event)">
+      </ng-multiselect-dropdown>
+      </div>
+      <div class="mb-3" *ngIf="siteName.length">
+        <label class="mb-1" for="">Site Name</label>
+        <ng-multiselect-dropdown [placeholder]="'Select Site Name'"
+        [settings]="dropdownSettings_1" [data]="siteName" [(ngModel)]="CPCBSite">
+      </ng-multiselect-dropdown>
+      </div>
+      <div class="mb-3"  *ngIf="siteName.length">
+        <label class="mb-1" for="">From Date</label>
+        <input type="date" class="form-control" name="" id="fromdate">
+      </div>
+      <div class="mb-3"  *ngIf="siteName.length">
+        <label class="mb-1" for="">To Date</label>
+        <input type="date" class="form-control" name="" id="todate">
+      </div>
+    </form>
+  </div>
+  <div class="tool-popup-footer text-end"  *ngIf="siteName.length">
+    <button type="button" class="btn btn-link me-2" (click)="cpcbReset()">Reset</button>
+    <button type="button" class="btn btn-tool-popup" (click)="cpcbExecute()">Execute</button>
+  </div>
+</div>
